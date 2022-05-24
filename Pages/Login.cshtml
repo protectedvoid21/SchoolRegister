@@ -1,0 +1,21 @@
+﻿@page
+@model SchoolRegister.Pages.LoginModel
+
+@{
+	Layout = "_Layout";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <div asp-validation-for="@Model.Input.UserName" class="form-label"></div>
+        <label asp-for="@Model.Input.UserName"></label>
+        <input asp-for="@Model.Input.UserName"/>
+    </div>
+    <div class="mb-3">
+        <div asp-validation-for="@Model.Input.Password" class="form-label"></div>
+        <label asp-for="@Model.Input.Password"></label>
+        <input asp-for="@Model.Input.Password"/>
+    </div>
+    <input type="submit" value="Confirm" class="btn btn-primary"/>
+</form>
