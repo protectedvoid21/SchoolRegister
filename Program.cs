@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
+using SchoolRegister.Services.Grades;
+using SchoolRegister.Services.Persons;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     })
     .AddEntityFrameworkStores<IdentityAppContext>();
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<IPersonsService, PersonsService>();
+builder.Services.AddTransient<IGradesService, GradesService>();
 
 var app = builder.Build();
 

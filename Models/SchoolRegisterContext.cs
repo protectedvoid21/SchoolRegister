@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace SchoolRegister.Models; 
+namespace SchoolRegister.Models;
 
 public class SchoolRegisterContext : DbContext {
     public SchoolRegisterContext(DbContextOptions<SchoolRegisterContext> options) : base(options) {}
@@ -8,5 +8,8 @@ public class SchoolRegisterContext : DbContext {
     public DbSet<SchoolClass> SchoolClasses { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Teacher> Teachers { get; set; }
+
     public DbSet<Subject> Subjects { get; set; }
+    public DbSet<StudentSubject> StudentSubjects { get; set; }
+    public DbSet<Grade> Grades { get; set; }
 }

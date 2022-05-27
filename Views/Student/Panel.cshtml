@@ -1,0 +1,24 @@
+﻿@model SchoolRegister.Models.Student
+@{
+    Layout = "_Layout";
+}
+
+<p>@Model.Name @Model.Class.Name</p>
+<hr/>
+<table>
+    <tr>
+        <td>Subject</td>
+        <td>Grades</td>
+        <td>Average</td>
+    </tr>
+    @foreach (var sub in Model.StudentSubjects) {
+        <tr>
+            <td>@sub.Subject.Name</td>
+            <td>
+                @foreach (var grade in sub.Grades) {
+                    @grade.GetGradeName() 
+                }
+            </td>
+        </tr>
+    }
+</table>
