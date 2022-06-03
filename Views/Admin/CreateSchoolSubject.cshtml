@@ -7,36 +7,42 @@
     <div asp-validation-summary="All"></div>
     <div>
         <p>Select subject</p>
+        <span asp-validation-for="@Model.SubjectId"></span>
         <ul>
             @foreach(var subject in Model.SubjectList) {
                 <li>
                     <label>@subject.Name</label>
-                    <input type="radio" asp-for="Subject" value="@subject"/>
+                    <input type="radio" asp-for="@Model.SubjectId" value="@subject.Id"/>
                 </li>
             }
         </ul>
     </div>
     <div>
         <p>Select class</p>
+        <span asp-validation-for="@Model.SchoolClassId"></span>
         <ul>
             @foreach(var schoolClass in Model.SchoolClassList) {
                 <li>
                     <label>@schoolClass.Name</label>
-                    <input type="radio" asp-for="SchoolClass" value="@schoolClass"/>
+                    <input type="radio" asp-for="@Model.SchoolClassId" value="@schoolClass.Id"/>
                 </li>
             }
         </ul>
     </div>
     <div>
         <p>Select teacher</p>
+        <span asp-validation-for="@Model.TeacherId"></span>
         <ul>
             @foreach(var teacher in Model.TeacherList) {
                 <li>
                     <label>@teacher.Name</label>
-                    <input type="radio" asp-for="Teacher" value="@teacher"/>
+                    <input type="radio" asp-for="@Model.TeacherId" value="@teacher.Id"/>
                 </li>
             }
         </ul>
     </div>
+    <input type="hidden" asp-for="@Model.SchoolClassList"/>
+    <input type="hidden" asp-for="@Model.SubjectList"/>
+    <input type="hidden" asp-for="@Model.TeacherList"/>
     <input type="submit" value="Confirm"/>
 </form>

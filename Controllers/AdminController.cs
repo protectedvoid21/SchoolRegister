@@ -121,13 +121,13 @@ public class AdminController : Controller {
     [HttpPost]
     public async Task<IActionResult> CreateSchoolSubject(SchoolSubjectViewModel schoolSubjectModel) {
         if (!ModelState.IsValid) {
-            return View();
+            return RedirectToAction("CreateSchoolSubject");
         }
 
         SchoolSubject subject = new() {
-            Subject = schoolSubjectModel.Subject,
-            SchoolClass = schoolSubjectModel.SchoolClass,
-            Teacher = schoolSubjectModel.Teacher,
+            Subject = await subjectsService.GetSubject(schoolSubjectModel.SubjectId),
+            SchoolClass = await personsService.GetSchoolClassById(schoolSubjectModel.SchoolClassId),
+            Teacher = await personsService.GetTeacherById(schoolSubjectModel.TeacherId),
         };
 
         await subjectsService.AddSchoolSubject(subject);

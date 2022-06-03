@@ -38,8 +38,8 @@ public class SubjectsService : ISubjectsService {
         await schoolContext.SaveChangesAsync();
     }
 
-    public Task<Subject> GetSubject(int id) {
-        throw new NotImplementedException();
+    public async Task<Subject> GetSubject(int id) {
+        return await schoolContext.Subjects.FindAsync(id);
     }
 
     public Task UpdateSubject(Subject subject) {
