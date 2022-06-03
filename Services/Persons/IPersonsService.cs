@@ -3,21 +3,27 @@
 namespace SchoolRegister.Services.Persons; 
 
 public interface IPersonsService {
-    public Task<int> GetStudentCount();
-    public Task<int> GetTeacherCount();
-    public Task<int> GetClassCount();
+    Task<int> GetStudentCount();
+    Task<int> GetTeacherCount();
+    Task<int> GetClassCount();
 
-    public Task<Student> GetStudentById(int studentId);
-    public Task<Teacher> GetTeacherById(int id);
-    public Task<SchoolClass> GetSchoolClassById(int id);
+    Task<List<Student>> GetAllStudents();
+    Task<List<SchoolClass>> GetAllSchoolClasses();
+    Task<List<Teacher>> GetAllTeachers();
 
-    public Task AddStudent(Student student);
-    public Task AddTeacher(Teacher teacher);
-    public Task AddSchoolClass(SchoolClass schoolClass);
+    Task<Student> GetStudentById(int studentId);
+    Task<Teacher> GetTeacherById(int id);
+    Task<SchoolClass> GetSchoolClassById(int id);
 
-    public Task UpdateStudent(Student student);
-    public Task DeleteStudent(Student student);
+    Task AddStudentSubject(StudentSubject studentSubject);
 
-    public Task UpdateTeacher(Teacher teacher);
-    public Task DeleteTeacher(Teacher teacher);
+    Task AddStudent(Student student);
+    Task AddTeacher(Teacher teacher);
+    Task AddSchoolClass(SchoolClass schoolClass);
+
+    Task UpdateStudent(Student student);
+    Task DeleteStudent(Student student);
+
+    Task UpdateTeacher(Teacher teacher);
+    Task DeleteTeacher(Teacher teacher);
 }

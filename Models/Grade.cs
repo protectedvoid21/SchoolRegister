@@ -4,7 +4,7 @@ namespace SchoolRegister.Models;
 
 public class Grade {
     public int Id { get; set; }
-    public string StudentId { get; set; }
+    public Student Student { get; set; }
     [Range(0, 6)]
     public int GradeType { get; set; }
     public GradeAdditionalInfo GradeInfo { get; set; }

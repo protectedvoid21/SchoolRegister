@@ -1,0 +1,30 @@
+﻿@model SchoolRegister.Models.ViewModels.CreateStudentViewModel
+@{
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="@Model.Name" class="form-label"></span>
+        <label asp-for="@Model.Name"></label>
+        <input asp-for="@Model.Name"/>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="@Model.Surname" class="form-label"></span>
+        <label asp-for="@Model.Surname"></label>
+        <input asp-for="@Model.Surname"/>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="@Model.SchoolClassId"></span>
+        @foreach (var schoolClass in Model.SchoolClassList) {
+            <div class="form-check">
+                <label class="form-check-label">@schoolClass.Name</label>
+                <input class="form-check-input" type="radio" asp-for="@Model.SchoolClassId" value="@schoolClass.Id"/>
+            </div>
+            
+        }
+    </div>
+    <input type="hidden" asp-for="SchoolClassList"/>
+    <input type="submit" value="Confim" class="btn-info"/>
+</form>

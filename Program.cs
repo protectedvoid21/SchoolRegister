@@ -21,7 +21,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
 builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<IPersonsService, PersonsService>();
-builder.Services.AddTransient<IGradesService, GradesService>();
+builder.Services.AddTransient<ISubjectsService, SubjectsService>();
 
 var app = builder.Build();
 

@@ -1,26 +1,26 @@
-﻿using SchoolRegister.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SchoolRegister.Models;
 using SchoolRegister.Services.Persons;
 
 namespace SchoolRegister.Services.Grades;
 
-public class GradesService : IGradesService {
+public class SubjectsService : ISubjectsService {
     private readonly SchoolRegisterContext schoolContext;
     private readonly IPersonsService personService;
 
-    public GradesService(SchoolRegisterContext schoolContext, IPersonsService personService) {
+    public SubjectsService(SchoolRegisterContext schoolContext, IPersonsService personService) {
         this.schoolContext = schoolContext;
         this.personService = personService;
     }
 
     public async Task AddGrade(Grade grade, int studentId) {
         Student student = await personService.GetStudentById(studentId);
-        student.StudentSubjects.First(s => s.Subject == grade.Subject).Grades.Add(grade);
+        student.StudentSubjects.First(s => s.SchoolSubject.Subject == grade.Subject).Grades.Add(grade);
         await schoolContext.SaveChangesAsync();
     }
 
     public async Task<Grade> GetGrade(int id) {
-        Grade grade = await schoolContext.Grades.FindAsync(id);
-        return grade;
+        return await schoolContext.Grades.FindAsync(id);
     }
 
     public async Task UpdateGrade(Grade grade) {
@@ -33,9 +33,43 @@ public class GradesService : IGradesService {
         await schoolContext.SaveChangesAsync();
     }
 
+    public async Task AddSubject(Subject subject) {
+        await schoolContext.Subjects.AddAsync(subject);
+        await schoolContext.SaveChangesAsync();
+    }
+
+    public Task<Subject> GetSubject(int id) {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateSubject(Subject subject) {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteSubject(Subject subject) {
+        throw new NotImplementedException();
+    }
+
+    public async Task<int> GetSubjectCount() {
+        return await schoolContext.Subjects.CountAsync();
+    }
+
+    public async Task AddSchoolSubject(SchoolSubject schoolSubject) {
+        await schoolContext.SchoolSubjects.AddAsync(schoolSubject);
+        await schoolContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsSubjectExisting(string name) {
+        return await schoolContext.Subjects.AnyAsync(s => s.Name == name);
+    }
+
+    public async Task<List<Subject>> GetAllSubjects() {
+        return await schoolContext.Subjects.ToListAsync();
+    }
+
     public async Task<IEnumerable<Grade>> GetStudentGrades(int studentId, Subject subject) {
         Student student = await personService.GetStudentById(studentId);
-        return student.StudentSubjects.First(p => p.Subject == subject).Grades;
+        return student.StudentSubjects.First(p => p.SchoolSubject.Subject == subject).Grades;
     }
 
     public async Task<float> GetStudentSubjectAverage(int studentId, Subject subject) {

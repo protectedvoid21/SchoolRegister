@@ -1,0 +1,19 @@
+﻿@model SchoolRegister.Models.ViewModels.TeacherViewModel
+@{
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="@Model.Name" class="form-label"></span>
+        <label asp-for="@Model.Name"></label>
+        <input asp-for="@Model.Name" id="name-input"/>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="@Model.Surname" class="form-label"></span>
+        <label asp-for="@Model.Surname"></label>
+        <input asp-for="@Model.Surname" id="name-input"/>
+    </div>
+    <input type="submit" value="Confirm" class="btn-info"/>
+</form>

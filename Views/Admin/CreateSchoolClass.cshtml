@@ -1,0 +1,14 @@
+﻿@model SchoolRegister.Models.ViewModels.SchoolClassViewModel
+@{
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="@Model.Name" class="form-label"></span>
+        <label asp-for="@Model.Name"></label>
+        <input asp-for="@Model.Name"/>
+    </div>
+    <input type="submit" class="btn-info" value="Confirm"/>
+</form>

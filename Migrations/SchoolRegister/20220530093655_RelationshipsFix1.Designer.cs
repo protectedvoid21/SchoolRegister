@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolRegister.Models;
 
@@ -11,9 +12,10 @@ using SchoolRegister.Models;
 namespace SchoolRegister.Migrations.SchoolRegister
 {
     [DbContext(typeof(SchoolRegisterContext))]
-    partial class SchoolRegisterContextModelSnapshot : ModelSnapshot
+    [Migration("20220530093655_RelationshipsFix1")]
+    partial class RelationshipsFix1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,6 +126,9 @@ namespace SchoolRegister.Migrations.SchoolRegister
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -131,6 +136,8 @@ namespace SchoolRegister.Migrations.SchoolRegister
                     b.HasKey("Id");
 
                     b.HasIndex("ClassId");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("Students");
                 });
@@ -266,6 +273,10 @@ namespace SchoolRegister.Migrations.SchoolRegister
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SchoolRegister.Models.Subject", null)
+                        .WithMany("StudentsList")
+                        .HasForeignKey("SubjectId");
+
                     b.Navigation("Class");
                 });
 
@@ -306,6 +317,11 @@ namespace SchoolRegister.Migrations.SchoolRegister
             modelBuilder.Entity("SchoolRegister.Models.StudentSubject", b =>
                 {
                     b.Navigation("Grades");
+                });
+
+            modelBuilder.Entity("SchoolRegister.Models.Subject", b =>
+                {
+                    b.Navigation("StudentsList");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.Teacher", b =>

@@ -4,10 +4,10 @@ using SchoolRegister.Services.Grades;
 namespace SchoolRegister.Controllers;
 
 public class StudentController : Controller {
-    private readonly IGradesService gradeService;
+    private readonly ISubjectsService _subjectService;
     
-    public StudentController(IGradesService gradeService) {
-        this.gradeService = gradeService;
+    public StudentController(ISubjectsService subjectService) {
+        this._subjectService = subjectService;
     }
 
     public IActionResult Panel() {

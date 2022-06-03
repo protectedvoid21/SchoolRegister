@@ -1,0 +1,42 @@
+﻿@model SchoolRegister.Models.ViewModels.SchoolSubjectViewModel
+@{
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div>
+        <p>Select subject</p>
+        <ul>
+            @foreach(var subject in Model.SubjectList) {
+                <li>
+                    <label>@subject.Name</label>
+                    <input type="radio" asp-for="Subject" value="@subject"/>
+                </li>
+            }
+        </ul>
+    </div>
+    <div>
+        <p>Select class</p>
+        <ul>
+            @foreach(var schoolClass in Model.SchoolClassList) {
+                <li>
+                    <label>@schoolClass.Name</label>
+                    <input type="radio" asp-for="SchoolClass" value="@schoolClass"/>
+                </li>
+            }
+        </ul>
+    </div>
+    <div>
+        <p>Select teacher</p>
+        <ul>
+            @foreach(var teacher in Model.TeacherList) {
+                <li>
+                    <label>@teacher.Name</label>
+                    <input type="radio" asp-for="Teacher" value="@teacher"/>
+                </li>
+            }
+        </ul>
+    </div>
+    <input type="submit" value="Confirm"/>
+</form>

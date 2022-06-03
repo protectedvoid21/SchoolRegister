@@ -22,6 +22,18 @@ public class PersonsService : IPersonsService {
         return await schoolContext.SchoolClasses.CountAsync();
     }
 
+    public async Task<List<Student>> GetAllStudents() {
+        return await schoolContext.Students.ToListAsync();
+    }
+
+    public async Task<List<SchoolClass>> GetAllSchoolClasses() {
+        return await schoolContext.SchoolClasses.ToListAsync();
+    }
+
+    public async Task<List<Teacher>> GetAllTeachers() {
+        return await schoolContext.Teachers.ToListAsync();
+    }
+
     public async Task<Student> GetStudentById(int id) {
         return await schoolContext.Students.FindAsync(id);
     }
@@ -32,6 +44,10 @@ public class PersonsService : IPersonsService {
 
     public async Task<SchoolClass> GetSchoolClassById(int id) {
         return await schoolContext.SchoolClasses.FindAsync(id);
+    }
+
+    public Task AddStudentSubject(StudentSubject studentSubject) {
+        throw new NotImplementedException();
     }
 
     public async Task AddStudent(Student student) {

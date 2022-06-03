@@ -13,7 +13,7 @@
     </tr>
     @foreach (var sub in Model.StudentSubjects) {
         <tr>
-            <td>@sub.Subject.Name</td>
+            <td>@sub.SchoolSubject.Subject.Name</td>
             <td>
                 @foreach (var grade in sub.Grades) {
                     @grade.GetGradeName() 

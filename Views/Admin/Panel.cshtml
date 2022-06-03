@@ -5,6 +5,12 @@
 
 <h1>Admin panel</h1>
 <p>Class count : @Model.ClassCount</p>
-<a class="btn-info">Add new class</a>
-<p>Student count : @Model.StudentCount</p>
+<a class="btn-info" asp-controller="Admin" asp-action="CreateSchoolClass">Add new class</a><hr/>
+<p>Subject count : @Model.SubjectCount</p>
+<a class="btn-info" asp-controller="Admin" asp-action="CreateSubject">Add new subject</a><hr/>
 <p>Teacher count : @Model.TeacherCount</p>
+<a class="btn-info" asp-controller="Admin" asp-action="CreateTeacher">Add new teacher</a><hr/>
+<p>Student count : @Model.StudentCount</p>
+<a class="btn-info" asp-controller="Admin" asp-action="CreateStudent">Add new student</a><hr/>
+
+<a class="btn-info" asp-controller="Admin" asp-action="CreateSchoolSubject">Create subject model</a>
