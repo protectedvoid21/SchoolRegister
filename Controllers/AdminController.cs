@@ -60,34 +60,11 @@ public class AdminController : Controller {
     }
 
     [HttpGet]
-    public ViewResult CreateSubject() {
-        var subjectModel = new SubjectViewModel();
-        return View(subjectModel);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateSubject(SubjectViewModel subjectModel) {
-        if (!ModelState.IsValid) {
-            return View(subjectModel);
-        }
-
-        if (await subjectsService.IsSubjectExisting(subjectModel.Name)) {
-            ModelState.AddModelError("", "Subject with this name already exists");
-            return View(subjectModel);
-        }
-
-        Subject subject = new() {
-            Name = subjectModel.Name,
-        };
-
-        await subjectsService.AddSubject(subject);
-        return RedirectToAction("Panel");
-    }
-
-    [HttpGet]
-    public async Task<ViewResult> CreateStudent() {
+    public async Task<ViewResult> CreateStudent(int schoolClassId) {
+        var schoolClass = await personsService.GetSchoolClassById(schoolClassId);
         var studentModel = new CreateStudentViewModel {
-            SchoolClassList = await personsService.GetAllSchoolClasses(),
+            SchoolClassId = schoolClassId,
+            SchoolClassName = schoolClass.Name,
         };
         return View(studentModel);
     }
@@ -95,7 +72,7 @@ public class AdminController : Controller {
     [HttpPost]
     public async Task<IActionResult> CreateStudent(CreateStudentViewModel studentModel) {
         if (!ModelState.IsValid) {
-            return RedirectToAction("CreateStudent");
+            return View("CreateStudent", studentModel);
         }
 
         Student student = new() {
@@ -105,7 +82,7 @@ public class AdminController : Controller {
         };
 
         await personsService.AddStudent(student);
-        return RedirectToAction("Panel");
+        return RedirectToAction("SchoolClassList");
     }
 
     [HttpGet]
@@ -121,7 +98,7 @@ public class AdminController : Controller {
     [HttpPost]
     public async Task<IActionResult> CreateSchoolSubject(SchoolSubjectViewModel schoolSubjectModel) {
         if (!ModelState.IsValid) {
-            return RedirectToAction("CreateSchoolSubject");
+            return View(schoolSubjectModel);
         }
 
         SchoolSubject subject = new() {
@@ -134,16 +111,81 @@ public class AdminController : Controller {
         return RedirectToAction("Panel");
     }
 
+    public async Task<IActionResult> SchoolClassList() {
+        List<SchoolClass> schoolClassList = await personsService.GetAllSchoolClasses();
+        return View(schoolClassList);
+    }
+
+    public async Task<IActionResult> SchoolClassView(int schoolClassId) {
+        SchoolClass schoolClass = await personsService.GetSchoolClassById(schoolClassId);
+        return View(schoolClass);
+    }
+
+    public async Task<IActionResult> SubjectList() {
+        List<Subject> subjectList = await subjectsService.GetAllSubjects();
+        return View(subjectList);
+    }
+
     [HttpGet]
-    public ViewResult CreateTeacher() {
+    public ViewResult CreateSubject() {
+        var subjectModel = new SubjectViewModel();
+        return View(subjectModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateSubject(SubjectViewModel subjectModel) {
+        if(!ModelState.IsValid) {
+            return View(subjectModel);
+        }
+
+        if(await subjectsService.IsSubjectExisting(subjectModel.Name)) {
+            ModelState.AddModelError("", "Subject with this name already exists");
+            return View(subjectModel);
+        }
+
+        Subject subject = new() {
+            Name = subjectModel.Name,
+        };
+
+        await subjectsService.AddSubject(subject);
+        return RedirectToAction("Panel");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditSubject(int subjectId) {
+        return View(await subjectsService.GetSubject(subjectId));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditSubject(Subject subject) {
+        if (!ModelState.IsValid) {
+            return View(subject);
+        }
+        await subjectsService.UpdateSubject(subject);
+        return RedirectToAction("SubjectList");
+    }
+
+    public async Task<IActionResult> DeleteSubject(int subjectId) {
+        Subject subject = await subjectsService.GetSubject(subjectId);
+        await subjectsService.DeleteSubject(subject);
+        return RedirectToAction("SubjectList");
+    }
+
+    public async Task<IActionResult> TeacherList() {
+        List<Teacher> teacherList = await personsService.GetAllTeachers();
+        return View(teacherList);
+    }
+
+    [HttpGet]
+    public ViewResult AddTeacher() {
         var teacherModel = new TeacherViewModel();
         return View(teacherModel);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateTeacher(TeacherViewModel teacherModel) {
-        if (!ModelState.IsValid) {
-            return View();
+    public async Task<IActionResult> AddTeacher(TeacherViewModel teacherModel) {
+        if(!ModelState.IsValid) {
+            return View(teacherModel);
         }
 
         Teacher teacher = new() {
@@ -152,6 +194,31 @@ public class AdminController : Controller {
         };
 
         await personsService.AddTeacher(teacher);
-        return RedirectToAction("Panel");
+        return RedirectToAction("TeacherList");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditTeacher(int teacherId) {
+        return View(await personsService.GetTeacherById(teacherId));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditTeacher(Teacher teacher) {
+        if (!ModelState.IsValid) {
+            return View(teacher);
+        }
+
+        await personsService.UpdateTeacher(teacher);
+        return RedirectToAction("TeacherList");
+    }
+
+    public async Task<IActionResult> DeleteTeacher(int teacherId) {
+        Teacher teacher = await personsService.GetTeacherById(teacherId);
+        await personsService.DeleteTeacher(teacher);
+        return RedirectToAction("TeacherList");
+    }
+
+    public async Task<IActionResult> TeacherView(int teacherId) {
+        Teacher teacher = await personsService.GetTeacherById(teacherId);
     }
 }

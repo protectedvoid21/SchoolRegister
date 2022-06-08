@@ -1,0 +1,28 @@
+﻿@model SchoolRegister.Models.SchoolClass
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<h2 class="align-content-center">@Model.Name</h2>
+<a class="btn btn-info" asp-controller="Admin" asp-action="CreateStudent" asp-route-schoolClassId="@Model.Id">Add student</a>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var student in Model.StudentsList) {
+        <tr>
+            <td>@student.Name</td>
+            <td>@student.Surname</td>
+            <td class="d-flex gap-3">
+                <a class="btn btn-warning flex-fill">Edit</a>
+                <a class="btn btn-danger flex-fill">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

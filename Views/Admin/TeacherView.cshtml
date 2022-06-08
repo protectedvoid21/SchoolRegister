@@ -1,0 +1,30 @@
+﻿@model SchoolRegister.Models.Teacher
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<p>Class count : @Model.ClassList.Count</p>
+<p>Subject count : @Model.Subjects.Count</p>
+<hr/>
+<p>Classes</p>
+@if (Model.ClassList.Any()) {
+    <table>
+        <thead>
+        <tr>
+            <th>Class name</th>
+            <th>Subject</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var schoolClass in Model.ClassList) {
+            <tr>
+                <td>@schoolClass.Name</td>
+                <td>@schoolClass.</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else {
+    <p>Teacher has not got any class teaching</p>
+}

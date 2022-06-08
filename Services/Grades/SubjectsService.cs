@@ -14,8 +14,7 @@ public class SubjectsService : ISubjectsService {
     }
 
     public async Task AddGrade(Grade grade, int studentId) {
-        Student student = await personService.GetStudentById(studentId);
-        student.StudentSubjects.First(s => s.SchoolSubject.Subject == grade.Subject).Grades.Add(grade);
+        await personService.GetStudentById(studentId);
         await schoolContext.SaveChangesAsync();
     }
 
@@ -42,12 +41,14 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.Subjects.FindAsync(id);
     }
 
-    public Task UpdateSubject(Subject subject) {
-        throw new NotImplementedException();
+    public async Task UpdateSubject(Subject subject) {
+        schoolContext.Update(subject);
+        await schoolContext.SaveChangesAsync();
     }
 
-    public Task DeleteSubject(Subject subject) {
-        throw new NotImplementedException();
+    public async Task DeleteSubject(Subject subject) {
+        schoolContext.Remove(subject);
+        await schoolContext.SaveChangesAsync();
     }
 
     public async Task<int> GetSubjectCount() {

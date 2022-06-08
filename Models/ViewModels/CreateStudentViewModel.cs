@@ -10,5 +10,5 @@ public class CreateStudentViewModel {
     [Required]
     public int SchoolClassId { get; set; }
 
-    public IEnumerable<SchoolClass> SchoolClassList { get; set; }
+    public string SchoolClassName { get; set; }
 }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SchoolRegister.Models.Subject>
+
+@{
+    Layout = "_LayoutAdmin";
+    int index = 1;
+}
+
+<h2>Subject list</h2>
+<a class="btn btn-info" asp-controller="Admin" asp-action="CreateSubject">Add subject</a>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Number</th>
+        <th scope="col">Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var subject in Model) {
+        <tr>
+            <td>@index</td>
+            <td>@subject.Name</td>
+            <td class="d-flex gap-2">
+                <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditSubject" asp-route-subjectId="@subject.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-action="DeleteSubject" asp-route-subjectId="@subject.Id">Delete</a>
+            </td>
+        </tr>
+        index++;
+    }
+    </tbody>
+</table>

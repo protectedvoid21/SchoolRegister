@@ -1,0 +1,18 @@
+﻿@model SchoolRegister.Models.ViewModels.TeacherViewModel
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="Name"></span>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="Surname"></span>
+        <label asp-for="Surname"></label>
+        <input asp-for="Surname" />
+    </div>
+</form>

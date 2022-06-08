@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SchoolRegister.Models.Teacher>
+@{
+    Layout = "_LayoutAdmin";
+    int index = 1;
+}
+
+<h2>Teacher list</h2>
+<a class="btn btn-info" asp-controller="Admin" asp-action="AddTeacher">Add teacher</a>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Index</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Class count</th>
+        <th>Subject count</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var teacher in Model) {
+        <tr>
+            <td>@index</td>
+            <td>@teacher.Name</td>
+            <td>@teacher.Surname</td>
+            <td>@teacher.ClassList.Count</td>
+            <td>@teacher.Subjects.Count</td>
+            <td class="d-flex gap-2">
+                <a class="btn btn-info flex-fill" asp-controller="Admin" asp-aciton="EditTeacher" asp-route-teacherId="@teacher.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-aciton="DeleteTeacher" asp-route-teacherId="@teacher.Id">Delete</a>
+            </td>
+        </tr>
+        index++;
+    }
+    </tbody>
+</table>

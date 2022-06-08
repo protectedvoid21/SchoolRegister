@@ -1,0 +1,15 @@
+﻿@model SchoolRegister.Models.Subject
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="Name"></span>
+        <label asp-for="Name"></label>
+        <input asp-for="Name"/>
+    </div>
+    <input type="hidden" asp-for="Id"/>
+    <input type="submit" value="Confirm" class="btn btn-info"/>
+</form>
