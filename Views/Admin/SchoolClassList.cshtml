@@ -19,7 +19,7 @@
         <tr>
             <th scope="row">@schoolClass.Name</th>
             <td>@schoolClass.StudentsList.Count</td>
-            <td>@schoolClass.SubjectList.Count</td>
+            <td>@schoolClass.SchoolSubjects.Count</td>
             <td class="d-flex gap-2">
                 <a class="btn btn-info flex-fill" asp-action="CreateStudent" asp-route-schoolClassId="@schoolClass.Id">Add student</a>
                 <a class="btn btn-info flex-fill" asp-action="SchoolClassView" asp-route-schoolClassId="@schoolClass.Id">View</a>

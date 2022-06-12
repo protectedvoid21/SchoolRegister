@@ -23,11 +23,13 @@
             <td>@index</td>
             <td>@teacher.Name</td>
             <td>@teacher.Surname</td>
-            <td>@teacher.ClassList.Count</td>
-            <td>@teacher.Subjects.Count</td>
+            <td>@teacher.SchoolSubjects.Distinct().Count()</td>
+            <td>@teacher.SchoolSubjects.Distinct().Count()</td>
             <td class="d-flex gap-2">
-                <a class="btn btn-info flex-fill" asp-controller="Admin" asp-aciton="EditTeacher" asp-route-teacherId="@teacher.Id">Edit</a>
-                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-aciton="DeleteTeacher" asp-route-teacherId="@teacher.Id">Delete</a>
+                <a class="btn btn-info flex-fill" asp-controller="Admin" asp-action="TeacherView" asp-route-teacherId="@teacher.Id">View</a>
+                <a class="btn btn-info" asp-controller="Admin" asp-action="CreateSchoolSubject" asp-route-teacherId="@teacher.Id">Assign subjects</a>
+                <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditTeacher" asp-route-teacherId="@teacher.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-action="DeleteTeacher" asp-route-teacherId="@teacher.Id">Delete</a>
             </td>
         </tr>
         index++;

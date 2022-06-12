@@ -55,9 +55,27 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.Subjects.CountAsync();
     }
 
+    public async Task<SchoolSubject> GetSchoolSubject(int id) {
+        return await schoolContext.SchoolSubjects.FindAsync(id);
+    }
+
     public async Task AddSchoolSubject(SchoolSubject schoolSubject) {
         await schoolContext.SchoolSubjects.AddAsync(schoolSubject);
         await schoolContext.SaveChangesAsync();
+    }
+
+    public async Task AddSchoolSubjectRange(IEnumerable<SchoolSubject> schoolSubjects) {
+        await schoolContext.AddRangeAsync(schoolSubjects);
+        await schoolContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteSchoolSubject(SchoolSubject schoolSubject) {
+        schoolContext.Remove(schoolSubject);
+        await schoolContext.SaveChangesAsync();
+    }
+
+    public async Task<List<SchoolSubject>> GetAllSchoolSubjects() {
+        return await schoolContext.SchoolSubjects.Include(s => s.SchoolClass).Include(s => s.Subject).ToListAsync();
     }
 
     public async Task<bool> IsSubjectExisting(string name) {
@@ -69,8 +87,12 @@ public class SubjectsService : ISubjectsService {
     }
 
     public async Task<IEnumerable<Grade>> GetStudentGrades(int studentId, Subject subject) {
-        Student student = await personService.GetStudentById(studentId);
-        return student.StudentSubjects.First(p => p.SchoolSubject.Subject == subject).Grades;
+        var grades = await schoolContext.StudentSubjects
+            .Include(s => s.Grades)
+            .Where(s => s.Student.Id == studentId && s.Subject == subject)
+            .SelectMany(s => s.Grades)
+            .ToListAsync();
+        return grades;
     }
 
     public async Task<float> GetStudentSubjectAverage(int studentId, Subject subject) {

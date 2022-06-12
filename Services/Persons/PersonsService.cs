@@ -23,40 +23,37 @@ public class PersonsService : IPersonsService {
     }
 
     public async Task<List<Student>> GetAllStudents() {
-        return await schoolContext.Students.ToListAsync();
+        return await schoolContext.Students
+            .Include(s => s.StudentSubjects)
+            .ToListAsync();
     }
 
     public async Task<List<SchoolClass>> GetAllSchoolClasses() {
-        List<SchoolClass> schoolClasses = await schoolContext.SchoolClasses.ToListAsync();
-        schoolClasses.ForEach(c => {
-            c.StudentsList = schoolContext.Students.Include(s => s.Class).Where(s => s.Class == c).ToList();
-            c.SubjectList = schoolContext.Subjects.Where(s => s.Id == c.Id).ToList();
-        });
+        List<SchoolClass> schoolClasses = await schoolContext.SchoolClasses
+            .Include(s => s.StudentsList)
+            .Include(s => s.SchoolSubjects)
+            .ToListAsync();
         return schoolClasses;
     }
 
     public async Task<List<Teacher>> GetAllTeachers() {
-        List<Teacher> teachers = await schoolContext.Teachers.ToListAsync();
-        foreach (var teacher in teachers) {
-            teacher.ClassList = await schoolContext.SchoolSubjects.Where(t => t.Id == teacher.Id).Select(c => c.SchoolClass).ToListAsync();
-            teacher.Subjects = await schoolContext.SchoolSubjects.Where(t => t.Subject.Id == teacher.Id).Select(s => s.Subject).ToListAsync();
-        }
+        List<Teacher> teachers = await schoolContext.Teachers.Include(s => s.SchoolSubjects).ToListAsync();
         return teachers;
     }
 
     public async Task<Student> GetStudentById(int id) {
-        return await schoolContext.Students.FindAsync(id);
+        return await schoolContext.Students.Include(s => s.StudentSubjects).FirstAsync(s => s.Id == id);
     }
 
     public async Task<Teacher> GetTeacherById(int id) {
-        return await schoolContext.Teachers.FindAsync(id);
+        return await schoolContext.Teachers.Include(t => t.SchoolSubjects).FirstAsync(t => t.Id == id);
     }
 
     public async Task<SchoolClass> GetSchoolClassById(int id) {
-        SchoolClass schoolClass = await schoolContext.SchoolClasses.FindAsync(id);
-        schoolClass.StudentsList = await schoolContext.Students.Include(s => s.Class).Where(s => s.Class == schoolClass).ToListAsync();
-        schoolClass.SubjectList = await schoolContext.Subjects.ToListAsync();
-        return schoolClass;
+        return await schoolContext.SchoolClasses
+            .Include(c => c.StudentsList)
+            .Include(c => c.SchoolSubjects)
+            .FirstAsync(c => c.Id == id);
     }
 
     public Task AddStudentSubject(StudentSubject studentSubject) {

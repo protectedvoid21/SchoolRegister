@@ -15,7 +15,11 @@ public interface ISubjectsService {
 
     Task<int> GetSubjectCount();
 
+    Task<SchoolSubject> GetSchoolSubject(int id);
     Task AddSchoolSubject(SchoolSubject schoolSubject);
+    Task AddSchoolSubjectRange(IEnumerable<SchoolSubject> schoolSubjects);
+    Task DeleteSchoolSubject(SchoolSubject schoolSubject);
+    Task<List<SchoolSubject>> GetAllSchoolSubjects();
 
     Task<bool> IsSubjectExisting(string name);
 

@@ -4,6 +4,5 @@ public class Teacher {
     public int Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    public List<Subject> Subjects { get; set; }
-    public List<SchoolClass> ClassList { get; set; } = new();
+    public List<SchoolSubject> SchoolSubjects { get; set; }
 }

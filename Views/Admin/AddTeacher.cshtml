@@ -1,4 +1,4 @@
-﻿@model SchoolRegister.Models.ViewModels.TeacherViewModel
+﻿@model SchoolRegister.Models.ViewModels.CreateTeacherViewModel
 @{
     Layout = "_LayoutAdmin";
 }
@@ -15,4 +15,5 @@
         <label asp-for="Surname"></label>
         <input asp-for="Surname" />
     </div>
+    <input type="submit" value="Confirm" class="btn btn-info"/>
 </form>

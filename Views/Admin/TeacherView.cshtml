@@ -1,14 +1,16 @@
-﻿@model SchoolRegister.Models.Teacher
+﻿@model SchoolRegister.Models.ViewModels.TeacherViewModel
 @{
     Layout = "_LayoutAdmin";
 }
 
-<p>Class count : @Model.ClassList.Count</p>
-<p>Subject count : @Model.Subjects.Count</p>
+<p>Teacher View</p>
+<h2>@Model.Name @Model.Surname</h2>
+<p>Class count : @Model.ClassCount</p>
+<p>Subject count : @Model.SubjectCount</p>
 <hr/>
-<p>Classes</p>
-@if (Model.ClassList.Any()) {
-    <table>
+<p class="text-dark fw-bold" style="font-size: 1.2em">Classes</p>
+@if (Model.TeachingClassList.Any()) {
+    <table class="table table-bordered table-hover">
         <thead>
         <tr>
             <th>Class name</th>
@@ -16,10 +18,10 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var schoolClass in Model.ClassList) {
+        @foreach (var teachingSubject in Model.TeachingClassList) {
             <tr>
-                <td>@schoolClass.Name</td>
-                <td>@schoolClass.</td>
+                <td>@teachingSubject.ClassName</td>
+                <td>@teachingSubject.SubjectName</td>
             </tr>
         }
         </tbody>

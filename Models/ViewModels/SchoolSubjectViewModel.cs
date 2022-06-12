@@ -5,13 +5,19 @@ namespace SchoolRegister.Models.ViewModels;
 public class SchoolSubjectViewModel {
     [Required]
     public int SubjectId { get; set; }
-    [Required]
-    [Display(Name = "Class")]
-    public int SchoolClassId { get; set; }
+    [Required] 
+    public List<ClassChoiceModel> ClassChoiceId { get; set; } = new();
     [Required]
     public int TeacherId { get; set; }
 
+    public string? TeacherName { get; set; }
+    public string? TeacherSurname { get; set; }
+
     public IEnumerable<Subject> SubjectList { get; set; }
-    public IEnumerable<SchoolClass> SchoolClassList { get; set; }
-    public IEnumerable<Teacher> TeacherList { get; set; }
+    public List<SchoolClass> SchoolClassList { get; set; }
+}
+
+public class ClassChoiceModel {
+    public int Id { get; set; }
+    public bool IsPicked { get; set; }
 }

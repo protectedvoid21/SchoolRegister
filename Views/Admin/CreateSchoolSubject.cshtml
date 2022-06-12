@@ -1,48 +1,38 @@
 ﻿@model SchoolRegister.Models.ViewModels.SchoolSubjectViewModel
 @{
-    Layout = "_Layout";
+    Layout = "_LayoutAdmin";
 }
-
+<h2>Add subject and class to teacher : @Model.TeacherName @Model.TeacherSurname</h2>
 <form method="post">
+    <input type="hidden" asp-for="SchoolClassList"/>
+    <input type="hidden" asp-for="SubjectList"/>
+    <input type="hidden" asp-for="TeacherId"/>
     <div asp-validation-summary="All"></div>
     <div>
         <p>Select subject</p>
         <span asp-validation-for="@Model.SubjectId"></span>
-        <ul>
-            @foreach(var subject in Model.SubjectList) {
-                <li>
-                    <label>@subject.Name</label>
-                    <input type="radio" asp-for="@Model.SubjectId" value="@subject.Id"/>
-                </li>
+        <select asp-for="@Model.SubjectId" class="form-select">
+            @foreach (var subject in Model.SubjectList) {
+                <option value="@subject.Id">@subject.Name</option>
             }
-        </ul>
+        </select>
     </div>
     <div>
-        <p>Select class</p>
-        <span asp-validation-for="@Model.SchoolClassId"></span>
-        <ul>
-            @foreach(var schoolClass in Model.SchoolClassList) {
-                <li>
-                    <label>@schoolClass.Name</label>
-                    <input type="radio" asp-for="@Model.SchoolClassId" value="@schoolClass.Id"/>
-                </li>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Class name</th>
+                <th>Assign status</th>
+            </tr>
+            @for (int i = 0; i < Model.SchoolClassList.Count; i++) {
+                <tr>
+                    <td>@Model.SchoolClassList[i].Name</td>
+                    <td class="flex-row d-flex justify-content-around">
+                        <input type="hidden" asp-for="ClassChoiceId[i].Id"/>
+                        <input class="form-check-input" asp-for="@Model.ClassChoiceId[i].IsPicked"/>
+                    </td>
+                </tr>
             }
-        </ul>
+        </table>
     </div>
-    <div>
-        <p>Select teacher</p>
-        <span asp-validation-for="@Model.TeacherId"></span>
-        <ul>
-            @foreach(var teacher in Model.TeacherList) {
-                <li>
-                    <label>@teacher.Name</label>
-                    <input type="radio" asp-for="@Model.TeacherId" value="@teacher.Id"/>
-                </li>
-            }
-        </ul>
-    </div>
-    <input type="hidden" asp-for="@Model.SchoolClassList"/>
-    <input type="hidden" asp-for="@Model.SubjectList"/>
-    <input type="hidden" asp-for="@Model.TeacherList"/>
-    <input type="submit" value="Confirm"/>
+    <input class="btn btn-info" type="submit" value="Confirm"/>
 </form>
