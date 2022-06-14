@@ -14,7 +14,7 @@ public class SchoolSubjectViewModel {
     public string? TeacherSurname { get; set; }
 
     public IEnumerable<Subject> SubjectList { get; set; }
-    public List<SchoolClass> SchoolClassList { get; set; }
+    public SchoolClass[] SchoolClassList { get; set; }
 }
 
 public class ClassChoiceModel {

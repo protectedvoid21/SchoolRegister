@@ -23,7 +23,7 @@
                 <th>Class name</th>
                 <th>Assign status</th>
             </tr>
-            @for (int i = 0; i < Model.SchoolClassList.Count; i++) {
+            @for (int i = 0; i < Model.SchoolClassList.Length; i++) {
                 <tr>
                     <td>@Model.SchoolClassList[i].Name</td>
                     <td class="flex-row d-flex justify-content-around">

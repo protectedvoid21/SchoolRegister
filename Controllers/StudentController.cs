@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Services.Grades;
+using SchoolRegister.Services.Students;
 
 namespace SchoolRegister.Controllers;
 
 public class StudentController : Controller {
-    private readonly ISubjectsService _subjectService;
+    private readonly IStudentsService studentsService;
     
-    public StudentController(ISubjectsService subjectService) {
-        this._subjectService = subjectService;
+    public StudentController(IStudentsService studentsService) {
+        this.studentsService = studentsService;
     }
 
     public IActionResult Panel() {

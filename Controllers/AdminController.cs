@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Services.Grades;
-using SchoolRegister.Services.Persons;
+using SchoolRegister.Services.SchoolClasses;
+using SchoolRegister.Services.Students;
+using SchoolRegister.Services.Subjects;
+using SchoolRegister.Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -14,22 +16,34 @@ namespace SchoolRegister.Controllers;
 public class AdminController : Controller {
     private readonly UserManager<IdentityUser> userManager;
     private readonly SignInManager<IdentityUser> signInManager;
-    private readonly IPersonsService personsService;
+    private readonly ITeachersService teachersService;
+    private readonly IStudentsService studentsService;
+    private readonly ISchoolClassesService schoolClassesService;
     private readonly ISubjectsService subjectsService;
 
     public AdminController(
         UserManager<IdentityUser> userManager, 
         SignInManager<IdentityUser> signInManager,
-        IPersonsService personsService,
-        ISubjectsService subjectsService) {
+        ITeachersService teachersService,
+        IStudentsService studentsService,
+        ISubjectsService subjectsService,
+        ISchoolClassesService schoolClassesService) {
         this.userManager = userManager;
         this.signInManager = signInManager;
-        this.personsService = personsService;
+        this.teachersService = teachersService;
+        this.studentsService = studentsService;
+        this.schoolClassesService = schoolClassesService;
         this.subjectsService = subjectsService;
     }
 
-    public ViewResult Panel() {
-        return View();
+    public async Task<ViewResult> Panel() {
+        var adminViewModel = new AdminPanelViewModel {
+            ClassCount = await schoolClassesService.GetCountAsync(),
+            StudentCount = await studentsService.GetCountAsync(),
+            TeacherCount = await teachersService.GetCountAsync(),
+            SubjectCount = await subjectsService.GetCountAsync()
+        };
+        return View(adminViewModel);
     }
 
     #region SchoolClass
@@ -42,8 +56,8 @@ public class AdminController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> CreateSchoolClass(SchoolClassViewModel schoolClassModel) {
-        if(!ModelState.IsValid) {
-            return View();
+        if(!ModelState.IsValid || await schoolClassesService.IsSchoolClassExisting(schoolClassModel.Name)) {
+            return View(schoolClassModel);
         }
 
         SchoolClass schoolClass = new() {
@@ -51,28 +65,28 @@ public class AdminController : Controller {
             StudentsList = new()
         };
 
-        await personsService.AddSchoolClass(schoolClass);
+        await schoolClassesService.AddAsync(schoolClass);
         return RedirectToAction("Panel");
     }
 
+    public async Task<IActionResult> DeleteSchoolClass(int schoolClassId) {
+        await schoolClassesService.DeleteAsync(schoolClassId);
+        return RedirectToAction("SchoolClassList");
+    }
+
     public async Task<IActionResult> SchoolClassList() {
-        List<SchoolClass> schoolClassList = await personsService.GetAllSchoolClasses();
+        IEnumerable<SchoolClass> schoolClassList = await schoolClassesService.GetAllAsync();
         return View(schoolClassList);
     }
 
     public async Task<IActionResult> SchoolClassView(int schoolClassId) {
-        SchoolClass schoolClass = await personsService.GetSchoolClassById(schoolClassId);
+        SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
         return View(schoolClass);
     }
 
     #endregion
 
     #region Teacher
-
-    public async Task<IActionResult> TeacherList() {
-        List<Teacher> teacherList = await personsService.GetAllTeachers();
-        return View(teacherList);
-    }
 
     [HttpGet]
     public ViewResult AddTeacher() {
@@ -91,13 +105,13 @@ public class AdminController : Controller {
             Surname = createTeacherModel.Surname,
         };
 
-        await personsService.AddTeacher(teacher);
+        await teachersService.AddAsync(teacher);
         return RedirectToAction("TeacherList");
     }
 
     [HttpGet]
     public async Task<IActionResult> EditTeacher(int teacherId) {
-        return View(await personsService.GetTeacherById(teacherId));
+        return View(await teachersService.GetById(teacherId));
     }
 
     [HttpPost]
@@ -106,23 +120,43 @@ public class AdminController : Controller {
             return View(teacher);
         }
 
-        await personsService.UpdateTeacher(teacher);
+        await teachersService.UpdateAsync(teacher);
         return RedirectToAction("TeacherList");
     }
 
     public async Task<IActionResult> DeleteTeacher(int teacherId) {
-        Teacher teacher = await personsService.GetTeacherById(teacherId);
-        await personsService.DeleteTeacher(teacher);
+        Teacher teacher = await teachersService.GetById(teacherId);
+        await teachersService.DeleteAsync(teacher);
         return RedirectToAction("TeacherList");
     }
 
+    public async Task<IActionResult> TeacherList() {
+        IEnumerable<Teacher> teacherList = await teachersService.GetAllAsync();
+        List<TeacherViewModel> teacherModelList = new();
+
+        foreach (var teacher in teacherList) {
+            teacherModelList.Add(new TeacherViewModel {
+                Id = teacher.Id,
+                Name = teacher.Name,
+                Surname = teacher.Surname,
+                ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
+                SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
+                SchoolSubjectCount = teacher.SchoolSubjects.Count,
+            });
+        }
+
+        return View(teacherModelList);
+    }
+
     public async Task<IActionResult> TeacherView(int teacherId) {
-        Teacher teacher = await personsService.GetTeacherById(teacherId);
+        Teacher teacher = await teachersService.GetById(teacherId);
         TeacherViewModel teacherModel = new() {
+            Id = teacherId,
             Name = teacher.Name,
             Surname = teacher.Surname,
-            ClassCount = teacher.SchoolSubjects.Distinct().Count(),
-            SubjectCount = teacher.SchoolSubjects.Distinct().Count()
+            ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
+            SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
+            SchoolSubjectCount = teacher.SchoolSubjects.Count
         };
 
         var schoolSubjects = await subjectsService.GetAllSchoolSubjects();
@@ -145,7 +179,7 @@ public class AdminController : Controller {
 
     [HttpGet]
     public async Task<ViewResult> CreateStudent(int schoolClassId) {
-        var schoolClass = await personsService.GetSchoolClassById(schoolClassId);
+        var schoolClass = await studentsService.GetById(schoolClassId);
         var studentModel = new CreateStudentViewModel {
             SchoolClassId = schoolClassId,
             SchoolClassName = schoolClass.Name,
@@ -162,10 +196,41 @@ public class AdminController : Controller {
         Student student = new() {
             Name = studentModel.Name,
             Surname = studentModel.Surname,
-            Class = await personsService.GetSchoolClassById(studentModel.SchoolClassId),
+            Class = await schoolClassesService.GetById(studentModel.SchoolClassId),
         };
 
-        await personsService.AddStudent(student);
+        await studentsService.AddAsync(student);
+        return RedirectToAction("SchoolClassList");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditStudent(int studentId) {
+        Student student = await studentsService.GetById(studentId);
+        StudentViewModel studentModel = new StudentViewModel {
+            Id = studentId,
+            Name = student.Name,
+            Surname = student.Surname,
+        };
+        return View(studentModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditStudent(StudentViewModel studentModel) {
+        if (!ModelState.IsValid) {
+            return View(studentModel);
+        }
+        Student student = await studentsService.GetById(studentModel.Id);
+        student.Name = studentModel.Name;
+        student.Surname = studentModel.Surname;
+
+        await studentsService.UpdateAsync(student);
+
+        return RedirectToAction("SchoolClassList");
+    }
+
+    public async Task<IActionResult> DeleteStudent(int studentId) {
+        Student student = await studentsService.GetById(studentId);
+        await studentsService.DeleteAsync(student);
         return RedirectToAction("SchoolClassList");
     }
 
@@ -175,21 +240,22 @@ public class AdminController : Controller {
 
     [HttpGet]
     public async Task<ViewResult> CreateSchoolSubject(int teacherId) {
-        Teacher teacher = await personsService.GetTeacherById(teacherId);
+        Teacher teacher = await teachersService.GetById(teacherId);
 
         var schoolSubjectModel = new SchoolSubjectViewModel {
-            SchoolClassList = await personsService.GetAllSchoolClasses(),
             SubjectList = await subjectsService.GetAllSubjects(),
             TeacherId = teacherId,
             TeacherName = teacher.Name,
             TeacherSurname = teacher.Surname,
         };
+        var schoolClassList = await schoolClassesService.GetAllAsync();
+        schoolSubjectModel.SchoolClassList = schoolClassList.ToArray();
+        schoolSubjectModel.ClassChoiceId = new List<ClassChoiceModel>();
 
-        schoolSubjectModel.ClassChoiceId = new();
         foreach(var schoolClass in schoolSubjectModel.SchoolClassList) {
             schoolSubjectModel.ClassChoiceId.Add(new ClassChoiceModel {
                 Id = schoolClass.Id,
-                IsPicked = false,
+                IsPicked = false
             });
         }
 
@@ -207,19 +273,19 @@ public class AdminController : Controller {
 
         foreach(var schoolClassId in pickList) {
             schoolSubjects.Add(new SchoolSubject {
-                Teacher = await personsService.GetTeacherById(schoolSubjectModel.TeacherId),
-                Subject = await subjectsService.GetSubject(schoolSubjectModel.SubjectId),
-                SchoolClass = await personsService.GetSchoolClassById(schoolClassId)
+                Teacher = await teachersService.GetById(schoolSubjectModel.TeacherId),
+                Subject = await subjectsService.GetById(schoolSubjectModel.SubjectId),
+                SchoolClass = await schoolClassesService.GetById(schoolClassId)
             });
         }
 
-        await subjectsService.AddSchoolSubjectRange(schoolSubjects);
+        await subjectsService.AddSchoolSubjectRangeAsync(schoolSubjects);
         return RedirectToAction("TeacherList");
     }
 
     public async Task<IActionResult> DeleteSchoolSubject(int schoolSubjectId) {
-        SchoolSubject schoolSubject = await subjectsService.GetSchoolSubject(schoolSubjectId);
-        await subjectsService.DeleteSchoolSubject(schoolSubject);
+        SchoolSubject schoolSubject = await subjectsService.GetSchoolSubjectById(schoolSubjectId);
+        await subjectsService.DeleteSchoolSubjectAsync(schoolSubject);
         return RedirectToAction("TeacherList");
     }
 
@@ -249,13 +315,13 @@ public class AdminController : Controller {
             Name = subjectModel.Name,
         };
 
-        await subjectsService.AddSubject(subject);
+        await subjectsService.AddAsync(subject);
         return RedirectToAction("SubjectList");
     }
 
     [HttpGet]
     public async Task<IActionResult> EditSubject(int subjectId) {
-        return View(await subjectsService.GetSubject(subjectId));
+        return View(await subjectsService.GetById(subjectId));
     }
 
     [HttpPost]
@@ -263,13 +329,13 @@ public class AdminController : Controller {
         if(!ModelState.IsValid) {
             return View(subject);
         }
-        await subjectsService.UpdateSubject(subject);
+        await subjectsService.UpdateAsync(subject);
         return RedirectToAction("SubjectList");
     }
 
     public async Task<IActionResult> DeleteSubject(int subjectId) {
-        Subject subject = await subjectsService.GetSubject(subjectId);
-        await subjectsService.DeleteSubject(subject);
+        Subject subject = await subjectsService.GetById(subjectId);
+        await subjectsService.DeleteAsync(subject);
         return RedirectToAction("SubjectList");
     }
 

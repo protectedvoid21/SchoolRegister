@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 using SchoolRegister.Services.Grades;
-using SchoolRegister.Services.Persons;
+using SchoolRegister.Services.SchoolClasses;
+using SchoolRegister.Services.Students;
+using SchoolRegister.Services.Subjects;
+using SchoolRegister.Services.Teachers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +23,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
     .AddEntityFrameworkStores<IdentityAppContext>();
 builder.Services.AddRazorPages();
 
-builder.Services.AddTransient<IPersonsService, PersonsService>();
+builder.Services.AddTransient<ISchoolClassesService, SchoolClassesService>();
 builder.Services.AddTransient<ISubjectsService, SubjectsService>();
+builder.Services.AddTransient<ITeachersService, TeachersService>();
+builder.Services.AddTransient<IGradesService, GradesService>();
+builder.Services.AddTransient<IStudentsService, StudentsService>();
 
 var app = builder.Build();
 

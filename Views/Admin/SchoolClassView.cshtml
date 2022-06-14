@@ -19,8 +19,8 @@
             <td>@student.Name</td>
             <td>@student.Surname</td>
             <td class="d-flex gap-3">
-                <a class="btn btn-warning flex-fill">Edit</a>
-                <a class="btn btn-danger flex-fill">Delete</a>
+                <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditStudent" asp-route-studentId="@student.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-action="DeleteStudent" asp-route-studentId="@student.Id">Delete</a>
             </td>
         </tr>
     }

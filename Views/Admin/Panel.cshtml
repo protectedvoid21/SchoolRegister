@@ -1,5 +1,30 @@
-﻿@{
+﻿@model SchoolRegister.Models.ViewModels.AdminPanelViewModel
+@{
     Layout = "_LayoutAdmin";
 }
 
 <h2 class="text-center">Admin panel</h2>
+<hr/>
+<p>Count by group</p>
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Count</th>
+    </tr>
+    <tr>
+        <td>Classes</td>
+        <td>@Model.ClassCount</td>
+    </tr>
+    <tr>
+        <td>Teachers</td>
+        <td>@Model.TeacherCount</td>
+    </tr>
+    <tr>
+        <td>Students</td>
+        <td>@Model.StudentCount</td>
+    </tr>
+    <tr>
+        <td>Subjects</td>
+        <td>@Model.SubjectCount</td>
+    </tr>
+</table>

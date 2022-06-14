@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SchoolRegister.Models.Teacher>
+﻿@model IEnumerable<SchoolRegister.Models.ViewModels.TeacherViewModel>
 @{
     Layout = "_LayoutAdmin";
     int index = 1;
@@ -14,6 +14,7 @@
         <th>Surname</th>
         <th>Class count</th>
         <th>Subject count</th>
+        <th>All subjects</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -23,8 +24,9 @@
             <td>@index</td>
             <td>@teacher.Name</td>
             <td>@teacher.Surname</td>
-            <td>@teacher.SchoolSubjects.Distinct().Count()</td>
-            <td>@teacher.SchoolSubjects.Distinct().Count()</td>
+            <td>@teacher.ClassCount</td>
+            <td>@teacher.SubjectCount</td>
+            <td>@teacher.SchoolSubjectCount</td>
             <td class="d-flex gap-2">
                 <a class="btn btn-info flex-fill" asp-controller="Admin" asp-action="TeacherView" asp-route-teacherId="@teacher.Id">View</a>
                 <a class="btn btn-info" asp-controller="Admin" asp-action="CreateSchoolSubject" asp-route-teacherId="@teacher.Id">Assign subjects</a>
