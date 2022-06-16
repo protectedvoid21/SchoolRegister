@@ -5,12 +5,12 @@
 }
 
 <h2>Create role</h2>
-<form>
+<form method="post">
     <div asp-validation-summary="All"></div>
     <div class="mb-3">
         <span asp-validation-for="Name"></span>
         <label asp-for="Name"></label>
-        <input asp-for="Name"/>
+        <input asp-for="Name" class="form-control-sm"/>
     </div>
     <input type="submit" class="btn btn-info" value="Confirm"/>
 </form>

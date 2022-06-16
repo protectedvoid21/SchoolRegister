@@ -66,7 +66,28 @@ public class AdminController : Controller {
         };
 
         await schoolClassesService.AddAsync(schoolClass);
-        return RedirectToAction("Panel");
+        return RedirectToAction("SchoolClassList");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditSchoolClass(int schoolClassId) {
+        SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
+        return View(schoolClass);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> EditSchoolClass(SchoolClass schoolClass) {
+        if (!ModelState.IsValid) {
+            return View(schoolClass);
+        }
+
+        if (await schoolClassesService.IsSchoolClassExisting(schoolClass.Name)) {
+            ModelState.AddModelError("", "Class with this name already exists");
+            return View(schoolClass);
+        }
+
+        await schoolClassesService.UpdateAsync(schoolClass);
+        return RedirectToAction("SchoolClassList");
     }
 
     public async Task<IActionResult> DeleteSchoolClass(int schoolClassId) {
@@ -179,7 +200,7 @@ public class AdminController : Controller {
 
     [HttpGet]
     public async Task<ViewResult> CreateStudent(int schoolClassId) {
-        var schoolClass = await studentsService.GetById(schoolClassId);
+        var schoolClass = await schoolClassesService.GetById(schoolClassId);
         var studentModel = new CreateStudentViewModel {
             SchoolClassId = schoolClassId,
             SchoolClassName = schoolClass.Name,

@@ -13,14 +13,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("SchoolRegister");
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<IdentityAppContext>(config => config.UseSqlServer(connectionString));
 builder.Services.AddDbContext<SchoolRegisterContext>(config => config.UseSqlServer(connectionString));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
         options.Password.RequireNonAlphanumeric = false;
         options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = false;
     })
-    .AddEntityFrameworkStores<IdentityAppContext>();
+    .AddEntityFrameworkStores<SchoolRegisterContext>();
 builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<ISchoolClassesService, SchoolClassesService>();

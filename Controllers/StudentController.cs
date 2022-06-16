@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SchoolRegister.Models;
 using SchoolRegister.Services.Students;
 
 namespace SchoolRegister.Controllers;
 
+[Authorize(Roles = "Student")]
 public class StudentController : Controller {
     private readonly IStudentsService studentsService;
     
@@ -10,7 +13,8 @@ public class StudentController : Controller {
         this.studentsService = studentsService;
     }
 
-    public IActionResult Panel() {
+    /*public async Task<IActionResult> Panel() {
+        Student student = await studentsService.Get
         return View();
-    }
+    }*/
 }

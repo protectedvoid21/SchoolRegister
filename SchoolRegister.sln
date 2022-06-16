@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolRegister", "SchoolRegister.csproj", "{68B4E94D-3FE8-4844-A481-E7BA29F9D9C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolRegister.Tests", "..\SchoolRegister.Tests\SchoolRegister.Tests.csproj", "{604A8383-19FB-435F-9FE0-5EF724B555BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolRegister.Tests", "..\SchoolRegister.Tests\SchoolRegister.Tests.csproj", "{604A8383-19FB-435F-9FE0-5EF724B555BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1A931B11-2744-482C-9D41-AA4563744AB6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{604A8383-19FB-435F-9FE0-5EF724B555BD} = {1A931B11-2744-482C-9D41-AA4563744AB6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F697EB5B-C3DF-4548-B758-2A4C4672977C}

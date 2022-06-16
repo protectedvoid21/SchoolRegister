@@ -1,18 +1,27 @@
 ﻿@model SchoolRegister.Models.ViewModels.CreateUserViewModel
 
 @{
-    Layout = null;
+    Layout = "_LayoutAdmin";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
-</div>
-</body>
-</html>
+<h2>Create new user</h2>
+<form method="post">
+    <div class="mb-3">
+        <span asp-validation-for="UserName"></span>
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control-sm"/>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="Password"></span>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" class="form-control-sm"/>
+    </div>
+    <div class="mb-3">
+        <select asp-for="SelectedRole" class="form-control">
+            @foreach (var role in Model.RoleList) {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+    </div>
+    <input type="submit" value="Confirm" class="btn btn-info"/>
+</form>

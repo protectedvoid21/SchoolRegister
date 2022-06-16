@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace SchoolRegister.Models;
 
-public class SchoolRegisterContext : DbContext {
+public class SchoolRegisterContext : IdentityDbContext {
     public SchoolRegisterContext(DbContextOptions<SchoolRegisterContext> options) : base(options) {}
 
     public DbSet<SchoolClass> SchoolClasses { get; set; }

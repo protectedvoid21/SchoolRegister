@@ -39,7 +39,8 @@ public class SchoolClassesService : ISchoolClassesService {
     }
 
     public async Task UpdateAsync(SchoolClass schoolClass) {
-        throw new NotImplementedException();
+        schoolContext.Update(schoolClass);
+        await schoolContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id) {

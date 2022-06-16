@@ -3,12 +3,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SchoolRegister.Migrations
+namespace SchoolRegister.Migrations.SchoolRegister
 {
-    public partial class init : Migration
+    public partial class RemoveIdentityAppContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_SchoolClasses_SchoolClasses_SchoolClassId",
+                table: "SchoolClasses");
+
+            migrationBuilder.DropIndex(
+                name: "IX_SchoolClasses_SchoolClassId",
+                table: "SchoolClasses");
+
+            migrationBuilder.DropColumn(
+                name: "SchoolClassId",
+                table: "SchoolClasses");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -216,6 +228,24 @@ namespace SchoolRegister.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.AddColumn<int>(
+                name: "SchoolClassId",
+                table: "SchoolClasses",
+                type: "int",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SchoolClasses_SchoolClassId",
+                table: "SchoolClasses",
+                column: "SchoolClassId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_SchoolClasses_SchoolClasses_SchoolClassId",
+                table: "SchoolClasses",
+                column: "SchoolClassId",
+                principalTable: "SchoolClasses",
+                principalColumn: "Id");
         }
     }
 }

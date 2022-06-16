@@ -4,6 +4,10 @@ namespace SchoolRegister.Controllers;
 
 public class HomeController : Controller {
     public IActionResult Index() {
-        return View();
+        if (User.IsInRole("Student")) {
+            return RedirectToAction("Panel", "Student");
+        }
+
+        return View("Index");
     }
 }

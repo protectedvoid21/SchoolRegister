@@ -1,18 +1,19 @@
-﻿@model TModel
+﻿@model SchoolRegister.Models.SchoolClass
 
 @{
-    Layout = null;
+    Layout = "_LayoutAdmin";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
-</div>
-</body>
-</html>
+<h2>Edit class</h2>
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="Name"></span>
+        <label asp-for="Name"></label>
+        <input asp-for="Name"/>
+    </div>
+    <input type="hidden" asp-for="Id"/>
+    <input type="hidden" asp-for="SchoolSubjects"/>
+    <input type="hidden" asp-for="StudentsList"/>
+    <input type="submit" value="Confirm" class="btn btn-info"/>
+</form>

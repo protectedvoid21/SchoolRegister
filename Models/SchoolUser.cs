@@ -1,5 +1,7 @@
-﻿namespace SchoolRegister.Models; 
+﻿using Microsoft.AspNetCore.Identity;
 
-public class SchoolUser {
-    
+namespace SchoolRegister.Models; 
+
+public class SchoolUser : IdentityUser {
+    public ISchoolRole SchoolRole { get; set; }
 }
