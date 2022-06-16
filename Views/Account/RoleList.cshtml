@@ -1,0 +1,26 @@
+﻿@model IEnumerable<SchoolRegister.Models.ViewModels.RoleViewModel>
+
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<h2>Role list</h2>
+<p>Role count : @Model.Count()</p>
+<a class="btn btn-info" asp-controller="Account" asp-action="CreateRole">Create role</a>
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Name</th>
+        <th>User count</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (var role in Model) {
+        <tr>
+            <td>@role.Name</td>
+            <td>@role.UserCount</td>
+            <td class="d-flex gap-2">
+                <a class="btn btn-warning flex-fill" asp-controller="Account" asp-action="EditRole" asp-route-roleId="@role.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Account" asp-action="DeleteRole" asp-route-roleId="@role.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

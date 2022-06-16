@@ -1,0 +1,16 @@
+﻿@model SchoolRegister.Models.ViewModels.CreateRoleViewModel
+
+@{
+    Layout = "_LayoutAdmin";
+}
+
+<h2>Create role</h2>
+<form>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="Name"></span>
+        <label asp-for="Name"></label>
+        <input asp-for="Name"/>
+    </div>
+    <input type="submit" class="btn btn-info" value="Confirm"/>
+</form>
