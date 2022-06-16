@@ -4,16 +4,20 @@
 }
 
 <h2>User list</h2>
-<a asp-controller="Account" asp-action="CreateUser" class="btn btn-info mb-3">Create user</a>
+<@*a asp-controller="Account" asp-action="CreateUser" class="btn btn-info mb-3">Create user</a>*@
 <table class="table table-bordered">
     <tr>
         <th>Username</th>
         <th>Email</th>
+        <th>Actions</th>
     </tr>
     @foreach (var user in Model) {
         <tr>
             <td>@user.UserName</td>
             <td>@user.Email</td>
+            <td>
+                <a class="btn btn-info" asp-controller="Account" asp-action="EditUser">Edit</a>
+            </td>
         </tr>
     }
 </table>

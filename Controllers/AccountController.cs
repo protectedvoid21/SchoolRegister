@@ -31,7 +31,7 @@ public class AccountController : Controller {
         return View(users);
     }
 
-    [HttpGet]
+    /*[HttpGet]
     public async Task<IActionResult> CreateUser() {
         var userModel = new CreateUserViewModel {
             RoleList = new()
@@ -71,7 +71,7 @@ public class AccountController : Controller {
             ModelState.AddModelError("", error.Description);
         }
         return View(userModel);
-    }
+    }*/
 
     #endregion
 

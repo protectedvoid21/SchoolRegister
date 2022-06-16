@@ -15,16 +15,17 @@ public class SchoolClassesService : ISchoolClassesService {
     }
 
     public async Task<IEnumerable<SchoolClass>> GetAllAsync() {
-        List<SchoolClass> schoolClasses = await schoolContext.SchoolClasses
+        return await schoolContext.SchoolClasses
             .Include(s => s.StudentsList)
+            .ThenInclude(s => s.User)
             .Include(s => s.SchoolSubjects)
             .ToListAsync();
-        return schoolClasses;
     }
 
     public async Task<SchoolClass> GetById(int id) {
         return await schoolContext.SchoolClasses
             .Include(c => c.StudentsList)
+            .ThenInclude(c => c.User)
             .Include(c => c.SchoolSubjects)
             .FirstAsync(c => c.Id == id);
     }

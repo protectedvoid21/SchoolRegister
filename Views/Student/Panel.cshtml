@@ -15,8 +15,10 @@
         <tr>
             <td>@subject.Subject.Name</td>
             <td>
-                @foreach (var grade in subject.Grades) {
-                    @grade.GetGradeName() 
+                @if (subject.Grades is not null) {
+                    @foreach (var grade in subject.Grades) {
+                        @grade.GetGradeName() 
+                    }
                 }
             </td>
             <td>avg lol</td>

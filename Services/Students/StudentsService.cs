@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 
 namespace SchoolRegister.Services.Students; 
@@ -21,7 +23,18 @@ public class StudentsService : IStudentsService {
     }
 
     public async Task<Student> GetById(int id) {
-        return await schoolContext.Students.Include(s => s.StudentSubjects).FirstAsync(s => s.Id == id);
+        return await schoolContext.Students
+            .Include(s => s.StudentSubjects)
+            .Include(s => s.User)
+            .FirstAsync(s => s.Id == id);
+    }
+
+    public async Task<Student> GetByUser(IdentityUser user) {
+        return await schoolContext.Students
+            .Include(s => s.StudentSubjects)
+            !.ThenInclude(s => s.Grades)
+            .Include(s => s.Class)
+            .FirstAsync(s => s.User == user);
     }
 
     public async Task AddAsync(Student student) {

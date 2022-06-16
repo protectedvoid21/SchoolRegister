@@ -16,6 +16,7 @@ namespace SchoolRegister.Controllers;
 public class AdminController : Controller {
     private readonly UserManager<IdentityUser> userManager;
     private readonly SignInManager<IdentityUser> signInManager;
+
     private readonly ITeachersService teachersService;
     private readonly IStudentsService studentsService;
     private readonly ISchoolClassesService schoolClassesService;
@@ -121,9 +122,17 @@ public class AdminController : Controller {
             return View(createTeacherModel);
         }
 
+        var user = new IdentityUser {
+            UserName = Utils.GenerateUserName(createTeacherModel.Name, createTeacherModel.Surname)
+        };
+
+        await userManager.CreateAsync(user, Utils.GeneratePassword(10));
+        await userManager.AddToRoleAsync(user, "Teacher");
+
         Teacher teacher = new() {
             Name = createTeacherModel.Name,
             Surname = createTeacherModel.Surname,
+            User = user,
         };
 
         await teachersService.AddAsync(teacher);
@@ -147,6 +156,7 @@ public class AdminController : Controller {
 
     public async Task<IActionResult> DeleteTeacher(int teacherId) {
         Teacher teacher = await teachersService.GetById(teacherId);
+        await userManager.DeleteAsync(teacher.User);
         await teachersService.DeleteAsync(teacher);
         return RedirectToAction("TeacherList");
     }
@@ -214,10 +224,18 @@ public class AdminController : Controller {
             return View("CreateStudent", studentModel);
         }
 
+        var user = new IdentityUser {
+            UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname),
+        };
+
+        await userManager.CreateAsync(user, Utils.GeneratePassword(10));
+        await userManager.AddToRoleAsync(user, "Student");
+
         Student student = new() {
             Name = studentModel.Name,
             Surname = studentModel.Surname,
             Class = await schoolClassesService.GetById(studentModel.SchoolClassId),
+            User = user
         };
 
         await studentsService.AddAsync(student);
@@ -243,6 +261,7 @@ public class AdminController : Controller {
         Student student = await studentsService.GetById(studentModel.Id);
         student.Name = studentModel.Name;
         student.Surname = studentModel.Surname;
+        student.User.UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname);
 
         await studentsService.UpdateAsync(student);
 
@@ -251,6 +270,7 @@ public class AdminController : Controller {
 
     public async Task<IActionResult> DeleteStudent(int studentId) {
         Student student = await studentsService.GetById(studentId);
+        await userManager.DeleteAsync(student.User);
         await studentsService.DeleteAsync(student);
         return RedirectToAction("SchoolClassList");
     }
