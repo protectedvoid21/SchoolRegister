@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 
 namespace SchoolRegister.Services.Teachers; 
@@ -15,13 +16,13 @@ public class TeachersService : ITeachersService {
     }
 
     public async Task<IEnumerable<Teacher>> GetAllAsync() {
-        List<Teacher> teachers = await schoolContext.Teachers
+        return await schoolContext.Teachers
             .Include(s => s.SchoolSubjects)
             .ThenInclude(s => s.SchoolClass)
             .Include(s => s.SchoolSubjects)
             .ThenInclude(s => s.Subject)
+            .Include(t => t.User)
             .ToListAsync();
-        return teachers;
     }
 
     public async Task<Teacher> GetById(int id) {
@@ -30,7 +31,22 @@ public class TeachersService : ITeachersService {
             .ThenInclude(t => t.SchoolClass)
             .Include(t => t.SchoolSubjects)
             .ThenInclude(t => t.Subject)
+            .Include(t => t.User)
             .FirstAsync(t => t.Id == id);
+    }
+
+    public async Task<Teacher> GetByUser(AppUser user) {
+        return await schoolContext.Teachers
+            .Include(t => t.SchoolSubjects)
+            .ThenInclude(t => t.SchoolClass)
+            .Include(t => t.SchoolSubjects)
+            .ThenInclude(t => t.Subject)
+            .Include(t => t.User)
+            .FirstAsync(t => t.User == user);
+    }
+
+    public async Task<IEnumerable<SchoolSubject>> GetTaughtSubjects(Teacher teacher) {
+        return await schoolContext.SchoolSubjects.Where(s => s.Teacher == teacher).ToListAsync();
     }
 
     public async Task AddAsync(Teacher teacher) {

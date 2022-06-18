@@ -34,6 +34,14 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.Subjects.CountAsync();
     }
 
+    public async Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher) {
+        return await schoolContext.StudentSubjects
+            .Include(s => s.SchoolSubject)
+            .Include(s => s.Student)
+            .Include(s => s.Grades)
+            .ToListAsync();
+    }
+
     public async Task<SchoolSubject> GetSchoolSubjectById(int id) {
         return await schoolContext.SchoolSubjects.FindAsync(id);
     }

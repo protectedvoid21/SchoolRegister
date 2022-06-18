@@ -9,15 +9,15 @@ namespace SchoolRegister.Controllers;
 [Authorize(Roles = "Student")]
 public class StudentController : Controller {
     private readonly IStudentsService studentsService;
-    private readonly UserManager<IdentityUser> userManager;
+    private readonly UserManager<AppUser> userManager;
 
-    public StudentController(IStudentsService studentsService, UserManager<IdentityUser> userManager) {
+    public StudentController(IStudentsService studentsService, UserManager<AppUser> userManager) {
         this.studentsService = studentsService;
         this.userManager = userManager;
     }
 
     public async Task<IActionResult> Panel() {
-        IdentityUser user = await userManager.GetUserAsync(User);
+        AppUser user = await userManager.GetUserAsync(User);
         Student student = await studentsService.GetByUser(user);
         return View(student);
     }

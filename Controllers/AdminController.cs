@@ -14,8 +14,8 @@ namespace SchoolRegister.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller {
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly UserManager<AppUser> userManager;
+    private readonly SignInManager<AppUser> signInManager;
 
     private readonly ITeachersService teachersService;
     private readonly IStudentsService studentsService;
@@ -23,8 +23,8 @@ public class AdminController : Controller {
     private readonly ISubjectsService subjectsService;
 
     public AdminController(
-        UserManager<IdentityUser> userManager, 
-        SignInManager<IdentityUser> signInManager,
+        UserManager<AppUser> userManager, 
+        SignInManager<AppUser> signInManager,
         ITeachersService teachersService,
         IStudentsService studentsService,
         ISubjectsService subjectsService,
@@ -122,7 +122,7 @@ public class AdminController : Controller {
             return View(createTeacherModel);
         }
 
-        var user = new IdentityUser {
+        var user = new AppUser {
             UserName = Utils.GenerateUserName(createTeacherModel.Name, createTeacherModel.Surname)
         };
 
@@ -149,6 +149,8 @@ public class AdminController : Controller {
         if(!ModelState.IsValid) {
             return View(teacher);
         }
+
+        teacher.User.UserName = Utils.GenerateUserName(teacher.Name, teacher.Surname);
 
         await teachersService.UpdateAsync(teacher);
         return RedirectToAction("TeacherList");
@@ -224,7 +226,7 @@ public class AdminController : Controller {
             return View("CreateStudent", studentModel);
         }
 
-        var user = new IdentityUser {
+        var user = new AppUser {
             UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname),
         };
 

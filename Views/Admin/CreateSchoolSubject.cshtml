@@ -1,7 +1,5 @@
 ﻿@model SchoolRegister.Models.ViewModels.SchoolSubjectViewModel
-@{
-    Layout = "_LayoutAdmin";
-}
+
 <h2>Add subject and class to teacher : @Model.TeacherName @Model.TeacherSurname</h2>
 <form method="post">
     <input type="hidden" asp-for="SchoolClassList"/>

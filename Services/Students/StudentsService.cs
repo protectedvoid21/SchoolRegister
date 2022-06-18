@@ -19,6 +19,7 @@ public class StudentsService : IStudentsService {
     public async Task<IEnumerable<Student>> GetAllAsync() {
         return await schoolContext.Students
             .Include(s => s.StudentSubjects)
+            .Include(s => s.User)
             .ToListAsync();
     }
 
@@ -29,7 +30,7 @@ public class StudentsService : IStudentsService {
             .FirstAsync(s => s.Id == id);
     }
 
-    public async Task<Student> GetByUser(IdentityUser user) {
+    public async Task<Student> GetByUser(AppUser user) {
         return await schoolContext.Students
             .Include(s => s.StudentSubjects)
             !.ThenInclude(s => s.Grades)

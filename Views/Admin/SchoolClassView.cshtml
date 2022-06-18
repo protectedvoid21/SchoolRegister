@@ -1,7 +1,4 @@
 ﻿@model SchoolRegister.Models.SchoolClass
-@{
-    Layout = "_LayoutAdmin";
-}
 
 <h2 class="align-content-center">@Model.Name</h2>
 <a class="btn btn-info mb-3" asp-controller="Admin" asp-action="CreateStudent" asp-route-schoolClassId="@Model.Id">Add student</a>

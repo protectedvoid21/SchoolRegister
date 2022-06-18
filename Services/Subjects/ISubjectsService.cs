@@ -13,6 +13,8 @@ public interface ISubjectsService {
 
     Task<int> GetCountAsync();
 
+    Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher);
+
     Task<SchoolSubject> GetSchoolSubjectById(int id);
 
     Task AddSchoolSubjectAsync(SchoolSubject schoolSubject);

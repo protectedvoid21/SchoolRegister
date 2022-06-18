@@ -1,4 +1,5 @@
-﻿using SchoolRegister.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using SchoolRegister.Models;
 
 namespace SchoolRegister.Services.Teachers;
 
@@ -8,6 +9,10 @@ public interface ITeachersService {
     Task<IEnumerable<Teacher>> GetAllAsync();
 
     Task<Teacher> GetById(int id);
+
+    Task<Teacher> GetByUser(AppUser user);
+
+    Task<IEnumerable<SchoolSubject>> GetTaughtSubjects(Teacher teacher);
 
     Task AddAsync(Teacher teacher);
 

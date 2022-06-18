@@ -10,7 +10,7 @@ public interface IStudentsService {
 
     Task<Student> GetById(int id);
 
-    Task<Student> GetByUser(IdentityUser user);
+    Task<Student> GetByUser(AppUser user);
 
     Task AddAsync(Student student);
 

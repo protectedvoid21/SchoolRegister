@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SchoolRegister.Models;
 
-public class SchoolRegisterContext : IdentityDbContext {
+public class SchoolRegisterContext : IdentityDbContext<AppUser, IdentityRole<int>, int> {
     public SchoolRegisterContext(DbContextOptions<SchoolRegisterContext> options) : base(options) { }
 
     public DbSet<SchoolClass> SchoolClasses { get; set; }

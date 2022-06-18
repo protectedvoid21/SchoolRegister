@@ -1,0 +1,16 @@
+﻿@model SchoolRegister.Models.Teacher
+
+@{
+    Layout = "_Layout";
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Class name</th>
+    </tr>
+    @foreach (var schoolSubject in Model.SchoolSubjects) {
+        <tr>
+            <th>@schoolSubject.SchoolClass.Name</th>
+        </tr>
+    }
+</table>
