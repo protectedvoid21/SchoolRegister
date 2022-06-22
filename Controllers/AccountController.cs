@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SchoolRegister.Models;
 using SchoolRegister.Models.ViewModels;
 
 namespace SchoolRegister.Controllers;
 
 [Authorize(Roles = "Admin")]
 public class AccountController : Controller {
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
-    private readonly RoleManager<IdentityRole> roleManager;
+    private readonly UserManager<AppUser> userManager;
+    private readonly SignInManager<AppUser> signInManager;
+    private readonly RoleManager<IdentityRole<int>> roleManager;
 
-    public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager) {
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole<int>> roleManager) {
         this.userManager = userManager;
         this.signInManager = signInManager;
         this.roleManager = roleManager;
@@ -27,7 +28,7 @@ public class AccountController : Controller {
     #region Users
 
     public IActionResult UserList() {
-        IEnumerable<IdentityUser> users = userManager.Users.AsEnumerable();
+        IEnumerable<AppUser> users = userManager.Users.AsEnumerable();
         return View(users);
     }
 
@@ -106,7 +107,7 @@ public class AccountController : Controller {
             return View(roleModel);
         }
 
-        IdentityRole role = new IdentityRole {
+        IdentityRole<int> role = new IdentityRole<int> {
             Name = roleModel.Name
         };
         await roleManager.CreateAsync(role);
@@ -115,12 +116,12 @@ public class AccountController : Controller {
 
     [HttpGet]
     public async Task<IActionResult> EditRole(string roleId) {
-        IdentityRole role = await roleManager.FindByIdAsync(roleId);
+        IdentityRole<int> role = await roleManager.FindByIdAsync(roleId);
         return View(role);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditRole(IdentityRole role) {
+    public async Task<IActionResult> EditRole(IdentityRole<int> role) {
         if (!ModelState.IsValid) {
             return View(role);
         }
@@ -134,7 +135,7 @@ public class AccountController : Controller {
     }
 
     public async Task<IActionResult> DeleteRole(string roleId) {
-        IdentityRole role = await roleManager.FindByIdAsync(roleId);
+        IdentityRole<int> role = await roleManager.FindByIdAsync(roleId);
         await roleManager.DeleteAsync(role);
         return RedirectToAction("RoleList");
     }

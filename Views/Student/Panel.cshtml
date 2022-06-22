@@ -3,7 +3,7 @@
     Layout = "_Layout";
 }
 
-<p>@Model.Name @Model.Class.Name</p>
+<p>@Model.Name @Model.SchoolClass.Name</p>
 <hr/>
 <table class="table table-bordered">
     <tr>
@@ -11,12 +11,12 @@
         <th>Grades</th>
         <th>Average</th>
     </tr>
-    @foreach (var subject in Model.StudentSubjects) {
+    @foreach (var studentSubject in Model.StudentSubjects) {
         <tr>
-            <td>@subject.Subject.Name</td>
+            <td>@studentSubject</td>
             <td>
-                @if (subject.Grades is not null) {
-                    @foreach (var grade in subject.Grades) {
+                @if (studentSubject.Grades is not null) {
+                    @foreach (var grade in studentSubject.Grades) {
                         @grade.GetGradeName() 
                     }
                 }

@@ -34,7 +34,7 @@ public class StudentsService : IStudentsService {
         return await schoolContext.Students
             .Include(s => s.StudentSubjects)
             !.ThenInclude(s => s.Grades)
-            .Include(s => s.Class)
+            .Include(s => s.SchoolClass)
             .FirstAsync(s => s.User == user);
     }
 

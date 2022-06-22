@@ -7,5 +7,5 @@ public class Teacher {
     public string Name { get; set; }
     public string Surname { get; set; }
     public AppUser User { get; set; }
-    public List<SchoolSubject> SchoolSubjects { get; set; }
+    public List<SchoolSubject>? SchoolSubjects { get; set; }
 }

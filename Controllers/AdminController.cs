@@ -236,7 +236,7 @@ public class AdminController : Controller {
         Student student = new() {
             Name = studentModel.Name,
             Surname = studentModel.Surname,
-            Class = await schoolClassesService.GetById(studentModel.SchoolClassId),
+            SchoolClass = await schoolClassesService.GetById(studentModel.SchoolClassId),
             User = user
         };
 

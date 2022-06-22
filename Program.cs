@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SchoolRegister");
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SchoolRegisterContext>(config => config.UseSqlServer(connectionString));
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options => {
         options.Password.RequireNonAlphanumeric = false;
         options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = false;

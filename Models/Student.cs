@@ -8,6 +8,6 @@ public class Student {
     public string Surname { get; set; }
     public AppUser User { get; set; }
 
-    public SchoolClass Class { get; set; }
-    public List<StudentSubject>? StudentSubjects { get; set; }
+    public SchoolClass SchoolClass { get; set; }
+    public List<StudentSubject> StudentSubjects { get; set; }
 }

@@ -49,8 +49,14 @@ public class TeacherController : Controller {
     public async Task<IActionResult> ViewSubject(int subjectId) {
         AppUser user = await userManager.GetUserAsync(User);
         Teacher teacher = await teachersService.GetByUser(user);
+
+        var studentSubjectModel = new TeacherStudentSubjectViewModel();
+        
         IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetSchoolSubjectsByTeacher(teacher);
-        //todo: change it to certain class view
-        return View(studentSubjects);
+        studentSubjectModel.StudentSubjects = studentSubjects.Where(s => s.SchoolSubject.Subject.Id == subjectId);
+        studentSubjectModel.SubjectName = (await subjectsService.GetById(subjectId)).Name;
+        studentSubjectModel.ClassName = studentSubjects.First().SchoolSubject.SchoolClass.Name;
+
+        return View(studentSubjectModel);
     }
 }

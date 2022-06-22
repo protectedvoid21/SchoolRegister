@@ -5,4 +5,5 @@ public class SchoolSubject {
     public Subject Subject { get; set; }
     public SchoolClass SchoolClass { get; set; }
     public Teacher Teacher { get; set; }
+    public List<StudentSubject> StudentSubjects { get; set; }
 }
