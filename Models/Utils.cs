@@ -1,4 +1,4 @@
-﻿namespace SchoolRegister.Models; 
+﻿namespace SchoolRegister.Models;
 
 public static class Utils {
     public static string GeneratePassword(int length, string availableCharacters = "abcdefghijklmnoprstxuwyzABCDEFGHIJKLMNOPRSTXUWYZ0123456789") {
@@ -11,6 +11,8 @@ public static class Utils {
         for (int i = 0; i < length; i++) {
             password += availableCharacters[rng.Next(availableCharacters.Length)];
         }
+
+        password = char.ToUpper(password[0]) + password.Substring(1);
 
         return password;
     }

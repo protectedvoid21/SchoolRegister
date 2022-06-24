@@ -106,6 +106,15 @@ public class AdminController : Controller {
         return View(schoolClass);
     }
 
+    public async Task<IActionResult> ClassSubjectView(int schoolClassId) {
+        ViewBag.ClassName = (await schoolClassesService.GetById(schoolClassId)).Name;
+
+        IEnumerable<Subject> subjects = (await subjectsService.GetAllSchoolSubjects())
+            .Where(s => s.SchoolClass.Id == schoolClassId)
+            .Select(s => s.Subject);
+        return View(subjects);
+    }
+
     #endregion
 
     #region Teacher
@@ -241,6 +250,8 @@ public class AdminController : Controller {
         };
 
         await studentsService.AddAsync(student);
+        await subjectsService.UpdateSubjectsForStudent(student);
+
         return RedirectToAction("SchoolClassList");
     }
 
@@ -312,17 +323,28 @@ public class AdminController : Controller {
         }
 
         List<SchoolSubject> schoolSubjects = new();
-        var pickList = schoolSubjectModel.ClassChoiceId.Where(c => c.IsPicked).Select(c => c.Id);
+        IEnumerable<int> pickList = schoolSubjectModel.ClassChoiceId.Where(c => c.IsPicked).Select(c => c.Id);
+        Teacher teacher = await teachersService.GetById(schoolSubjectModel.TeacherId);
+        Subject subject = await subjectsService.GetById(schoolSubjectModel.SubjectId);
+        List<SchoolClass> schoolClassList = new List<SchoolClass>();
 
         foreach(var schoolClassId in pickList) {
+            SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
+            schoolClassList.Add(schoolClass);
+
             schoolSubjects.Add(new SchoolSubject {
-                Teacher = await teachersService.GetById(schoolSubjectModel.TeacherId),
-                Subject = await subjectsService.GetById(schoolSubjectModel.SubjectId),
-                SchoolClass = await schoolClassesService.GetById(schoolClassId)
+                Teacher = teacher,
+                Subject = subject,
+                SchoolClass = schoolClass
             });
         }
-
         await subjectsService.AddSchoolSubjectRangeAsync(schoolSubjects);
+
+        foreach(var schoolClass in schoolClassList) {
+            SchoolSubject schoolSubject = (await subjectsService.GetSchoolSubjectsByClass(schoolClass, subject)).First(s => s.Subject == subject);
+            await subjectsService.UpdateStudentSubjectsInClass(schoolSubject);
+        }
+
         return RedirectToAction("TeacherList");
     }
 
@@ -334,7 +356,14 @@ public class AdminController : Controller {
 
     public async Task<IActionResult> SubjectList() {
         List<Subject> subjectList = await subjectsService.GetAllSubjects();
-        return View(subjectList);
+        List<SubjectElementViewModel> subjectListModel = new();
+        foreach (var subject in subjectList) {
+            subjectListModel.Add(new SubjectElementViewModel {
+                Subject = subject,
+                StudentCount = await subjectsService.GetCountByStudents(subject)
+            });
+        }
+        return View(subjectListModel);
     }
 
     [HttpGet]

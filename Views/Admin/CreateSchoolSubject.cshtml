@@ -9,7 +9,7 @@
     <div>
         <p>Select subject</p>
         <span asp-validation-for="@Model.SubjectId"></span>
-        <select asp-for="@Model.SubjectId" class="form-select">
+        <select asp-for="@Model.SubjectId" class="form-select mb-3">
             @foreach (var subject in Model.SubjectList) {
                 <option value="@subject.Id">@subject.Name</option>
             }

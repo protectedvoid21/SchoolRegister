@@ -8,6 +8,14 @@ public class HomeController : Controller {
             return RedirectToAction("Panel", "Student");
         }
 
+        if (User.IsInRole("Teacher")) {
+            return RedirectToAction("Index", "Teacher");
+        }
+
+        if (User.IsInRole("Admin")) {
+            return RedirectToAction("Panel", "Admin");
+        }
+
         return View("Index");
     }
 }

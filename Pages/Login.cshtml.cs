@@ -2,12 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SchoolRegister.Models;
 
 namespace SchoolRegister.Pages; 
 
 public class LoginModel : PageModel {
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly UserManager<AppUser> userManager;
+    private readonly SignInManager<AppUser> signInManager;
 
     [BindProperty]
     public InputModel Input { get; set; }
@@ -22,7 +23,7 @@ public class LoginModel : PageModel {
         public string Password { get; set; }
     }
 
-    public LoginModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) {
+    public LoginModel(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) {
         this.userManager = userManager;
         this.signInManager = signInManager;
     }

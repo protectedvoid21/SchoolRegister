@@ -14,12 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SchoolRegister");
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SchoolRegisterContext>(config => config.UseSqlServer(connectionString));
-builder.Services.AddIdentity<AppUser, IdentityRole<int>>(options => {
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
         options.Password.RequireNonAlphanumeric = false;
-        options.User.RequireUniqueEmail = true;
+        //options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = false;
     })
-    .AddEntityFrameworkStores<SchoolRegisterContext>();
+    .AddEntityFrameworkStores<SchoolRegisterContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddRazorPages();
 
 builder.Services.AddTransient<ISchoolClassesService, SchoolClassesService>();

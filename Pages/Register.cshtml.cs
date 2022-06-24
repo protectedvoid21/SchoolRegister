@@ -2,12 +2,13 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SchoolRegister.Models;
 
 namespace SchoolRegister.Pages; 
 
 public class RegisterModel : PageModel {
-    private readonly UserManager<IdentityUser> userManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly UserManager<AppUser> userManager;
+    private readonly SignInManager<AppUser> signInManager;
 
     [BindProperty]
     public InputModel Input { get; set; }
@@ -26,7 +27,7 @@ public class RegisterModel : PageModel {
         public string Email { get; set; }
     }
 
-    public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager) {
+    public RegisterModel(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) {
         this.userManager = userManager;
         this.signInManager = signInManager;
     }
@@ -45,7 +46,7 @@ public class RegisterModel : PageModel {
             return Page();
         }
 
-        IdentityUser user = new() {
+        AppUser user = new() {
             UserName = Input.UserName,
             Email = Input.Email,
         };

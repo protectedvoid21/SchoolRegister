@@ -14,6 +14,8 @@ public class Grade {
     public int GradeType { get; set; }
     public GradeAdditionalInfo GradeInfo { get; set; }
     public DateTime DateAdd { get; set; }
+
+    public string? Comment { get; set; }
     
 
     public string GetGradeName() {

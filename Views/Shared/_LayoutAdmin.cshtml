@@ -37,16 +37,18 @@
 <div class="flex-row d-flex">
     <header style="width: 20%">
         <nav class="bg-brown h-100 min-vh-100">
-            <ul class="nav flex-column">
+            <ul class="nav flex-column text-center text-white">
                 <li><a class="navbar-brand nav-link text-white text-center" asp-controller="Admin" asp-action="Panel">School Register</a></li>
-                <li class="nav-item"><p class="adm-view-text text-center">Administrator View</p></li>
+                <li class="nav-item text-white"><p class="adm-view-text text-center">Administrator View</p></li>
                 <li><hr/></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="SchoolClassList">Class list</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="SubjectList">Subject list</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="TeacherList">Teacher list</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="SchoolClassList">Class list</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="SubjectList">Subject list</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-controller="Admin" asp-action="TeacherList">Teacher list</a></li>
                 <li><hr/></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="UserList">User list</a></li>
-                <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="RoleList">Role list</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-controller="Account" asp-action="UserList">User list</a></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-controller="Account" asp-action="RoleList">Role list</a></li>
+                <li><hr/></li>
+                <li class="nav-item"><a class="nav-link text-white" asp-controller="Account" asp-action="Logout">Logout</a></li>
             </ul>
         </nav>
     </header>

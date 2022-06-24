@@ -1,11 +1,12 @@
 ﻿@model SchoolRegister.Models.ViewModels.SchoolClassViewModel
 
+<h2>Create new class</h2>
 <form method="post">
     <div asp-validation-summary="All"></div>
     <div class="mb-3">
         <span asp-validation-for="@Model.Name" class="form-label"></span>
         <label asp-for="@Model.Name"></label>
-        <input asp-for="@Model.Name"/>
+        <input asp-for="@Model.Name" class="form-control-sm"/>
     </div>
     <input type="submit" class="btn-info" value="Confirm"/>
 </form>

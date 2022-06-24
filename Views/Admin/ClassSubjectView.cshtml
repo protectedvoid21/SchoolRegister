@@ -1,0 +1,13 @@
+﻿@model IEnumerable<SchoolRegister.Models.Subject>
+
+<h2>Subject list for class : @ViewBag.ClassName</h2>
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>Name</th>
+    </tr>
+    @foreach (var subject in Model) {
+        <tr>
+            <td>@subject.Name</td>
+        </tr>
+    }
+</table>

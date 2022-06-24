@@ -5,17 +5,18 @@
 	Layout = "_Layout";
 }
 
+<h2>Login into account</h2>
 <form method="post">
     <div asp-validation-summary="All"></div>
     <div class="mb-3">
         <div asp-validation-for="@Model.Input.UserName" class="form-label"></div>
         <label asp-for="@Model.Input.UserName"></label>
-        <input asp-for="@Model.Input.UserName"/>
+        <input asp-for="@Model.Input.UserName" class="form-control-sm"/>
     </div>
     <div class="mb-3">
         <div asp-validation-for="@Model.Input.Password" class="form-label"></div>
         <label asp-for="@Model.Input.Password"></label>
-        <input asp-for="@Model.Input.Password"/>
+        <input asp-for="@Model.Input.Password" class="form-control-sm"/>
     </div>
     <input type="submit" value="Confirm" class="btn btn-primary"/>
 </form>

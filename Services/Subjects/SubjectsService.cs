@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 using SchoolRegister.Services.Subjects;
 
@@ -20,6 +21,14 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.Subjects.FindAsync(id);
     }
 
+    public async Task<StudentSubject> GetStudentSubjectById(int id) {
+        return await schoolContext.StudentSubjects
+            .Include(s => s.SchoolSubject)
+            .ThenInclude(s => s.Subject)
+            .Include(s => s.Student)
+            .FirstAsync(s => s.Id == id);
+    }
+
     public async Task UpdateAsync(Subject subject) {
         schoolContext.Update(subject);
         await schoolContext.SaveChangesAsync();
@@ -34,9 +43,16 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.Subjects.CountAsync();
     }
 
+    public async Task<int> GetCountByStudents(Subject subject) {
+        return await schoolContext.StudentSubjects.Where(s => s.SchoolSubject.Subject == subject).CountAsync();
+    }
+
     public async Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher) {
         return await schoolContext.StudentSubjects
             .Include(s => s.SchoolSubject)
+            .ThenInclude(s => s.Subject)
+            .Include(s => s.SchoolSubject)
+            .ThenInclude(s => s.SchoolClass)
             .Include(s => s.Student)
             .Include(s => s.Grades)
             .ToListAsync();
@@ -44,6 +60,46 @@ public class SubjectsService : ISubjectsService {
 
     public async Task<SchoolSubject> GetSchoolSubjectById(int id) {
         return await schoolContext.SchoolSubjects.FindAsync(id);
+    }
+
+    public async Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass, Subject subject) {
+        return await schoolContext.SchoolSubjects
+            .Where(s => s.SchoolClass == schoolClass && s.Subject == subject)
+            .ToListAsync();
+    }
+
+    public async Task UpdateStudentSubjectsInClass(SchoolSubject schoolSubject) {
+        IEnumerable<Student> studentList = schoolContext.Students
+            .Include(s => s.StudentSubjects)
+            .Where(s => s.SchoolClass == schoolSubject.SchoolClass);
+
+        foreach (var student in studentList) {
+            if (!student.StudentSubjects.Select(s => s.SchoolSubject).Contains(schoolSubject)) {
+                StudentSubject studentSubject = new() {
+                    SchoolSubject = schoolSubject,
+                    SchoolSubjectId = schoolSubject.Id,
+                    Student = student,
+                };
+                await schoolContext.AddAsync(studentSubject);
+            }
+        }
+        await schoolContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateSubjectsForStudent(Student student) {
+        IEnumerable<SchoolSubject> schoolSubjects = schoolContext.SchoolSubjects.Where(s => s.SchoolClass == student.SchoolClass);
+
+        foreach (var schoolSubject in schoolSubjects) {
+            if (!schoolContext.StudentSubjects.Select(s => s.SchoolSubject).Contains(schoolSubject)) {
+                StudentSubject studentSubject = new() {
+                    SchoolSubject = schoolSubject,
+                    SchoolSubjectId = schoolSubject.Id,
+                    Student = student,
+                };
+                await schoolContext.AddAsync(studentSubject);
+            }
+        }
+        await schoolContext.SaveChangesAsync();
     }
 
     public async Task AddSchoolSubjectAsync(SchoolSubject schoolSubject) {

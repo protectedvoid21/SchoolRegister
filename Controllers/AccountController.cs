@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +13,15 @@ namespace SchoolRegister.Controllers;
 public class AccountController : Controller {
     private readonly UserManager<AppUser> userManager;
     private readonly SignInManager<AppUser> signInManager;
-    private readonly RoleManager<IdentityRole<int>> roleManager;
+    private readonly RoleManager<IdentityRole> roleManager;
 
-    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole<int>> roleManager) {
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager) {
         this.userManager = userManager;
         this.signInManager = signInManager;
         this.roleManager = roleManager;
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Logout() {
         await signInManager.SignOutAsync();
         return RedirectToAction("Index", "Home");
@@ -31,6 +33,43 @@ public class AccountController : Controller {
         IEnumerable<AppUser> users = userManager.Users.AsEnumerable();
         return View(users);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> ChangePasswordForUser(string userId) {
+        AppUser user = await userManager.FindByIdAsync(userId);
+
+        ChangePasswordViewModel changePasswordModel = new() {
+            UserId = userId,
+            UserName = user.UserName
+        };
+        return View(changePasswordModel);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangePasswordForUser(ChangePasswordViewModel changePasswordModel) {
+        if (!ModelState.IsValid) {
+            return View(changePasswordModel);
+        }
+
+        var user = await userManager.FindByIdAsync(changePasswordModel.UserId);
+        var code = await userManager.GeneratePasswordResetTokenAsync(user);
+        IdentityResult result = await userManager.ResetPasswordAsync(user, code, changePasswordModel.NewPassword);
+
+        if (!result.Succeeded) {
+            foreach (var error in result.Errors) {
+                ModelState.AddModelError("", error.Description);
+            }
+            return View(changePasswordModel);
+        }
+
+        UserViewModel userModel = new() {
+            UserId = user.Id,
+            UserName = changePasswordModel.UserName,
+            Password = changePasswordModel.NewPassword,
+        };
+
+        return View("UserData", userModel);
+    } 
 
     /*[HttpGet]
     public async Task<IActionResult> CreateUser() {
@@ -107,7 +146,7 @@ public class AccountController : Controller {
             return View(roleModel);
         }
 
-        IdentityRole<int> role = new IdentityRole<int> {
+        IdentityRole role = new IdentityRole {
             Name = roleModel.Name
         };
         await roleManager.CreateAsync(role);
@@ -116,12 +155,12 @@ public class AccountController : Controller {
 
     [HttpGet]
     public async Task<IActionResult> EditRole(string roleId) {
-        IdentityRole<int> role = await roleManager.FindByIdAsync(roleId);
+        IdentityRole role = await roleManager.FindByIdAsync(roleId);
         return View(role);
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditRole(IdentityRole<int> role) {
+    public async Task<IActionResult> EditRole(IdentityRole role) {
         if (!ModelState.IsValid) {
             return View(role);
         }
@@ -135,7 +174,7 @@ public class AccountController : Controller {
     }
 
     public async Task<IActionResult> DeleteRole(string roleId) {
-        IdentityRole<int> role = await roleManager.FindByIdAsync(roleId);
+        IdentityRole role = await roleManager.FindByIdAsync(roleId);
         await roleManager.DeleteAsync(role);
         return RedirectToAction("RoleList");
     }

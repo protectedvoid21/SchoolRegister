@@ -1,16 +1,20 @@
-﻿@model SchoolRegister.Models.Teacher
+﻿@model IEnumerable<SchoolRegister.Models.ViewModels.TeacherSubjectViewModel>
 
-@{
-    Layout = "_Layout";
-}
-
-<table class="table table-bordered">
-    <tr>
-        <th>Class name</th>
-    </tr>
-    @foreach (var schoolSubject in Model.SchoolSubjects) {
+<h2>Class list</h2>
+@foreach (var teachingModel in Model) {
+    <h2>@teachingModel.SchoolClass.Name</h2>
+    <table class="table table-bordered table-hover">
         <tr>
-            <th>@schoolSubject.SchoolClass.Name</th>
+            <th>Subject</th>
+            <th>Actions</th>
         </tr>
-    }
-</table>
+        @foreach (var subject in teachingModel.Subject) {
+            <tr>
+                <td>@subject.Name</td>
+                <td class="d-flex gap-2">
+                    <a class="btn btn-info flex-fill" asp-controller="Teacher" asp-action="ViewClassSubject" asp-route-subjectId="@subject.Id">View</a>
+                </td>
+            </tr>
+        }
+    </table>
+}
