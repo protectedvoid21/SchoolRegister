@@ -21,7 +21,7 @@ public interface ISubjectsService {
 
     Task<SchoolSubject> GetSchoolSubjectById(int id);
 
-    Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass, Subject subject);
+    Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass);
 
     Task UpdateStudentSubjectsInClass(SchoolSubject schoolSubject);
 

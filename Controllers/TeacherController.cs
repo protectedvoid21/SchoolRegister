@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolRegister.Models;
 using SchoolRegister.Models.ViewModels;
 using SchoolRegister.Services.Grades;
+using SchoolRegister.Services.SchoolClasses;
 using SchoolRegister.Services.Subjects;
 using SchoolRegister.Services.Teachers;
 
@@ -14,15 +15,18 @@ namespace SchoolRegister.Controllers;
 public class TeacherController : Controller {
     private readonly ITeachersService teachersService;
     private readonly ISubjectsService subjectsService;
+    private readonly ISchoolClassesService schoolClassesService;
     private readonly IGradesService gradesService;
     private readonly UserManager<AppUser> userManager;
 
     public TeacherController(ITeachersService teachersService, 
         ISubjectsService subjectsService, 
+        ISchoolClassesService schoolClassesService,
         IGradesService gradesService,
         UserManager<AppUser> userManager) {
         this.teachersService = teachersService;
         this.subjectsService = subjectsService;
+        this.schoolClassesService = schoolClassesService;
         this.gradesService = gradesService;
         this.userManager = userManager;
     }
@@ -39,23 +43,24 @@ public class TeacherController : Controller {
         foreach(var group in groupedSubjects) {
             teacherSubjectsModelList.Add(new TeacherSubjectViewModel {
                 SchoolClass = group.Key,
-                Subject = group.Select(s => s.Subject).ToList()
+                SubjectList = group.Select(s => s.Subject).ToList()
             });
         }
 
         return View(teacherSubjectsModelList);
     }
 
-    public async Task<IActionResult> ViewClassSubject(int subjectId) {
+    public async Task<IActionResult> ViewClassSubject(int subjectId, int classId) {
         AppUser user = await userManager.GetUserAsync(User);
         Teacher teacher = await teachersService.GetByUser(user);
         var studentSubjectModel = new TeacherStudentSubjectViewModel();
-        
-        IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetSchoolSubjectsByTeacher(teacher);
 
-        studentSubjectModel.StudentSubjects = studentSubjects.Where(s => s.SchoolSubject.Subject.Id == subjectId);
+        IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetSchoolSubjectsByTeacher(teacher);
+        var schoolClass = await schoolClassesService.GetById(classId);
+
+        studentSubjectModel.StudentSubjects = studentSubjects.Where(s => s.SchoolSubject.Subject.Id == subjectId && s.Student.SchoolClass == schoolClass);
         studentSubjectModel.SubjectName = (await subjectsService.GetById(subjectId)).Name;
-        studentSubjectModel.ClassName = studentSubjects.First().SchoolSubject.SchoolClass.Name;
+        studentSubjectModel.ClassName = schoolClass.Name;
 
         return View(studentSubjectModel);
     }
@@ -91,6 +96,7 @@ public class TeacherController : Controller {
         };
 
         await gradesService.AddAsync(grade);
-        return RedirectToAction("ViewClassSubject", gradeModel.SubjectId);
+        //todo: Return to class view
+        return RedirectToAction("Index");
     }
 }

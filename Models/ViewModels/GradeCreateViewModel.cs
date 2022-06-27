@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SchoolRegister.Models.ViewModels; 
 
@@ -20,5 +21,6 @@ public class GradeCreateViewModel {
     public int GradeType { get; set; }
 
     [Display(Name = "Addition")]
+    [DefaultValue(GradeAdditionalInfo.None)]
     public GradeAdditionalInfo GradeInfo { get; set; }
 }

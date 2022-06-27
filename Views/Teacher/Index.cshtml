@@ -8,11 +8,11 @@
             <th>Subject</th>
             <th>Actions</th>
         </tr>
-        @foreach (var subject in teachingModel.Subject) {
+        @foreach (var subject in teachingModel.SubjectList) {
             <tr>
                 <td>@subject.Name</td>
                 <td class="d-flex gap-2">
-                    <a class="btn btn-info flex-fill" asp-controller="Teacher" asp-action="ViewClassSubject" asp-route-subjectId="@subject.Id">View</a>
+                    <a class="btn btn-info flex-fill" asp-controller="Teacher" asp-action="ViewClassSubject" asp-route-subjectId="@subject.Id" asp-route-classId="@teachingModel.SchoolClass.Id">View</a>
                 </td>
             </tr>
         }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SchoolRegister.Models; 
+namespace SchoolRegister.Models;
 
 public class Grade {
     public int Id { get; set; }
@@ -19,6 +19,10 @@ public class Grade {
     
 
     public string GetGradeName() {
-        return GradeInfo == GradeAdditionalInfo.Plus ? $"{GradeType}+" : $"-{GradeType}";
+        return GradeInfo switch {
+            GradeAdditionalInfo.Plus => $"{GradeType}+",
+            GradeAdditionalInfo.Minus => $"-{GradeType}",
+            _ => GradeType.ToString()
+        };
     }
 }

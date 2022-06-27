@@ -15,7 +15,6 @@ namespace SchoolRegister.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller {
     private readonly UserManager<AppUser> userManager;
-    private readonly SignInManager<AppUser> signInManager;
 
     private readonly ITeachersService teachersService;
     private readonly IStudentsService studentsService;
@@ -23,14 +22,12 @@ public class AdminController : Controller {
     private readonly ISubjectsService subjectsService;
 
     public AdminController(
-        UserManager<AppUser> userManager, 
-        SignInManager<AppUser> signInManager,
+        UserManager<AppUser> userManager,
         ITeachersService teachersService,
         IStudentsService studentsService,
         ISubjectsService subjectsService,
         ISchoolClassesService schoolClassesService) {
         this.userManager = userManager;
-        this.signInManager = signInManager;
         this.teachersService = teachersService;
         this.studentsService = studentsService;
         this.schoolClassesService = schoolClassesService;
@@ -330,6 +327,10 @@ public class AdminController : Controller {
 
         foreach(var schoolClassId in pickList) {
             SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
+            if((await subjectsService.GetSchoolSubjectsByClass(schoolClass)).Any(s => s.Subject == subject)) {
+                continue;
+            }
+
             schoolClassList.Add(schoolClass);
 
             schoolSubjects.Add(new SchoolSubject {
@@ -341,7 +342,7 @@ public class AdminController : Controller {
         await subjectsService.AddSchoolSubjectRangeAsync(schoolSubjects);
 
         foreach(var schoolClass in schoolClassList) {
-            SchoolSubject schoolSubject = (await subjectsService.GetSchoolSubjectsByClass(schoolClass, subject)).First(s => s.Subject == subject);
+            SchoolSubject schoolSubject = (await subjectsService.GetSchoolSubjectsByClass(schoolClass)).First(s => s.Subject == subject);
             await subjectsService.UpdateStudentSubjectsInClass(schoolSubject);
         }
 

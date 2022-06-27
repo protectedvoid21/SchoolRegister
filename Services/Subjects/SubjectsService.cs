@@ -62,9 +62,9 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.SchoolSubjects.FindAsync(id);
     }
 
-    public async Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass, Subject subject) {
+    public async Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass) {
         return await schoolContext.SchoolSubjects
-            .Where(s => s.SchoolClass == schoolClass && s.Subject == subject)
+            .Where(s => s.SchoolClass == schoolClass)
             .ToListAsync();
     }
 
