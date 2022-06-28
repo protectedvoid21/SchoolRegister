@@ -18,7 +18,7 @@ public static class Utils {
     }
 
     public static string GenerateUserName(string name, string surname) {
-        return (name + surname).ToLower() + GenerateRandomNumberText(4);
+        return (name + surname).RemoveNonLatinDigits().ToLower() + GenerateRandomNumberText(4);
     }
 
     public static string GenerateRandomNumberText(int length) {
@@ -33,6 +33,11 @@ public static class Utils {
         }
 
         return text;
+    }
+
+    public static string RemoveNonLatinDigits(this string text) {
+        byte[] tempBytes = System.Text.Encoding.GetEncoding("ISO-8859-8").GetBytes(text);
+        return System.Text.Encoding.UTF8.GetString(tempBytes);
     }
 
     public static double GetSubjectAverage(this StudentSubject studentSubject) {

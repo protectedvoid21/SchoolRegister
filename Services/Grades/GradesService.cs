@@ -47,22 +47,5 @@ public class GradesService : IGradesService {
             .SelectMany(s => s.Grades)
             .ToListAsync();
         return grades;
-    }
-
-    public async Task<float> GetStudentSubjectAverage(int studentId, StudentSubject subject) {
-        var grades = await GetStudentGrades(studentId, subject);
-        return (float)grades.Average(p => p.GradeType);
-    }
-
-    public async Task<float> GetSubjectAverage(Subject subject, int classId) {
-        SchoolClass schoolClass = await schoolClassesService.GetById(classId);
-        List<float> averageStudentGrades = new();
-
-        var studentList = schoolClass.StudentsList;
-        foreach(var student in studentList) {
-            averageStudentGrades.Add(await GetStudentSubjectAverage(student.Id, subject));
-        }
-
-        return averageStudentGrades.Average();
     }*/
 }

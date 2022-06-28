@@ -1,0 +1,17 @@
+﻿@model SchoolRegister.Models.ViewModels.AnnouncementCreateViewModel
+
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="Title"></span>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control-sm"/>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="Description"></span>
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control"/>
+    </div>
+    <input type="hidden" asp-for="TeacherId"/>
+    <input type="submit" class="btn btn-info" value="Confirm"/>
+</form>

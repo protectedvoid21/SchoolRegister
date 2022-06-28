@@ -13,6 +13,7 @@ public class SchoolRegisterContext : IdentityDbContext<AppUser, IdentityRole, st
 
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Grade> Grades { get; set; }
+    public DbSet<Announcement> Announcements { get; set; }
 
     public DbSet<StudentSubject> StudentSubjects { get; set; }
     public DbSet<SchoolSubject> SchoolSubjects { get; set; }

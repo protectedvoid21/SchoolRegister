@@ -1,9 +1,5 @@
 ﻿@model IEnumerable<SchoolRegister.Models.ViewModels.RoleViewModel>
 
-@{
-    Layout = "_LayoutAdmin";
-}
-
 <h2>Role list</h2>
 <p>Role count : @Model.Count()</p>
 <a class="btn btn-info mb-3" asp-controller="Account" asp-action="CreateRole">Create role</a>

@@ -1,0 +1,11 @@
+﻿@model IEnumerable<SchoolRegister.Models.Announcement>
+
+<h2>Announcements</h2>
+@foreach (var announcement in Model) {
+    <div class="card mb-3">
+        <div class="card-header">@announcement.Title</div>
+        <div class="card-body">
+            <p class="card-text">@announcement.Description</p>
+        </div>
+    </div>
+}

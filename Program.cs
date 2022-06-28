@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
+using SchoolRegister.Services.Announcements;
 using SchoolRegister.Services.Grades;
 using SchoolRegister.Services.SchoolClasses;
 using SchoolRegister.Services.Students;
@@ -28,6 +29,7 @@ builder.Services.AddTransient<ISubjectsService, SubjectsService>();
 builder.Services.AddTransient<ITeachersService, TeachersService>();
 builder.Services.AddTransient<IGradesService, GradesService>();
 builder.Services.AddTransient<IStudentsService, StudentsService>();
+builder.Services.AddTransient<IAnnouncementsService, AnnouncementsService>();
 
 var app = builder.Build();
 
