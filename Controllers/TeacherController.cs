@@ -99,4 +99,43 @@ public class TeacherController : Controller {
         //todo: Return to class view
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    public async Task<IActionResult> EditGrade(int gradeId) {
+        Grade grade = await gradesService.GetById(gradeId);
+        Student student = grade.StudentSubject.Student;
+
+        GradeEditViewModel gradeModel = new() {
+            Id = gradeId,
+            GradeType = grade.GradeType,
+            GradeInfo = grade.GradeInfo,
+            StudentName = student.Name,
+            StudentSurname = student.Surname,
+            SubjectName = grade.Subject.Name,
+            Comment = grade.Comment,
+        };
+
+        return View(gradeModel);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EditGrade(GradeEditViewModel gradeModel) {
+        if (!ModelState.IsValid) {
+            return View(gradeModel);
+        }
+
+        Grade grade = await gradesService.GetById(gradeModel.Id);
+        grade.GradeType = gradeModel.GradeType;
+        grade.GradeInfo = gradeModel.GradeInfo;
+        grade.Comment = grade.Comment;
+
+        await gradesService.UpdateAsync(grade);
+        return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> DeleteGrade(int gradeId) {
+        Grade grade = await gradesService.GetById(gradeId);
+        await gradesService.DeleteAsync(grade);
+        return RedirectToAction("Index");
+    }
 }

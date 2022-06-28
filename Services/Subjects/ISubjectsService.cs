@@ -17,6 +17,8 @@ public interface ISubjectsService {
 
     Task<int> GetCountByStudents(Subject subject);
 
+    Task<IEnumerable<StudentSubject>> GetStudentSubjectForStudent(Student student);
+
     Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher);
 
     Task<SchoolSubject> GetSchoolSubjectById(int id);

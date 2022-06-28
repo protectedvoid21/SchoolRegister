@@ -5,7 +5,7 @@ namespace SchoolRegister.Controllers;
 public class HomeController : Controller {
     public IActionResult Index() {
         if (User.IsInRole("Student")) {
-            return RedirectToAction("Panel", "Student");
+            return RedirectToAction("Index", "Student");
         }
 
         if (User.IsInRole("Teacher")) {

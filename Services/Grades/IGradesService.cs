@@ -11,9 +11,9 @@ public interface IGradesService {
 
     Task DeleteAsync(Grade grade);
 
-    /*Task<IEnumerable<Grade>> GetStudentGrades(int studentId, StudentSubject subject);
+    Task<IEnumerable<Grade>> GetStudentGrades(int studentSubjectId);
 
-    Task<float> GetStudentSubjectAverage(int studentId, StudentSubject subject);
+    /*Task<float> GetStudentSubjectAverage(int studentId, StudentSubject subject);
 
     Task<float> GetSubjectAverage(Subject subject, int classId);*/
 }

@@ -47,6 +47,14 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.StudentSubjects.Where(s => s.SchoolSubject.Subject == subject).CountAsync();
     }
 
+    public async Task<IEnumerable<StudentSubject>> GetStudentSubjectForStudent(Student student) {
+        return schoolContext.StudentSubjects
+            .Where(s => s.Student == student)
+            .Include(s => s.Grades)
+            .Include(s => s.SchoolSubject)
+            .ThenInclude(s => s.Subject);
+    }
+
     public async Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher) {
         return await schoolContext.StudentSubjects
             .Include(s => s.SchoolSubject)

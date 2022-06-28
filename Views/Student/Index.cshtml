@@ -1,0 +1,43 @@
+﻿@using SchoolRegister.Models
+@model SchoolRegister.Models.ViewModels.StudentPanelViewModel
+
+<link rel="stylesheet" href="css/grades.css"/>
+
+<h2>@Model.Student.Name @Model.Student.Surname</h2>
+<h4>Class : @Model.Student.SchoolClass.Name</h4>
+<hr/>
+<table class="table table-bordered">
+    <tr>
+        <th>Subject</th>
+        <th>Grades</th>
+        <th>Average</th>
+    </tr>
+    @foreach (var studentSubject in Model.StudentSubjects) {
+        <tr>
+            <td>@studentSubject.SchoolSubject.Subject.Name</td>
+            <td>
+                @foreach (var grade in studentSubject.Grades) {
+                    <a id="grade" class="btn">@grade.GetGradeName()</a>
+                }
+            </td>
+            <td>@if(studentSubject.Grades.Any()) { @studentSubject.GetSubjectAverage().ToString("F2") }</td>
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    <script>
+        const grades = document.querySelectorAll('#grade')
+
+        grades.forEach(grade => {
+            const gradeName = grade.innerHTML
+
+            for (let i = 0; i <= 6; i++) {
+                if (gradeName.includes(i.toString())) {
+                    grade.classList.add(`grade-${i}`)
+                    break
+                }
+            }
+        })
+    </script>
+}

@@ -1,0 +1,87 @@
+﻿* {
+    --grade-0-color: #ff006f;
+    --grade-1-color: #ff0000;
+    --grade-2-color: #ff9000;
+    --grade-3-color: #ffff00;
+    --grade-4-color: #00d600;
+    --grade-5-color: #00d985;
+    --grade-6-color: #00bfc3;
+
+    --border-width: 2px;
+}
+
+.grade-0 {
+    border-color: var(--grade-0-color);
+    border-width: var(--border-width);
+}
+
+.grade-0:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.grade-1 {
+    border-color: var(--grade-1-color);
+    border-width: var(--border-width);
+}
+
+.grade-1:hover {
+    background-color: var(--grade-1-color);
+    border-color: var(--grade-1-color);
+    color: #ffffff;
+}
+
+.grade-2 {
+    border-color: var(--grade-2-color);
+    border-width: var(--border-width);
+}
+
+.grade-2:hover {
+    background-color: var(--grade-2-color);
+    border-color: var(--grade-2-color);
+    color: #000000;
+}
+
+.grade-3 {
+    border-color: var(--grade-3-color);
+    border-width: var(--border-width);
+}
+
+.grade-3:hover {
+    background-color: var(--grade-3-color);
+    border-color: var(--grade-3-color);
+    color: #000000;
+}
+
+.grade-4 {
+    border-color: var(--grade-4-color);
+    border-width: var(--border-width);
+}
+
+.grade-4:hover {
+    background-color: var(--grade-4-color);
+    border-color: var(--grade-4-color);
+    color: #ffffff;
+}
+
+.grade-5 {
+    border-color: var(--grade-5-color);
+    border-width: var(--border-width);
+}
+
+.grade-5:hover {
+    background-color: var(--grade-5-color);
+    border-color: var(--grade-5-color);
+    color: #ffffff;
+}
+
+.grade-6 {
+    border-color: var(--grade-6-color);
+    border-width: var(--border-width);
+}
+
+.grade-6:hover {
+    background-color: var(--grade-6-color);
+    border-color: var(--grade-6-color);
+    color: #ffffff;
+}

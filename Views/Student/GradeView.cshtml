@@ -1,0 +1,24 @@
+﻿@model SchoolRegister.Models.ViewModels.GradeViewModel
+
+@if (User.IsInRole("Teacher")) {
+    <a class="btn btn-warning mb-2" asp-controller="Teacher" asp-action="EditGrade" asp-route-gradeId="@Model.Id">Edit</a>
+    <a class="btn btn-danger mb-2" asp-controller="Teacher" asp-action="DeleteGrade" asp-route-gradeId="@Model.Id">Delete</a>
+}
+<table class="table table-bordered">
+    <tr>
+        <th>Subject name</th>
+        <td>@Model.SubjectName</td>
+    </tr>
+    <tr>
+        <th>Grade</th>
+        <td>@Model.GradeName</td>
+    </tr>
+    <tr>
+        <th>Date of addition</th>
+        <td>@Model.DateAdd</td>
+    </tr>
+    <tr>
+        <th>Comment</th>
+        <td>@Model.Comment</td>
+    </tr>
+</table>

@@ -33,6 +33,13 @@ public class GradesService : IGradesService {
         await schoolContext.SaveChangesAsync();
     }
 
+    public async Task<IEnumerable<Grade>> GetStudentGrades(int studentSubjectId) {
+        IEnumerable<Grade> grades = schoolContext.Grades.Where(s => s.StudentSubject.Id == studentSubjectId);
+        return grades;
+    }
+
+
+
     /*public async Task<IEnumerable<Grade>> GetStudentGrades(int studentId, StudentSubject subject) {
         var grades = await schoolContext.StudentSubjects
             .Include(s => s.Grades)

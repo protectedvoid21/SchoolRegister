@@ -164,7 +164,7 @@ public class AdminController : Controller {
 
     public async Task<IActionResult> DeleteTeacher(int teacherId) {
         Teacher teacher = await teachersService.GetById(teacherId);
-        await userManager.DeleteAsync(teacher.User);
+        //await userManager.DeleteAsync(teacher.User);
         await teachersService.DeleteAsync(teacher);
         return RedirectToAction("TeacherList");
     }
