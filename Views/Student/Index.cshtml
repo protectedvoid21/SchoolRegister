@@ -1,7 +1,8 @@
 ﻿@using SchoolRegister.Models
 @model SchoolRegister.Models.ViewModels.StudentPanelViewModel
 
-<link rel="stylesheet" href="css/grades.css"/>
+<link rel="stylesheet" href="~/css/grades.css"/>
+<script src="~/js/grades.js"></script>
 
 <h2>@Model.Student.Name @Model.Student.Surname</h2>
 <h4>Class : @Model.Student.SchoolClass.Name</h4>
@@ -17,27 +18,10 @@
             <td>@studentSubject.SchoolSubject.Subject.Name</td>
             <td>
                 @foreach (var grade in studentSubject.Grades) {
-                    <a id="grade" class="btn">@grade.GetGradeName()</a>
+                    <a id="grade" class="btn" asp-controller="Student" asp-action="GradeView" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>
                 }
             </td>
             <td>@if(studentSubject.Grades.Any()) { @studentSubject.GetSubjectAverage().ToString("F2") }</td>
         </tr>
     }
 </table>
-
-@section Scripts {
-    <script>
-        const grades = document.querySelectorAll('#grade')
-
-        grades.forEach(grade => {
-            const gradeName = grade.innerHTML
-
-            for (let i = 0; i <= 6; i++) {
-                if (gradeName.includes(i.toString())) {
-                    grade.classList.add(`grade-${i}`)
-                    break
-                }
-            }
-        })
-    </script>
-}

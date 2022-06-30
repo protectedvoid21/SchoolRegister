@@ -1,6 +1,7 @@
 ﻿@using SchoolRegister.Models
 @model SchoolRegister.Models.ViewModels.GradeCreateViewModel
 
+<h2>Adding grade for</h2>
 <h2>Student : @Model.StudentName @Model.StudentSurname</h2>
 <h3>Subject : @Model.SubjectName </h3>
 <form method="post">
@@ -30,7 +31,7 @@
     <div class="mb-3">
         <span asp-validation-for="Comment"></span>
         <label asp-for="Comment"></label>
-        <textarea asp-for="Comment"></textarea>
+        <textarea asp-for="Comment" class="form-control"></textarea>
     </div>
     <input type="hidden" asp-for="StudentName" />
     <input type="hidden" asp-for="StudentSurname"/>

@@ -14,6 +14,7 @@ public class AnnouncementsService : IAnnouncementsService {
         Announcement announcement = new() {
             Title = title,
             Description = description,
+            CreateDate = DateTime.Now,
             TeacherId = teacherId,
         };
 
@@ -32,8 +33,28 @@ public class AnnouncementsService : IAnnouncementsService {
         await schoolContext.SaveChangesAsync();
     }
 
+    public async Task<bool> IsOwner(int announcementId, int teacherId) {
+        Announcement announcement = await schoolContext.Announcements
+            .FirstAsync(a => a.Id == announcementId);
+        return announcement.TeacherId == teacherId;
+    }
+
+    public async Task<Announcement> GetById(int id) {
+        Announcement announcement = await schoolContext.Announcements
+            .Include(a => a.Teacher)
+            .FirstAsync(a => a.Id == id);
+        return announcement;
+    }
+
     public async Task<IEnumerable<Announcement>> GetAllAsync() {
-        IEnumerable<Announcement> announcements = await schoolContext.Announcements.ToListAsync();
+        IEnumerable<Announcement> announcements = await schoolContext.Announcements
+            .Include(a => a.Teacher)
+            .ToListAsync();
+        return announcements;
+    }
+
+    public async Task<IEnumerable<Announcement>> GetAllByTeacher(int teacherId) {
+        IEnumerable<Announcement> announcements = schoolContext.Announcements.Where(a => a.Teacher.Id == teacherId);
         return announcements;
     }
 }

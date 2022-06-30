@@ -9,5 +9,11 @@ public interface IAnnouncementsService {
 
     Task RemoveAsync(int announcementId);
 
+    Task<bool> IsOwner(int announcementId, int teacherId);
+
+    Task<Announcement> GetById(int id);
+
     Task<IEnumerable<Announcement>> GetAllAsync();
+
+    Task<IEnumerable<Announcement>> GetAllByTeacher(int teacherId);
 }

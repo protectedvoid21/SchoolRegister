@@ -13,6 +13,8 @@ public interface IGradesService {
 
     Task<IEnumerable<Grade>> GetStudentGrades(int studentSubjectId);
 
+    Task<bool> IsOwner(int gradeId, int studentId);
+
     /*Task<float> GetStudentSubjectAverage(int studentId, StudentSubject subject);
 
     Task<float> GetSubjectAverage(Subject subject, int classId);*/

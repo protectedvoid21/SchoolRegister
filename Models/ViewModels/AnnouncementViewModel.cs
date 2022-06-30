@@ -2,7 +2,8 @@
 
 namespace SchoolRegister.Models.ViewModels; 
 
-public class AnnouncementCreateViewModel {
+public class AnnouncementViewModel {
+    public int Id { get; set; }
     public int TeacherId { get; set; }
     [Required]
     [MaxLength(50)]

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 using SchoolRegister.Services.SchoolClasses;
 
@@ -6,11 +7,9 @@ namespace SchoolRegister.Services.Grades;
 
 public class GradesService : IGradesService {
     private readonly SchoolRegisterContext schoolContext;
-    private readonly ISchoolClassesService schoolClassesService;
 
-    public GradesService(SchoolRegisterContext schoolContext, ISchoolClassesService schoolClassesService) {
+    public GradesService(SchoolRegisterContext schoolContext) {
         this.schoolContext = schoolContext;
-        this.schoolClassesService = schoolClassesService;
     }
 
     //todo: Convert to Task<bool> - returns if student was found and adding result
@@ -20,7 +19,11 @@ public class GradesService : IGradesService {
     }
 
     public async Task<Grade> GetById(int id) {
-        return await schoolContext.Grades.FindAsync(id);
+        return await schoolContext.Grades
+            .Include(g => g.Subject)
+            .Include(g => g.StudentSubject)
+            .ThenInclude(g => g.Student)
+            .FirstAsync(g => g.Id == id);
     }
 
     public async Task UpdateAsync(Grade grade) {
@@ -38,6 +41,20 @@ public class GradesService : IGradesService {
         return grades;
     }
 
+    public async Task<bool> IsOwner(int gradeId, int studentId) {
+        var grade = await schoolContext.Grades
+            .Include(g => g.StudentSubject.Student)
+            .FirstAsync(g => g.Id == gradeId);
+        return grade.StudentSubject.Student.Id == studentId;
+    }
+
+    public async Task<bool> IsTeaching(int gradeId, int teacherId) {
+        var grade = await schoolContext.Grades
+            .Include(g => g.StudentSubject.SchoolSubject.Teacher)
+            .FirstAsync(g => g.Id == gradeId);
+
+        return grade.StudentSubject.SchoolSubject.Teacher.Id == teacherId;
+    }
 
 
     /*public async Task<IEnumerable<Grade>> GetStudentGrades(int studentId, StudentSubject subject) {

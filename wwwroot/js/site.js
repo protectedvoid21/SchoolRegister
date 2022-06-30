@@ -1,4 +1,12 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const grades = document.querySelectorAll('#grade')
 
-// Write your JavaScript code.
+grades.forEach(grade => {
+    const gradeName = grade.innerHTML
+    
+    for (let i = 0; i <= 6; i++) {
+        if (gradeName.includes(i.toString())) {
+            grade.classList.add(`grade-${i}`)
+            break
+        }
+    }
+})

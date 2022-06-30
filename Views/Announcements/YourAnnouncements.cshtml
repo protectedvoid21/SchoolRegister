@@ -1,13 +1,6 @@
 ﻿@model IEnumerable<SchoolRegister.Models.Announcement>
 
-<h2>Announcements</h2>
-@if (User.IsInRole("Teacher")) {
-    <div class="mb-3">
-        <a class="btn btn-success" asp-controller="Announcements" asp-action="YourAnnouncements">Your announcements</a>
-        <a class="btn btn-success" asp-controller="Announcements" asp-action="Add">Add announcement</a>
-    </div>
-}
-
+<h2 class="text-center mb-5">Your announcements</h2>
 @foreach (var announcement in Model) {
     <div class="card mb-3">
         <div class="card-header d-flex">
@@ -17,6 +10,10 @@
         </div>
         <div class="card-body">
             <p class="card-text text-center">@announcement.Description</p>
+        </div>
+        <div class="card-footer d-flex flex-row-reverse gap-3">
+            <a class="btn btn-danger p-2 w-25" asp-controller="Announcements" asp-action="Delete" asp-route-id="@announcement.Id">Delete</a>
+            <a class="btn btn-warning p-2 w-25" asp-controller="Announcements" asp-action="Edit" asp-route-id="@announcement.Id">Edit</a>
         </div>
     </div>
 }

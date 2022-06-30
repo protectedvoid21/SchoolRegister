@@ -1,5 +1,8 @@
 ﻿@model SchoolRegister.Models.ViewModels.TeacherStudentSubjectViewModel
 
+<link rel="stylesheet" href="~/css/grades.css"/>
+<script src="~/js/grades.js"></script>
+
 <h2>Class : @Model.ClassName</h2>
 <h2>Subject : @Model.SubjectName</h2>
 <table class="table table-bordered table-hover">
@@ -13,7 +16,7 @@
             <td>@studentSubject.Student.Name @studentSubject.Student.Surname</td>
             <td>
                 @foreach (var grade in studentSubject.Grades) {
-                    <a class="btn btn-outline-success">@grade.GetGradeName()</a>
+                    <a id="grade" class="btn" asp-controller="Student" asp-action="GradeView" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>
                 }
             </td>
             <td class="d-flex">

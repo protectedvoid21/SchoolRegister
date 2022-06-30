@@ -1,8 +1,10 @@
 ﻿@model SchoolRegister.Models.ViewModels.GradeViewModel
 
 @if (User.IsInRole("Teacher")) {
-    <a class="btn btn-warning mb-2" asp-controller="Teacher" asp-action="EditGrade" asp-route-gradeId="@Model.Id">Edit</a>
-    <a class="btn btn-danger mb-2" asp-controller="Teacher" asp-action="DeleteGrade" asp-route-gradeId="@Model.Id">Delete</a>
+    <div class="d-flex gap-2">
+        <a class="btn btn-warning mb-2" asp-controller="Teacher" asp-action="EditGrade" asp-route-gradeId="@Model.Id">Edit</a>
+        <a class="btn btn-danger mb-2" asp-controller="Teacher" asp-action="DeleteGrade" asp-route-gradeId="@Model.Id">Delete</a>
+    </div>
 }
 <table class="table table-bordered">
     <tr>

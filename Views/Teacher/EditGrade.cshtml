@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using SchoolRegister.Models
+@model SchoolRegister.Models.ViewModels.GradeEditViewModel
+
+<h2>Editing grade for</h2>
+<h2>Student : @Model.StudentName @Model.StudentSurname</h2>
+<h3>Subject : @Model.SubjectName </h3>
+<form method="post">
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="GradeType"></span>
+        <label asp-for="GradeType"></label>
+        <select asp-for="GradeType" class="form-control-sm fw-bold">
+            <option value="0" class="fw-bold">0</option>
+            <option value="1" class="fw-bold">1</option>
+            <option value="2" class="fw-bold">2</option>
+            <option value="3" class="fw-bold">3</option>
+            <option value="4" class="fw-bold">4</option>
+            <option value="5" class="fw-bold">5</option>
+            <option value="6" class="fw-bold">6</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="GradeInfo"></span>
+        <label asp-for="GradeInfo"></label>
+        <select asp-for="GradeInfo" class="form-control-sm fw-bold">
+            <option value="@GradeAdditionalInfo.None" class="fw-bold"></option>
+            <option value="@GradeAdditionalInfo.Plus" class="fw-bold">+</option>
+            <option value="@GradeAdditionalInfo.Minus" class="fw-bold">-</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <span asp-validation-for="Comment"></span>
+        <label asp-for="Comment"></label>
+        <textarea asp-for="Comment" class="form-control"></textarea>
+    </div>
+    <input type="hidden" asp-for="StudentName" />
+    <input type="hidden" asp-for="StudentSurname"/>
+    <input type="hidden" asp-for="SubjectName"/>
+    <input type="submit" value="Confirm" class="btn btn-info"/>
+</form>

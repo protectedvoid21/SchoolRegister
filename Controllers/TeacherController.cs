@@ -118,7 +118,7 @@ public class TeacherController : Controller {
         return View(gradeModel);
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> EditGrade(GradeEditViewModel gradeModel) {
         if (!ModelState.IsValid) {
             return View(gradeModel);
