@@ -1,0 +1,19 @@
+﻿@model IEnumerable<SchoolRegister.Models.Message>
+
+<a class="btn btn-success" asp-controller="Message" asp-action="Write">New message</a>
+
+<table class="table table-bordered table-sm">
+    <tr>
+        <th>Date</th>
+        <th>Title</th>
+        <th>Sender</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var message in Model) {
+        <tr>
+            <td>@message.CreatedDate</td>
+            <td>@message.Title</td>
+            <td>@message.SenderUser</td>
+        </tr>
+    }
+</table>

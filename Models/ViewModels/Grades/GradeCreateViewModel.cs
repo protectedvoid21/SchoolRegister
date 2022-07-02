@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolRegister.Models.ViewModels; 
+namespace SchoolRegister.Models.ViewModels.Grades;
 
 public class GradeCreateViewModel {
     public string StudentName { get; set; }
@@ -15,8 +15,8 @@ public class GradeCreateViewModel {
     [MaxLength(60, ErrorMessage = "Comment can not exceed 60 characters")]
     [Display(Name = "Comment (optional)")]
     public string? Comment { get; set; }
-    
-    [Range(0, 6), Required]
+
+    [Range(GlobalConstants.MinGrade, GlobalConstants.MaxGrade), Required]
     [Display(Name = "Grade")]
     public int GradeType { get; set; }
 

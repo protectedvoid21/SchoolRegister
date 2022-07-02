@@ -1,4 +1,4 @@
-﻿namespace SchoolRegister.Models.ViewModels; 
+﻿namespace SchoolRegister.Models.ViewModels.Teachers;
 
 public class TeacherViewModel {
     public int Id { get; set; }

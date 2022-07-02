@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SchoolRegister.Models.ViewModels; 
+namespace SchoolRegister.Models.ViewModels.Students;
 
 public class CreateStudentViewModel {
     [Required]

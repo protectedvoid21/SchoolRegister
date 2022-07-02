@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SchoolRegister.Models.ViewModels; 
+namespace SchoolRegister.Models.ViewModels.Grades;
 
 public class GradeEditViewModel {
     public int Id { get; set; }
@@ -9,7 +9,7 @@ public class GradeEditViewModel {
     public string StudentSurname { get; set; }
     public string SubjectName { get; set; }
 
-    [Range(0, 6)]
+    [Range(GlobalConstants.MinGrade, GlobalConstants.MaxGrade)]
     public int GradeType { get; set; }
     public GradeAdditionalInfo GradeInfo { get; set; }
 

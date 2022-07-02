@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SchoolRegister.Models.ViewModels; 
+namespace SchoolRegister.Models.ViewModels.Students;
 
-public class CreateTeacherViewModel {
+public class StudentViewModel {
+    public int Id { get; set; }
     [Required]
     public string Name { get; set; }
     [Required]

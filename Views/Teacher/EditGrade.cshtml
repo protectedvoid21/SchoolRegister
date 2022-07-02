@@ -1,5 +1,5 @@
 ﻿@using SchoolRegister.Models
-@model SchoolRegister.Models.ViewModels.GradeEditViewModel
+@model SchoolRegister.Models.ViewModels.Grades.GradeEditViewModel
 
 <h2>Editing grade for</h2>
 <h2>Student : @Model.StudentName @Model.StudentSurname</h2>
@@ -33,6 +33,7 @@
         <label asp-for="Comment"></label>
         <textarea asp-for="Comment" class="form-control"></textarea>
     </div>
+    <input type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="StudentName" />
     <input type="hidden" asp-for="StudentSurname"/>
     <input type="hidden" asp-for="SubjectName"/>

@@ -1,0 +1,11 @@
+﻿@model SchoolRegister.Models.ViewModels.MessageViewModel
+
+<h2>Write a message</h2>
+<form>
+    <div asp-validation-summary="All"></div>
+    <div class="mb-3">
+        <span asp-validation-for="Title"></span>
+    </div>
+    <input type="hidden" asp-for="UserReceiverId"/>
+    <input type="submit" value="Send" class="btn btn-success"/>
+</form>

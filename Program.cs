@@ -1,13 +1,5 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
-using SchoolRegister.Services.Announcements;
-using SchoolRegister.Services.Grades;
-using SchoolRegister.Services.SchoolClasses;
-using SchoolRegister.Services.Students;
-using SchoolRegister.Services.Subjects;
-using SchoolRegister.Services.Teachers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,21 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("SchoolRegister");
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SchoolRegisterContext>(config => config.UseSqlServer(connectionString));
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => {
-        options.Password.RequireNonAlphanumeric = false;
-        //options.User.RequireUniqueEmail = true;
-        options.SignIn.RequireConfirmedEmail = false;
-    })
-    .AddEntityFrameworkStores<SchoolRegisterContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity();
 builder.Services.AddRazorPages();
 
-builder.Services.AddTransient<ISchoolClassesService, SchoolClassesService>();
-builder.Services.AddTransient<ISubjectsService, SubjectsService>();
-builder.Services.AddTransient<ITeachersService, TeachersService>();
-builder.Services.AddTransient<IGradesService, GradesService>();
-builder.Services.AddTransient<IStudentsService, StudentsService>();
-builder.Services.AddTransient<IAnnouncementsService, AnnouncementsService>();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
@@ -39,6 +20,8 @@ if(!app.Environment.IsDevelopment()) {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.SeedDatabase();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

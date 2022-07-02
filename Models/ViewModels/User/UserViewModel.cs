@@ -1,4 +1,4 @@
-﻿namespace SchoolRegister.Models.ViewModels; 
+﻿namespace SchoolRegister.Models.ViewModels.User;
 
 public class UserViewModel {
     public string UserId { get; set; }

@@ -10,7 +10,7 @@ public class Grade {
     public int SubjectId { get; set; }
     public Subject Subject { get; set; }
 
-    [Range(0, 6)]
+    [Range(GlobalConstants.MinGrade, GlobalConstants.MaxGrade)]
     public int GradeType { get; set; }
     public GradeAdditionalInfo GradeInfo { get; set; }
     public DateTime DateAdd { get; set; }
@@ -23,6 +23,14 @@ public class Grade {
             GradeAdditionalInfo.Plus => $"{GradeType}+",
             GradeAdditionalInfo.Minus => $"-{GradeType}",
             _ => GradeType.ToString()
+        };
+    }
+
+    public float GetValue() {
+        return GradeInfo switch {
+            GradeAdditionalInfo.Plus => GradeType + 0.5f,
+            GradeAdditionalInfo.Minus => GradeType - 0.25f,
+            _ => GradeType
         };
     }
 }

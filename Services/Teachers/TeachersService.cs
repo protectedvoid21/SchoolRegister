@@ -6,7 +6,7 @@ namespace SchoolRegister.Services.Teachers;
 
 public class TeachersService : ITeachersService {
     private readonly SchoolRegisterContext schoolContext;
-    
+
     public TeachersService(SchoolRegisterContext schoolContext) {
         this.schoolContext = schoolContext;
     }

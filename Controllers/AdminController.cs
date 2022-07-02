@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 using SchoolRegister.Models.ViewModels;
+using SchoolRegister.Models.ViewModels.Students;
+using SchoolRegister.Models.ViewModels.Teachers;
 using SchoolRegister.Services.SchoolClasses;
 using SchoolRegister.Services.Students;
 using SchoolRegister.Services.Subjects;

@@ -1,4 +1,4 @@
-﻿namespace SchoolRegister.Models.ViewModels; 
+﻿namespace SchoolRegister.Models.ViewModels.Students;
 
 public class StudentPanelViewModel {
     public Student Student { get; set; }

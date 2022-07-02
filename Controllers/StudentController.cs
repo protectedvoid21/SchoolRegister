@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
+using SchoolRegister.Models.ViewModels.Grades;
+using SchoolRegister.Models.ViewModels.Students;
 using SchoolRegister.Services.Grades;
 using SchoolRegister.Services.Students;
 using SchoolRegister.Services.Subjects;

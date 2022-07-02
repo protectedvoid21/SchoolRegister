@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
+using SchoolRegister.Models.ViewModels.User;
 
 namespace SchoolRegister.Controllers;
 

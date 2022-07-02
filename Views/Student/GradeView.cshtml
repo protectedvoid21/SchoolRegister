@@ -1,5 +1,6 @@
-﻿@model SchoolRegister.Models.ViewModels.GradeViewModel
+﻿@model SchoolRegister.Models.ViewModels.Grades.GradeViewModel
 
+<h2>Grade information</h2>
 @if (User.IsInRole("Teacher")) {
     <div class="d-flex gap-2">
         <a class="btn btn-warning mb-2" asp-controller="Teacher" asp-action="EditGrade" asp-route-gradeId="@Model.Id">Edit</a>
