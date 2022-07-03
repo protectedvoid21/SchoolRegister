@@ -1,4 +1,5 @@
-﻿@model SchoolRegister.Models.ViewModels.Teacher.TeacherStudentSubjectViewModel
+﻿@using SchoolRegister.Models
+@model SchoolRegister.Models.ViewModels.Teacher.TeacherStudentSubjectViewModel
 
 <link rel="stylesheet" href="~/css/grades.css"/>
 <script src="~/js/grades.js"></script>
@@ -9,6 +10,7 @@
     <tr>
         <th>Name</th>
         <th>Grades</th>
+        <th>Average</th>
         <th>Action</th>
     </tr>
     @foreach (var studentSubject in Model.StudentSubjects) {
@@ -17,6 +19,11 @@
             <td>
                 @foreach (var grade in studentSubject.Grades) {
                     <a id="grade" class="btn" asp-controller="Student" asp-action="GradeView" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>
+                }
+            </td>
+            <td>
+                @if (studentSubject.Grades.Any()) {
+                    @studentSubject.GetSubjectAverage().ToString("F2")
                 }
             </td>
             <td class="d-flex">

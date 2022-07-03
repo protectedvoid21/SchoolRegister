@@ -22,6 +22,7 @@ public class AnnouncementsController : Controller {
     }
 
     //todo: override authorization
+    [Authorize]
     public async Task<IActionResult> Index() {
         IEnumerable<Announcement> announcements = await announcementsService.GetAllAsync();
         announcements = announcements.OrderByDescending(a => a.CreateDate);
@@ -76,7 +77,7 @@ public class AnnouncementsController : Controller {
             Id = id,
             Title = announcement.Title,
             Description = announcement.Description,
-            TeacherId = (int)announcement.TeacherId //todo: nullability could be done better
+            TeacherId = (int)announcement.TeacherId
         };
         return View(announcementModel);
     }

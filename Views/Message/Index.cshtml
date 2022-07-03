@@ -1,19 +1,10 @@
 ﻿@model IEnumerable<SchoolRegister.Models.Message>
 
-<a class="btn btn-success" asp-controller="Message" asp-action="Write">New message</a>
-
-<table class="table table-bordered table-sm">
-    <tr>
-        <th>Date</th>
-        <th>Title</th>
-        <th>Sender</th>
-        <th>Action</th>
-    </tr>
-    @foreach (var message in Model) {
-        <tr>
-            <td>@message.CreatedDate</td>
-            <td>@message.Title</td>
-            <td>@message.SenderUser</td>
-        </tr>
-    }
-</table>
+<h2 class="text-center mb-4">Message list</h2>
+<div class="d-flex gap-2">
+    <div class="d-flex flex-column">
+        <a class="btn btn-success mb-2" asp-controller="Message" asp-action="Write">New message</a>
+        <a class="btn btn-primary" asp-controller="Message" asp-action="SentList">Sent messages</a>
+    </div>
+    <partial name="_MessageListPartial" model="Model"/>
+</div>

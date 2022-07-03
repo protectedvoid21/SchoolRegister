@@ -41,6 +41,6 @@ public static class Utils {
     }
 
     public static double GetSubjectAverage(this StudentSubject studentSubject) {
-        return studentSubject.Grades.Select(s => s.GradeType).Average();
+        return studentSubject.Grades.Select(s => s.GetValue()).Average();
     }
 }

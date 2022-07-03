@@ -51,7 +51,6 @@ public class AccountController : Controller {
             return View(changePasswordModel);
         }
 
-        //todo: user with polish digit cannot be edited - change it
         var user = await userManager.FindByIdAsync(changePasswordModel.UserId);
         var code = await userManager.GeneratePasswordResetTokenAsync(user);
         IdentityResult result = await userManager.ResetPasswordAsync(user, code, changePasswordModel.NewPassword);

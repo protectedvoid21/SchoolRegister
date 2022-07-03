@@ -49,7 +49,9 @@ public class StudentController : Controller {
         var user = await userManager.GetUserAsync(User);
         if (User.IsInRole("Teacher")) {
             Teacher teacher = await teachersService.GetByUser(user);
-
+            if (!await teachersService.IsTeacherGradeAuthor(teacher.Id, gradeId)) {
+                return Forbid();
+            }
         }
         else if (User.IsInRole("Student")) {
             Student student = await studentsService.GetByUser(user);

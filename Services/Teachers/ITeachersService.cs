@@ -14,6 +14,8 @@ public interface ITeachersService {
 
     Task<IEnumerable<SchoolSubject>> GetTaughtSubjects(Teacher teacher);
 
+    Task<bool> IsTeacherGradeAuthor(int teacherId, int gradeId);
+
     Task AddAsync(Teacher teacher);
 
     Task UpdateAsync(Teacher teacher);

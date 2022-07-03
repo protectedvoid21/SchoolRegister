@@ -1,11 +1,64 @@
 ﻿@model SchoolRegister.Models.ViewModels.MessageViewModel
 
 <h2>Write a message</h2>
-<form>
+<p>
+    @foreach (var userGroup in Model.UserDictionary) {
+        <button class="btn btn-primary display-button" id="@userGroup.Key">@userGroup.Key</button>        
+    }
+</p>
+<form method="post">
     <div asp-validation-summary="All"></div>
     <div class="mb-3">
         <span asp-validation-for="Title"></span>
+        <label asp-for="Title"></label><br/>
+        <input asp-for="Title" class="form-control-sm"/>
     </div>
-    <input type="hidden" asp-for="UserReceiverId"/>
+    <div class="mb-3">
+        <span asp-validation-for="Description"></span>
+        <label asp-for="Description"></label><br/>
+        <textarea asp-for="Description" class="form-control" rows="7"></textarea>
+    </div>
+    @foreach (var userGroup in Model.UserDictionary) {
+        <div class="display-table d-none" id="@userGroup.Key">
+            <table class="table table-sm d-flex table-hover table-bordered">
+                <tr>
+                    <th>Name and surname</th>
+                    <th></th>
+                </tr>
+                @foreach (var user in userGroup.Value) {
+                    <tr>
+                        <td>@user.Name @user.Surname</td>
+                        <td>
+                            <input type="radio" asp-for="UserReceiverId" value="@user.Id"/>
+                        </td>
+                    </tr>       
+                }
+            </table>
+        </div>
+    }
+    <input type="hidden" asp-for="UserDictionary"/>
     <input type="submit" value="Send" class="btn btn-success"/>
 </form>
+
+@section Scripts {
+    <script>
+        const buttonDisplayList = document.querySelectorAll('.display-button')
+        const tableDisplayList = document.querySelectorAll('.display-table')
+
+        for (let i = 0; i < buttonDisplayList.length; i++) {
+            buttonDisplayList[i].addEventListener('click', () => {
+                tableDisplayList.forEach(table => {
+                    table.classList.add('d-none')
+                })
+
+                const tableClassList = tableDisplayList[i].classList
+                if (tableDisplayList[i].classList.contains('d-none')) {
+                    tableClassList.remove('d-none')
+                } 
+                else {
+                    tableClassList.add('d-none')
+                }
+            })
+        }
+    </script>
+}

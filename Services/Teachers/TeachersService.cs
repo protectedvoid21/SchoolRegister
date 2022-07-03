@@ -49,6 +49,11 @@ public class TeachersService : ITeachersService {
         return await schoolContext.SchoolSubjects.Where(s => s.Teacher == teacher).ToListAsync();
     }
 
+    public async Task<bool> IsTeacherGradeAuthor(int teacherId, int gradeId) {
+        var gradeIdList = schoolContext.Teachers.SelectMany(s => s.SchoolSubjects.SelectMany(s => s.StudentSubjects.SelectMany(s => s.Grades.Select(g => g.Id))));
+        return await gradeIdList.ContainsAsync(gradeId);
+    }
+
     public async Task AddAsync(Teacher teacher) {
         await schoolContext.AddAsync(teacher);
         await schoolContext.SaveChangesAsync();

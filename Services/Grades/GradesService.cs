@@ -12,7 +12,6 @@ public class GradesService : IGradesService {
         this.schoolContext = schoolContext;
     }
 
-    //todo: Convert to Task<bool> - returns if student was found and adding result
     public async Task AddAsync(Grade grade) {
         await schoolContext.AddAsync(grade);
         await schoolContext.SaveChangesAsync();
