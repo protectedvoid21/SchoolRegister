@@ -15,7 +15,7 @@
     </tr>
     @foreach (var studentSubject in Model.StudentSubjects) {
         <tr>
-            <td>@studentSubject.Student.Name @studentSubject.Student.Surname</td>
+            <td>@studentSubject.Student.User.Name @studentSubject.Student.User.Surname</td>
             <td>
                 @foreach (var grade in studentSubject.Grades) {
                     <a id="grade" class="btn" asp-controller="Student" asp-action="GradeView" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>

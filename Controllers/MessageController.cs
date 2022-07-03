@@ -48,8 +48,8 @@ public class MessageController : Controller {
             foreach (var student in studentList) {
                 studentModelList.Add(new UserSimpleViewModel {
                     Id = student.User.Id,
-                    Name = student.Name,
-                    Surname = student.Surname,
+                    Name = student.User.Name,
+                    Surname = student.User.Surname,
                 });
             }
             userGrouped.Add("Students", studentModelList);
@@ -59,8 +59,8 @@ public class MessageController : Controller {
         foreach(var teacher in teacherList) {
             teacherModelList.Add(new UserSimpleViewModel {
                 Id = teacher.User.Id,
-                Name = teacher.Name,
-                Surname = teacher.Surname,
+                Name = teacher.User.Name,
+                Surname = teacher.User.Surname,
             });
         }
         userGrouped.Add("Teachers", teacherModelList);

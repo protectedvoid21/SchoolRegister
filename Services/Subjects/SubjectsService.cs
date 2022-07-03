@@ -26,6 +26,7 @@ public class SubjectsService : ISubjectsService {
             .Include(s => s.SchoolSubject)
             .ThenInclude(s => s.Subject)
             .Include(s => s.Student)
+            .ThenInclude(s => s.User)
             .FirstAsync(s => s.Id == id);
     }
 

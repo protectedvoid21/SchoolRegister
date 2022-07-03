@@ -14,8 +14,8 @@
     <tbody>
     @foreach (var student in Model.StudentsList) {
         <tr>
-            <td>@student.Name</td>
-            <td>@student.Surname</td>
+            <td>@student.User.Name</td>
+            <td>@student.User.Surname</td>
             <td>@student.User.UserName</td>
             <td class="d-flex gap-3">
                 <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditStudent" asp-route-studentId="@student.Id">Edit</a>

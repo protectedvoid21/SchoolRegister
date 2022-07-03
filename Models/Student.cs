@@ -4,8 +4,6 @@ namespace SchoolRegister.Models;
 
 public class Student {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Surname { get; set; }
     public AppUser User { get; set; }
 
     public SchoolClass SchoolClass { get; set; }

@@ -6,5 +6,26 @@
         <a class="btn btn-success mb-2" asp-controller="Message" asp-action="Write">New message</a>
         <a class="btn btn-primary" asp-controller="Message" asp-action="SentList">Sent messages</a>
     </div>
-    <partial name="_MessageListPartial" model="Model"/>
+    <table class="table table-bordered table-hover table-sm">
+        <tr>
+            <th style="width: 20%">Date</th>
+            <th style="width: 50%">Title</th>
+            <th style="width: 20%">Sender</th>
+            <th style="width: 20%">Action</th>
+        </tr>
+        @foreach (var message in Model) {
+            <tr>
+                <td>@message.CreatedDate</td>
+                <td><a href="#">@message.Title</a></td>
+                <td>
+                    @if (message.SenderUser != null) {
+                        @message.SenderUser.Name @message.SenderUser.Surname
+                    }
+                    else {
+                        <p class="text-muted">deleted user</p>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
 </div>

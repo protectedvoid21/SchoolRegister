@@ -73,8 +73,8 @@ public class TeacherController : Controller {
         Student student = studentSubject.Student;
 
         GradeCreateViewModel gradeModel = new() {
-            StudentName = student.Name,
-            StudentSurname = student.Surname,
+            StudentName = student.User.Name,
+            StudentSurname = student.User.Surname,
             SubjectName = studentSubject.SchoolSubject.Subject.Name,
             SubjectId = studentSubject.SchoolSubject.Subject.Id
         };
@@ -111,8 +111,8 @@ public class TeacherController : Controller {
             Id = gradeId,
             GradeType = grade.GradeType,
             GradeInfo = grade.GradeInfo,
-            StudentName = student.Name,
-            StudentSurname = student.Surname,
+            StudentName = student.User.Name,
+            StudentSurname = student.User.Surname,
             SubjectName = grade.Subject.Name,
             Comment = grade.Comment,
         };

@@ -15,6 +15,8 @@ public class AdminSeeder : ISeeder {
 
         AppUser adminUser = new() {
             UserName = GlobalConstants.AdministratorName,
+            Name = "Admin",
+            Surname = "Admin",
         };
 
         var result = await userManager.CreateAsync(adminUser, GlobalConstants.AdministratorPassword);

@@ -10,8 +10,7 @@ public class LoginModel : PageModel {
     private readonly UserManager<AppUser> userManager;
     private readonly SignInManager<AppUser> signInManager;
 
-    [BindProperty]
-    public InputModel Input { get; set; }
+    [BindProperty] public InputModel Input { get; set; } = new();
 
     public class InputModel {
         [Required]
@@ -27,10 +26,8 @@ public class LoginModel : PageModel {
         this.userManager = userManager;
         this.signInManager = signInManager;
     }
-        
-    public void OnGet() {
-        Input = new();
-    }
+
+    public void OnGet() {}
 
     public async Task<IActionResult> OnPostAsync() {
         if(!ModelState.IsValid) {

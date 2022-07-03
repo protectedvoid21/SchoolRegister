@@ -131,15 +131,15 @@ public class AdminController : Controller {
         }
 
         var user = new AppUser {
-            UserName = Utils.GenerateUserName(createTeacherModel.Name, createTeacherModel.Surname)
+            UserName = Utils.GenerateUserName(createTeacherModel.Name, createTeacherModel.Surname),
+            Name = createTeacherModel.Name,
+            Surname = createTeacherModel.Surname,
         };
 
         await userManager.CreateAsync(user, Utils.GeneratePassword(10));
         await userManager.AddToRoleAsync(user, "Teacher");
 
         Teacher teacher = new() {
-            Name = createTeacherModel.Name,
-            Surname = createTeacherModel.Surname,
             User = user,
         };
 
@@ -158,7 +158,7 @@ public class AdminController : Controller {
             return View(teacher);
         }
 
-        teacher.User.UserName = Utils.GenerateUserName(teacher.Name, teacher.Surname);
+        teacher.User.UserName = Utils.GenerateUserName(teacher.User.Name, teacher.User.Surname);
 
         await teachersService.UpdateAsync(teacher);
         return RedirectToAction("TeacherList");
@@ -178,8 +178,8 @@ public class AdminController : Controller {
         foreach (var teacher in teacherList) {
             teacherModelList.Add(new TeacherViewModel {
                 Id = teacher.Id,
-                Name = teacher.Name,
-                Surname = teacher.Surname,
+                Name = teacher.User.Name,
+                Surname = teacher.User.Surname,
                 ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
                 SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
                 SchoolSubjectCount = teacher.SchoolSubjects.Count,
@@ -193,8 +193,8 @@ public class AdminController : Controller {
         Teacher teacher = await teachersService.GetById(teacherId);
         TeacherViewModel teacherModel = new() {
             Id = teacherId,
-            Name = teacher.Name,
-            Surname = teacher.Surname,
+            Name = teacher.User.Name,
+            Surname = teacher.User.Surname,
             ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
             SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
             SchoolSubjectCount = teacher.SchoolSubjects.Count
@@ -235,6 +235,8 @@ public class AdminController : Controller {
         }
 
         var user = new AppUser {
+            Name = studentModel.Name,
+            Surname = studentModel.Surname,
             UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname),
         };
 
@@ -242,8 +244,6 @@ public class AdminController : Controller {
         await userManager.AddToRoleAsync(user, "Student");
 
         Student student = new() {
-            Name = studentModel.Name,
-            Surname = studentModel.Surname,
             SchoolClass = await schoolClassesService.GetById(studentModel.SchoolClassId),
             User = user
         };
@@ -259,8 +259,8 @@ public class AdminController : Controller {
         Student student = await studentsService.GetById(studentId);
         StudentViewModel studentModel = new StudentViewModel {
             Id = studentId,
-            Name = student.Name,
-            Surname = student.Surname,
+            Name = student.User.Name,
+            Surname = student.User.Surname,
         };
         return View(studentModel);
     }
@@ -271,8 +271,8 @@ public class AdminController : Controller {
             return View(studentModel);
         }
         Student student = await studentsService.GetById(studentModel.Id);
-        student.Name = studentModel.Name;
-        student.Surname = studentModel.Surname;
+        student.User.Name = studentModel.Name;
+        student.User.Surname = studentModel.Surname;
         student.User.UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname);
 
         await studentsService.UpdateAsync(student);
@@ -298,8 +298,8 @@ public class AdminController : Controller {
         var schoolSubjectModel = new SchoolSubjectViewModel {
             SubjectList = await subjectsService.GetAllSubjects(),
             TeacherId = teacherId,
-            TeacherName = teacher.Name,
-            TeacherSurname = teacher.Surname,
+            TeacherName = teacher.User.Name,
+            TeacherSurname = teacher.User.Surname,
         };
         var schoolClassList = await schoolClassesService.GetAllAsync();
         schoolSubjectModel.SchoolClassList = schoolClassList.ToArray();
