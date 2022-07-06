@@ -7,5 +7,6 @@ public class Student {
     public AppUser User { get; set; }
 
     public SchoolClass SchoolClass { get; set; }
+    public int SchoolClassId { get; set; }
     public List<StudentSubject> StudentSubjects { get; set; }
 }

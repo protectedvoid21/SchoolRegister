@@ -77,11 +77,11 @@ public class AdminController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> EditSchoolClass(SchoolClass schoolClass) {
-        if (!ModelState.IsValid) {
+        if(!ModelState.IsValid) {
             return View(schoolClass);
         }
 
-        if (await schoolClassesService.IsSchoolClassExisting(schoolClass.Name)) {
+        if(await schoolClassesService.IsSchoolClassExisting(schoolClass.Name)) {
             ModelState.AddModelError("", "Class with this name already exists");
             return View(schoolClass);
         }
@@ -175,7 +175,7 @@ public class AdminController : Controller {
         IEnumerable<Teacher> teacherList = await teachersService.GetAllAsync();
         List<TeacherViewModel> teacherModelList = new();
 
-        foreach (var teacher in teacherList) {
+        foreach(var teacher in teacherList) {
             teacherModelList.Add(new TeacherViewModel {
                 Id = teacher.Id,
                 Name = teacher.User.Name,
@@ -234,22 +234,7 @@ public class AdminController : Controller {
             return View("CreateStudent", studentModel);
         }
 
-        var user = new AppUser {
-            Name = studentModel.Name,
-            Surname = studentModel.Surname,
-            UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname),
-        };
-
-        await userManager.CreateAsync(user, Utils.GeneratePassword(10));
-        await userManager.AddToRoleAsync(user, "Student");
-
-        Student student = new() {
-            SchoolClass = await schoolClassesService.GetById(studentModel.SchoolClassId),
-            User = user
-        };
-
-        await studentsService.AddAsync(student);
-        await subjectsService.UpdateSubjectsForStudent(student);
+        await studentsService.AddAsync(studentModel.Name, studentModel.Surname, studentModel.SchoolClassId);
 
         return RedirectToAction("SchoolClassList");
     }
@@ -257,7 +242,7 @@ public class AdminController : Controller {
     [HttpGet]
     public async Task<IActionResult> EditStudent(int studentId) {
         Student student = await studentsService.GetById(studentId);
-        StudentViewModel studentModel = new StudentViewModel {
+        StudentViewModel studentModel = new() {
             Id = studentId,
             Name = student.User.Name,
             Surname = student.User.Surname,
@@ -267,23 +252,17 @@ public class AdminController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> EditStudent(StudentViewModel studentModel) {
-        if (!ModelState.IsValid) {
+        if(!ModelState.IsValid) {
             return View(studentModel);
         }
-        Student student = await studentsService.GetById(studentModel.Id);
-        student.User.Name = studentModel.Name;
-        student.User.Surname = studentModel.Surname;
-        student.User.UserName = Utils.GenerateUserName(studentModel.Name, studentModel.Surname);
 
-        await studentsService.UpdateAsync(student);
+        await studentsService.UpdateAsync(studentModel.Id, studentModel.Name, studentModel.Surname);
 
         return RedirectToAction("SchoolClassList");
     }
 
     public async Task<IActionResult> DeleteStudent(int studentId) {
-        Student student = await studentsService.GetById(studentId);
-        await userManager.DeleteAsync(student.User);
-        await studentsService.DeleteAsync(student);
+        await studentsService.DeleteAsync(studentId);
         return RedirectToAction("SchoolClassList");
     }
 
@@ -360,7 +339,7 @@ public class AdminController : Controller {
     public async Task<IActionResult> SubjectList() {
         List<Subject> subjectList = await subjectsService.GetAllSubjects();
         List<SubjectElementViewModel> subjectListModel = new();
-        foreach (var subject in subjectList) {
+        foreach(var subject in subjectList) {
             subjectListModel.Add(new SubjectElementViewModel {
                 Subject = subject,
                 StudentCount = await subjectsService.GetCountByStudents(subject)

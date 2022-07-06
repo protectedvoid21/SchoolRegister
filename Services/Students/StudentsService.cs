@@ -2,14 +2,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
+using SchoolRegister.Services.Subjects;
 
-namespace SchoolRegister.Services.Students; 
+namespace SchoolRegister.Services.Students;
 
 public class StudentsService : IStudentsService {
     private readonly SchoolRegisterContext schoolContext;
+    private readonly UserManager<AppUser> userManager;
+    private readonly ISubjectsService subjectsService;
 
-    public StudentsService(SchoolRegisterContext schoolContext) {
+    public StudentsService(SchoolRegisterContext schoolContext, UserManager<AppUser> userManager, ISubjectsService subjectsService) {
         this.schoolContext = schoolContext;
+        this.userManager = userManager;
+        this.subjectsService = subjectsService;
     }
 
     public async Task<int> GetCountAsync() {
@@ -38,18 +43,42 @@ public class StudentsService : IStudentsService {
             .FirstAsync(s => s.User == user);
     }
 
-    public async Task AddAsync(Student student) {
+    public async Task AddAsync(string name, string surname, int schoolClassId) {
+        var user = new AppUser {
+            Name = name,
+            Surname = surname,
+            UserName = Utils.GenerateUserName(name, surname),
+        };
+
+        await userManager.CreateAsync(user, Utils.GeneratePassword(10));
+        await userManager.AddToRoleAsync(user, "Student");
+
+        Student student = new() {
+            User = user,
+            SchoolClassId = schoolClassId
+        };
+
         await schoolContext.AddAsync(student);
+        await subjectsService.UpdateSubjectsForStudent(student);
+
         await schoolContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Student student) {
+    public async Task UpdateAsync(int id, string name, string surname) {
+        Student student = await GetById(id);
+        student.User.Name = name;
+        student.User.Surname = surname;
+        student.User.UserName = Utils.GenerateUserName(name, surname);
+
         schoolContext.Update(student);
         await schoolContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Student student) {
+    public async Task DeleteAsync(int id) {
+        Student student = await GetById(id);
+        await userManager.DeleteAsync(student.User);
         schoolContext.Remove(student);
+
         await schoolContext.SaveChangesAsync();
     }
 }

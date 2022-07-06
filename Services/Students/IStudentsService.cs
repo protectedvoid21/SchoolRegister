@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SchoolRegister.Models;
 
-namespace SchoolRegister.Services.Students; 
+namespace SchoolRegister.Services.Students;
 
 public interface IStudentsService {
     Task<int> GetCountAsync();
@@ -12,9 +12,9 @@ public interface IStudentsService {
 
     Task<Student> GetByUser(AppUser user);
 
-    Task AddAsync(Student student);
+    Task AddAsync(string name, string surname, int schoolClassId);
 
-    Task UpdateAsync(Student student);
+    Task UpdateAsync(int id, string name, string surname);
 
-    Task DeleteAsync(Student student);
+    Task DeleteAsync(int id);
 }
