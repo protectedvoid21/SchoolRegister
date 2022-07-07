@@ -3,16 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolRegister", "SchoolRegister.csproj", "{68B4E94D-3FE8-4844-A481-E7BA29F9D9C6}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{5CCB5D55-E022-4C38-9B25-FAB70CCA7AE8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolRegister.Tests", "..\SchoolRegister.Tests\SchoolRegister.Tests.csproj", "{604A8383-19FB-435F-9FE0-5EF724B555BD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{42CE4547-73CB-4449-91D1-0F4C6676E3EA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1A931B11-2744-482C-9D41-AA4563744AB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolRegister.Tests", "Tests\SchoolRegister.Tests\SchoolRegister.Tests.csproj", "{37F6E13D-DF5A-4F63-A4A5-C65339A5AE8A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2019499-2616-413F-BC0A-733F56B24825}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SchoolRegister", "Web\SchoolRegister.csproj", "{3FD353CD-590D-4264-85A7-EAF929BD0FF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,20 +17,21 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{68B4E94D-3FE8-4844-A481-E7BA29F9D9C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68B4E94D-3FE8-4844-A481-E7BA29F9D9C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68B4E94D-3FE8-4844-A481-E7BA29F9D9C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68B4E94D-3FE8-4844-A481-E7BA29F9D9C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{604A8383-19FB-435F-9FE0-5EF724B555BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{604A8383-19FB-435F-9FE0-5EF724B555BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{604A8383-19FB-435F-9FE0-5EF724B555BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{604A8383-19FB-435F-9FE0-5EF724B555BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37F6E13D-DF5A-4F63-A4A5-C65339A5AE8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37F6E13D-DF5A-4F63-A4A5-C65339A5AE8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37F6E13D-DF5A-4F63-A4A5-C65339A5AE8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37F6E13D-DF5A-4F63-A4A5-C65339A5AE8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD353CD-590D-4264-85A7-EAF929BD0FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD353CD-590D-4264-85A7-EAF929BD0FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD353CD-590D-4264-85A7-EAF929BD0FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD353CD-590D-4264-85A7-EAF929BD0FF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{604A8383-19FB-435F-9FE0-5EF724B555BD} = {1A931B11-2744-482C-9D41-AA4563744AB6}
+		{37F6E13D-DF5A-4F63-A4A5-C65339A5AE8A} = {42CE4547-73CB-4449-91D1-0F4C6676E3EA}
+		{3FD353CD-590D-4264-85A7-EAF929BD0FF2} = {5CCB5D55-E022-4C38-9B25-FAB70CCA7AE8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F697EB5B-C3DF-4548-B758-2A4C4672977C}
