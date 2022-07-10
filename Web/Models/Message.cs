@@ -6,7 +6,12 @@ public class Message {
     public string Description { get; set; }
 
     public AppUser? SenderUser { get; set; }
+    public string? SenderUserId { get; set; }
+    
     public AppUser ReceiverUser { get; set; }
+    public string? ReceiverUserId { get; set; }
+    
+    public bool IsVisible { get; set; }
     
     public DateTime CreatedDate { get; set; }
 }

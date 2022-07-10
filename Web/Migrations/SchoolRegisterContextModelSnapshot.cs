@@ -181,7 +181,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Announcements", (string)null);
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.AppUser", b =>
@@ -289,7 +289,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Grades", (string)null);
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.Message", b =>
@@ -307,6 +307,9 @@ namespace SchoolRegister.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ReceiverUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -323,7 +326,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("SenderUserId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.SchoolClass", b =>
@@ -340,7 +343,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SchoolClasses", (string)null);
+                    b.ToTable("SchoolClasses");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.SchoolSubject", b =>
@@ -368,7 +371,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("SchoolSubjects", (string)null);
+                    b.ToTable("SchoolSubjects");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.Student", b =>
@@ -391,7 +394,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.StudentSubject", b =>
@@ -414,7 +417,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("StudentSubjects", (string)null);
+                    b.ToTable("StudentSubjects");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.Subject", b =>
@@ -431,7 +434,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("SchoolRegister.Models.Teacher", b =>
@@ -449,7 +452,7 @@ namespace SchoolRegister.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

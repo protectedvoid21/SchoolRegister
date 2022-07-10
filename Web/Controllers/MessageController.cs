@@ -90,15 +90,7 @@ public class MessageController : Controller {
             }
         }
 
-        Message message = new() {
-            Title = messageModel.Title,
-            Description = messageModel.Description,
-            CreatedDate = DateTime.Now,
-            SenderUser = user,
-            ReceiverUser = receiverUser
-        };
-
-        await messagesService.AddAsync(message);
+        await messagesService.AddAsync(messageModel.Title, messageModel.Description, user.Id, messageModel.UserReceiverId);
 
         return RedirectToAction("Index");
     }
@@ -108,5 +100,16 @@ public class MessageController : Controller {
         var messages = await messagesService.GetAllSentMessages(user.Id);
 
         return View(messages);
+    }
+
+    public async Task<IActionResult> Delete(int id) {
+        var user = await userManager.GetUserAsync(User);
+
+        if (!await messagesService.IsReceiver(id, user.Id)) {
+            return BadRequest();
+        }
+
+        await messagesService.DeleteForReceiver(id);
+        return RedirectToAction("Index");
     }
 }
