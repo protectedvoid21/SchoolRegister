@@ -57,7 +57,7 @@ public class TeacherController : Controller {
         Teacher teacher = await teachersService.GetByUser(user);
         var studentSubjectModel = new TeacherStudentSubjectViewModel();
 
-        IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetSchoolSubjectsByTeacher(teacher);
+        IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetStudentSubjectsForTeacher(teacher.Id);
         var schoolClass = await schoolClassesService.GetById(classId);
 
         studentSubjectModel.StudentSubjects = studentSubjects.Where(s => s.SchoolSubject.Subject.Id == subjectId && s.Student.SchoolClass == schoolClass);

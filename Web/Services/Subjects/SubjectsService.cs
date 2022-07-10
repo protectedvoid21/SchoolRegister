@@ -12,8 +12,12 @@ public class SubjectsService : ISubjectsService {
         this.schoolContext = schoolContext;
     }
 
-    public async Task AddAsync(Subject subject) {
-        await schoolContext.Subjects.AddAsync(subject);
+    public async Task AddAsync(string name) {
+        Subject subject = new() {
+            Name = name,
+        };
+
+        await schoolContext.AddAsync(subject);
         await schoolContext.SaveChangesAsync();
     }
 
@@ -30,12 +34,17 @@ public class SubjectsService : ISubjectsService {
             .FirstAsync(s => s.Id == id);
     }
 
-    public async Task UpdateAsync(Subject subject) {
+    public async Task UpdateAsync(int id, string name) {
+        Subject subject = new() {
+            Id = id,
+            Name = name,
+        };
         schoolContext.Update(subject);
         await schoolContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Subject subject) {
+    public async Task DeleteAsync(int id) {
+        Subject subject = await schoolContext.Subjects.FindAsync(id);
         schoolContext.Remove(subject);
         await schoolContext.SaveChangesAsync();
     }
@@ -48,7 +57,7 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.StudentSubjects.Where(s => s.SchoolSubject.Subject == subject).CountAsync();
     }
 
-    public async Task<IEnumerable<StudentSubject>> GetStudentSubjectForStudent(Student student) {
+    public async Task<IEnumerable<StudentSubject>> GetStudentSubjectsForStudent(Student student) {
         return schoolContext.StudentSubjects
             .Where(s => s.Student == student)
             .Include(s => s.Grades)
@@ -56,7 +65,7 @@ public class SubjectsService : ISubjectsService {
             .ThenInclude(s => s.Subject);
     }
 
-    public async Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher) {
+    public async Task<IEnumerable<StudentSubject>> GetStudentSubjectsForTeacher(int teacherId) {
         return await schoolContext.StudentSubjects
             .Include(s => s.SchoolSubject)
             .ThenInclude(s => s.Subject)
@@ -64,6 +73,7 @@ public class SubjectsService : ISubjectsService {
             .ThenInclude(s => s.SchoolClass)
             .Include(s => s.Student)
             .Include(s => s.Grades)
+            .Where(t => t.SchoolSubject.TeacherId == teacherId)
             .ToListAsync();
     }
 
@@ -71,9 +81,9 @@ public class SubjectsService : ISubjectsService {
         return await schoolContext.SchoolSubjects.FindAsync(id);
     }
 
-    public async Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass) {
+    public async Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(int schoolClassId) {
         return await schoolContext.SchoolSubjects
-            .Where(s => s.SchoolClass == schoolClass)
+            .Where(s => s.SchoolClassId == schoolClassId)
             .ToListAsync();
     }
 
@@ -111,8 +121,14 @@ public class SubjectsService : ISubjectsService {
         await schoolContext.SaveChangesAsync();
     }
 
-    public async Task AddSchoolSubjectAsync(SchoolSubject schoolSubject) {
-        await schoolContext.SchoolSubjects.AddAsync(schoolSubject);
+    public async Task AddSchoolSubjectAsync(int subjectId, int schoolClassId, int teacherId) {
+        SchoolSubject schoolSubject = new() {
+            SubjectId = subjectId,
+            SchoolClassId = schoolClassId,
+            TeacherId = teacherId
+        };
+
+        await schoolContext.AddAsync(schoolSubject);
         await schoolContext.SaveChangesAsync();
     }
 

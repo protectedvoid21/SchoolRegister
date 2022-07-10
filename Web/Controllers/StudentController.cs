@@ -36,7 +36,7 @@ public class StudentController : Controller {
         AppUser user = await userManager.GetUserAsync(User);
         Student student = await studentsService.GetByUser(user);
 
-        IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetStudentSubjectForStudent(student);
+        IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetStudentSubjectsForStudent(student);
         StudentPanelViewModel studentPanelModel = new() {
             Student = student,
             StudentSubjects = studentSubjects

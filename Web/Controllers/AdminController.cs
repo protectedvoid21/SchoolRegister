@@ -302,28 +302,26 @@ public class AdminController : Controller {
 
         List<SchoolSubject> schoolSubjects = new();
         IEnumerable<int> pickList = schoolSubjectModel.ClassChoiceId.Where(c => c.IsPicked).Select(c => c.Id);
-        Teacher teacher = await teachersService.GetById(schoolSubjectModel.TeacherId);
         Subject subject = await subjectsService.GetById(schoolSubjectModel.SubjectId);
-        List<SchoolClass> schoolClassList = new List<SchoolClass>();
+        List<int> schoolClassIdList = new();
 
         foreach(var schoolClassId in pickList) {
-            SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
-            if((await subjectsService.GetSchoolSubjectsByClass(schoolClass)).Any(s => s.Subject == subject)) {
+            if((await subjectsService.GetSchoolSubjectsByClass(schoolClassId)).Any(s => s.SubjectId == schoolSubjectModel.SubjectId)) {
                 continue;
             }
 
-            schoolClassList.Add(schoolClass);
+            schoolClassIdList.Add(schoolClassId);
 
             schoolSubjects.Add(new SchoolSubject {
-                Teacher = teacher,
-                Subject = subject,
-                SchoolClass = schoolClass
+                TeacherId = schoolSubjectModel.TeacherId,
+                SubjectId = schoolSubjectModel.SubjectId,
+                SchoolClassId = schoolClassId
             });
         }
         await subjectsService.AddSchoolSubjectRangeAsync(schoolSubjects);
 
-        foreach(var schoolClass in schoolClassList) {
-            SchoolSubject schoolSubject = (await subjectsService.GetSchoolSubjectsByClass(schoolClass)).First(s => s.Subject == subject);
+        foreach(var schoolClassId in schoolClassIdList) {
+            SchoolSubject schoolSubject = (await subjectsService.GetSchoolSubjectsByClass(schoolClassId)).First(s => s.Subject == subject);
             await subjectsService.UpdateStudentSubjectsInClass(schoolSubject);
         }
 
@@ -365,11 +363,7 @@ public class AdminController : Controller {
             return View(subjectModel);
         }
 
-        Subject subject = new() {
-            Name = subjectModel.Name,
-        };
-
-        await subjectsService.AddAsync(subject);
+        await subjectsService.AddAsync(subjectModel.Name);
         return RedirectToAction("SubjectList");
     }
 
@@ -383,13 +377,12 @@ public class AdminController : Controller {
         if(!ModelState.IsValid) {
             return View(subject);
         }
-        await subjectsService.UpdateAsync(subject);
+        await subjectsService.UpdateAsync(subject.Id, subject.Name);
         return RedirectToAction("SubjectList");
     }
 
     public async Task<IActionResult> DeleteSubject(int subjectId) {
-        Subject subject = await subjectsService.GetById(subjectId);
-        await subjectsService.DeleteAsync(subject);
+        await subjectsService.DeleteAsync(subjectId);
         return RedirectToAction("SubjectList");
     }
 

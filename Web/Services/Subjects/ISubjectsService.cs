@@ -3,33 +3,33 @@
 namespace SchoolRegister.Services.Subjects;
 
 public interface ISubjectsService {
-    Task AddAsync(Subject subject);
+    Task AddAsync(string name);
 
     Task<Subject> GetById(int id);
 
     Task<StudentSubject> GetStudentSubjectById(int id);
 
-    Task UpdateAsync(Subject subject);
+    Task UpdateAsync(int id, string name);
 
-    Task DeleteAsync(Subject subject);
+    Task DeleteAsync(int id);
 
     Task<int> GetCountAsync();
 
     Task<int> GetCountByStudents(Subject subject);
 
-    Task<IEnumerable<StudentSubject>> GetStudentSubjectForStudent(Student student);
+    Task<IEnumerable<StudentSubject>> GetStudentSubjectsForStudent(Student student);
 
-    Task<IEnumerable<StudentSubject>> GetSchoolSubjectsByTeacher(Teacher teacher);
+    Task<IEnumerable<StudentSubject>> GetStudentSubjectsForTeacher(int teacherId);
 
     Task<SchoolSubject> GetSchoolSubjectById(int id);
 
-    Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(SchoolClass schoolClass);
+    Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(int schoolClassId);
 
     Task UpdateStudentSubjectsInClass(SchoolSubject schoolSubject);
 
     Task UpdateSubjectsForStudent(Student student);
 
-    Task AddSchoolSubjectAsync(SchoolSubject schoolSubject);
+    Task AddSchoolSubjectAsync(int subjectId, int schoolClassId, int teacherId);
 
     Task AddSchoolSubjectRangeAsync(IEnumerable<SchoolSubject> schoolSubjects);
 
