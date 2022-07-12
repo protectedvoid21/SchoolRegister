@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,9 +34,20 @@ public class MessageController : Controller {
 
     public async Task<IActionResult> Index() {
         var user = await userManager.GetUserAsync(User);
-        var messages = await messagesService.GetAllReceivedMessages(user.Id);
+        var messages = (await messagesService.GetAllReceivedMessages(user.Id)).OrderByDescending(m => m.CreatedDate);
 
         return View(messages);
+    }
+
+    public async Task<IActionResult> View(int id) {
+        var user = await userManager.GetUserAsync(User);
+        var message = await messagesService.GetById(id);
+
+        if (message.SenderUser != user && message.ReceiverUser != user) {
+            return BadRequest();
+        }
+
+        return View(message);
     }
 
     [HttpGet]
@@ -102,6 +114,24 @@ public class MessageController : Controller {
         return View(messages);
     }
 
+    public async Task<IActionResult> HiddenList() {
+        var user = await userManager.GetUserAsync(User);
+        var hiddenMessages = (await messagesService.GetAllReceivedMessages(user.Id)).Where(m => m.IsVisible == false);
+
+        return View(hiddenMessages);
+    }
+
+    public async Task<IActionResult> Revoke(int id) {
+        var user = await userManager.GetUserAsync(User);
+
+        if(!await messagesService.IsReceiver(id, user.Id)) {
+            return BadRequest();
+        }
+
+        await messagesService.ChangeVisibility(id, true);
+        return RedirectToAction("Index");
+    }
+
     public async Task<IActionResult> Delete(int id) {
         var user = await userManager.GetUserAsync(User);
 
@@ -109,7 +139,7 @@ public class MessageController : Controller {
             return BadRequest();
         }
 
-        await messagesService.DeleteForReceiver(id);
+        await messagesService.ChangeVisibility(id, false);
         return RedirectToAction("Index");
     }
 }

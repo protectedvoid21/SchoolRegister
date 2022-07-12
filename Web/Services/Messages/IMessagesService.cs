@@ -9,9 +9,11 @@ public interface IMessagesService {
 
     Task RemoveAsync(int id);
 
-    Task<bool> IsReceiver(int messasgeId, string userId);
+    Task<Message> GetById(int id);
 
-    Task DeleteForReceiver(int id);
+    Task<bool> IsReceiver(int messageId, string userId);
+
+    Task ChangeVisibility(int id, bool visibility);
 
     Task<IEnumerable<Message>> GetAllReceivedMessages(string userId);
 

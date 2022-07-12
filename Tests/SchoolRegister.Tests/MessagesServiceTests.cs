@@ -39,7 +39,7 @@ public class MessagesServiceTests {
         
         Assert.True(message.IsVisible);
 
-        await messagesService.DeleteForReceiver(message.Id);
+        await messagesService.ChangeVisibility(message.Id);
         
         Assert.False(message.IsVisible);
     } 

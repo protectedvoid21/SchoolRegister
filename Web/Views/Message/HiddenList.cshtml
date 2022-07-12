@@ -1,0 +1,29 @@
+﻿@model IEnumerable<SchoolRegister.Models.Message> 
+
+<h2>Hidden messages</h2>
+
+<table class="table table-bordered table-hover table-sm">
+    <tr>
+        <th style="width: 20%">Date</th>
+        <th style="width: 50%">Title</th>
+        <th style="width: 20%">Sender</th>
+        <th style="width: 20%">Action</th>
+    </tr>
+    @foreach (var message in Model) {
+        <tr>
+            <td>@message.CreatedDate</td>
+            <td><a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a></td>
+            <td>
+                @if (message.SenderUser != null) {
+                    <p>@message.SenderUser.Name  @message.SenderUser.Surname</p>
+                }
+                else {
+                    <p class="text-muted">deleted user</p>
+                }
+            </td>
+            <td>
+                <a class="btn btn-outline-success" asp-controller="Message" asp-action="Revoke" asp-route-id="@message.Id">Revoke</a>
+            </td>
+        </tr>
+    }
+</table>

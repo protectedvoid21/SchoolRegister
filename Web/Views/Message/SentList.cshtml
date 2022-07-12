@@ -12,7 +12,7 @@
     @foreach (var message in Model) {
         <tr>
             <td>@message.CreatedDate</td>
-            <td><a href="#">@message.Title</a></td>
+            <td><a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a></td>
             <td>@message.ReceiverUser.Name @message.ReceiverUser.Surname</td>
         </tr>
     }

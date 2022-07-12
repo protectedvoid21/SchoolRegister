@@ -2,9 +2,10 @@
 
 <h2 class="text-center mb-4">Message list</h2>
 <div class="d-flex gap-2">
-    <div class="d-flex flex-column">
-        <a class="btn btn-success mb-2" asp-controller="Message" asp-action="Write">New message</a>
+    <div class="d-flex flex-column gap-2">
+        <a class="btn btn-success" asp-controller="Message" asp-action="Write">New message</a>
         <a class="btn btn-primary" asp-controller="Message" asp-action="SentList">Sent messages</a>
+        <a class="btn btn-outline-primary" asp-controller="Message" asp-action="HiddenList">Hidden messages</a>
     </div>
     <table class="table table-bordered table-hover table-sm">
         <tr>
@@ -14,16 +15,22 @@
             <th style="width: 20%">Action</th>
         </tr>
         @foreach (var message in Model) {
+            if (!message.IsVisible) {
+                continue;
+            }
             <tr>
                 <td>@message.CreatedDate</td>
-                <td><a href="#">@message.Title</a></td>
+                <td><a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a></td>
                 <td>
                     @if (message.SenderUser != null) {
-                        @message.SenderUser.Name @message.SenderUser.Surname
+                        <p>@message.SenderUser.Name  @message.SenderUser.Surname</p>
                     }
                     else {
                         <p class="text-muted">deleted user</p>
                     }
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger" asp-controller="Message" asp-action="Delete" asp-route-id="@message.Id">Delete</a>
                 </td>
             </tr>
         }
