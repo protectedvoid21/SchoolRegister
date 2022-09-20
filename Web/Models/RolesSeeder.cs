@@ -3,7 +3,7 @@
 namespace SchoolRegister.Models; 
 
 public class RolesSeeder : ISeeder {
-    public async Task SeedAsync(SchoolRegisterContext dbContext, IServiceProvider serviceProvider) {
+    public async Task SeedAsync(SchoolContext dbContext, IServiceProvider serviceProvider) {
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
         foreach (string roleName in GlobalConstants.RequiredRoles) {

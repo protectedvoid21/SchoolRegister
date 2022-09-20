@@ -11,7 +11,7 @@ using SchoolRegister.Models;
 
 namespace SchoolRegister.Migrations
 {
-    [DbContext(typeof(SchoolRegisterContext))]
+    [DbContext(typeof(SchoolContext))]
     [Migration("20220710210034_AddIsVisibleToMessage")]
     partial class AddIsVisibleToMessage
     {

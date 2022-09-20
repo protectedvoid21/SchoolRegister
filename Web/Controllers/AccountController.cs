@@ -1,4 +1,5 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
@@ -14,11 +15,13 @@ public class AccountController : Controller {
     private readonly UserManager<AppUser> userManager;
     private readonly SignInManager<AppUser> signInManager;
     private readonly RoleManager<IdentityRole> roleManager;
+    private readonly IMapper mapper;
 
-    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager) {
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper) {
         this.userManager = userManager;
         this.signInManager = signInManager;
         this.roleManager = roleManager;
+        this.mapper = mapper;
     }
 
     [AllowAnonymous]
@@ -122,11 +125,8 @@ public class AccountController : Controller {
         var roleList = roleManager.Roles.AsAsyncEnumerable();
         await foreach(var role in roleList) {
             var usersInRole = await userManager.GetUsersInRoleAsync(role.Name);
-            roleModelList.Add(new RoleViewModel {
-                Id = role.Id,
-                Name = role.Name,
-                UserCount = usersInRole.Count,
-            });
+            RoleViewModel roleModel = mapper.Map<RoleViewModel>(role);
+            roleModel.UserCount = usersInRole.Count;
         }
 
         return View(roleModelList);
@@ -146,7 +146,7 @@ public class AccountController : Controller {
             return View(roleModel);
         }
 
-        IdentityRole role = new IdentityRole {
+        IdentityRole role = new() {
             Name = roleModel.Name
         };
         await roleManager.CreateAsync(role);

@@ -5,9 +5,9 @@ using SchoolRegister.Models;
 namespace SchoolRegister.Services.Teachers; 
 
 public class TeachersService : ITeachersService {
-    private readonly SchoolRegisterContext schoolContext;
+    private readonly SchoolContext schoolContext;
 
-    public TeachersService(SchoolRegisterContext schoolContext) {
+    public TeachersService(SchoolContext schoolContext) {
         this.schoolContext = schoolContext;
     }
 

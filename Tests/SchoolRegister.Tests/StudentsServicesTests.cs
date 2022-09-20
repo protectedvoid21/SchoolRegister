@@ -15,8 +15,8 @@ public class StudentsServiceTests {
     [InlineData("Adam", "Żółć")]
     [InlineData("Michael", "Gray")]
     public async Task Add_Students_ExistsInDb(string name, string surname) {
-        var options = new DbContextOptionsBuilder<SchoolRegisterContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-        var context = new SchoolRegisterContext(options);
+        var options = new DbContextOptionsBuilder<SchoolContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+        var context = new SchoolContext(options);
 
         var userManagerMock = new Mock<FakeUserManager>();
         var subjectsServiceMock = new Mock<ISubjectsService>();

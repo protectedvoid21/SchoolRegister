@@ -4,9 +4,9 @@ using SchoolRegister.Models;
 namespace SchoolRegister.Services.Messages; 
 
 public class MessagesService : IMessagesService {
-    private readonly SchoolRegisterContext schoolContext;
+    private readonly SchoolContext schoolContext;
 
-    public MessagesService(SchoolRegisterContext schoolContext) {
+    public MessagesService(SchoolContext schoolContext) {
         this.schoolContext = schoolContext;
     }
     

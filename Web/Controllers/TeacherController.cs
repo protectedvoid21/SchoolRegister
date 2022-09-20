@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,17 +21,20 @@ public class TeacherController : Controller {
     private readonly ISchoolClassesService schoolClassesService;
     private readonly IGradesService gradesService;
     private readonly UserManager<AppUser> userManager;
+    private readonly IMapper mapper;
 
     public TeacherController(ITeachersService teachersService, 
         ISubjectsService subjectsService, 
         ISchoolClassesService schoolClassesService,
         IGradesService gradesService,
-        UserManager<AppUser> userManager) {
+        UserManager<AppUser> userManager,
+        IMapper mapper) {
         this.teachersService = teachersService;
         this.subjectsService = subjectsService;
         this.schoolClassesService = schoolClassesService;
         this.gradesService = gradesService;
         this.userManager = userManager;
+        this.mapper = mapper;
     }
 
     public async Task<IActionResult> Index() {
@@ -70,14 +74,7 @@ public class TeacherController : Controller {
     [HttpGet]
     public async Task<IActionResult> AddGrade(int studentSubjectId) {
         StudentSubject studentSubject = await subjectsService.GetStudentSubjectById(studentSubjectId);
-        Student student = studentSubject.Student;
-
-        GradeCreateViewModel gradeModel = new() {
-            StudentName = student.User.Name,
-            StudentSurname = student.User.Surname,
-            SubjectName = studentSubject.SchoolSubject.Subject.Name,
-            SubjectId = studentSubject.SchoolSubject.Subject.Id
-        };
+        GradeCreateViewModel gradeModel = mapper.Map<GradeCreateViewModel>(studentSubject);
         return View(gradeModel);
     }
 
@@ -87,35 +84,15 @@ public class TeacherController : Controller {
             return View(gradeModel);
         }
 
-        Grade grade = new() {
-            StudentSubject = await subjectsService.GetStudentSubjectById(gradeModel.StudentSubjectId),
-            Subject = await subjectsService.GetById(gradeModel.SubjectId),
-            SubjectId = gradeModel.SubjectId,
-            DateAdd = DateTime.Now,
-            GradeType = gradeModel.GradeType,
-            GradeInfo = gradeModel.GradeInfo,
-            Comment = gradeModel.Comment,
-        };
-
-        await gradesService.AddAsync(grade);
+        await gradesService.AddAsync(gradeModel.SubjectId, gradeModel.StudentSubjectId, gradeModel.GradeType,
+            gradeModel.GradeInfo, gradeModel.Comment);
         //todo: Return to class view
         return RedirectToAction("Index");
     }
 
     [HttpGet]
     public async Task<IActionResult> EditGrade(int gradeId) {
-        Grade grade = await gradesService.GetById(gradeId);
-        Student student = grade.StudentSubject.Student;
-
-        GradeEditViewModel gradeModel = new() {
-            Id = gradeId,
-            GradeType = grade.GradeType,
-            GradeInfo = grade.GradeInfo,
-            StudentName = student.User.Name,
-            StudentSurname = student.User.Surname,
-            SubjectName = grade.Subject.Name,
-            Comment = grade.Comment,
-        };
+        GradeEditViewModel gradeModel = await gradesService.GetById<GradeEditViewModel>(gradeId);
 
         return View(gradeModel);
     }
@@ -126,18 +103,12 @@ public class TeacherController : Controller {
             return View(gradeModel);
         }
 
-        Grade grade = await gradesService.GetById(gradeModel.Id);
-        grade.GradeType = gradeModel.GradeType;
-        grade.GradeInfo = gradeModel.GradeInfo;
-        grade.Comment = grade.Comment;
-
-        await gradesService.UpdateAsync(grade);
+        await gradesService.UpdateAsync(gradeModel.Id, gradeModel.GradeType, gradeModel.GradeInfo, gradeModel.Comment);
         return RedirectToAction("Index");
     }
 
     public async Task<IActionResult> DeleteGrade(int gradeId) {
-        Grade grade = await gradesService.GetById(gradeId);
-        await gradesService.DeleteAsync(grade);
+        await gradesService.DeleteAsync(gradeId);
         return RedirectToAction("Index");
     }
 }

@@ -7,11 +7,11 @@ using SchoolRegister.Services.Subjects;
 namespace SchoolRegister.Services.Students;
 
 public class StudentsService : IStudentsService {
-    private readonly SchoolRegisterContext schoolContext;
+    private readonly SchoolContext schoolContext;
     private readonly UserManager<AppUser> userManager;
     private readonly ISubjectsService subjectsService;
 
-    public StudentsService(SchoolRegisterContext schoolContext, UserManager<AppUser> userManager, ISubjectsService subjectsService) {
+    public StudentsService(SchoolContext schoolContext, UserManager<AppUser> userManager, ISubjectsService subjectsService) {
         this.schoolContext = schoolContext;
         this.userManager = userManager;
         this.subjectsService = subjectsService;

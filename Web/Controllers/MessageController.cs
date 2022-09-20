@@ -125,7 +125,7 @@ public class MessageController : Controller {
         var user = await userManager.GetUserAsync(User);
 
         if(!await messagesService.IsReceiver(id, user.Id)) {
-            return BadRequest();
+            return Forbid();
         }
 
         await messagesService.ChangeVisibility(id, true);
@@ -136,7 +136,7 @@ public class MessageController : Controller {
         var user = await userManager.GetUserAsync(User);
 
         if (!await messagesService.IsReceiver(id, user.Id)) {
-            return BadRequest();
+            return Forbid();
         }
 
         await messagesService.ChangeVisibility(id, false);

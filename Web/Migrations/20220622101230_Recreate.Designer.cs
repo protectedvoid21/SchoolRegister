@@ -11,7 +11,7 @@ using SchoolRegister.Models;
 
 namespace SchoolRegister.Migrations
 {
-    [DbContext(typeof(SchoolRegisterContext))]
+    [DbContext(typeof(SchoolContext))]
     [Migration("20220622101230_Recreate")]
     partial class Recreate
     {

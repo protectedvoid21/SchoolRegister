@@ -1,7 +1,7 @@
 ﻿namespace SchoolRegister.Models; 
 
 public class SchoolRegisterSeeder : ISeeder {
-    public async Task SeedAsync(SchoolRegisterContext dbContext, IServiceProvider serviceProvider) {
+    public async Task SeedAsync(SchoolContext dbContext, IServiceProvider serviceProvider) {
         if (dbContext == null) {
             throw new ArgumentNullException(nameof(dbContext));
         }

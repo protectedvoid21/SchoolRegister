@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SchoolRegister;
 using SchoolRegister.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,9 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("SchoolRegister");
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<SchoolRegisterContext>(config => config.UseSqlServer(connectionString));
+builder.Services.AddDbContext<SchoolContext>(config => config.UseSqlServer(connectionString));
 builder.Services.AddIdentity();
 builder.Services.AddRazorPages();
+builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddApplicationServices();
 

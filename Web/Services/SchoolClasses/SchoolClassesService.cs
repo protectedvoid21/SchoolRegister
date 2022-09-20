@@ -4,9 +4,9 @@ using SchoolRegister.Models;
 namespace SchoolRegister.Services.SchoolClasses; 
 
 public class SchoolClassesService : ISchoolClassesService {
-    private readonly SchoolRegisterContext schoolContext;
+    private readonly SchoolContext schoolContext;
 
-    public SchoolClassesService(SchoolRegisterContext schoolContext) {
+    public SchoolClassesService(SchoolContext schoolContext) {
         this.schoolContext = schoolContext;
     }
 

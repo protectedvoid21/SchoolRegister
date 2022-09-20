@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace SchoolRegister.Models; 
 
 public class AdminSeeder : ISeeder {
-    public async Task SeedAsync(SchoolRegisterContext dbContext, IServiceProvider serviceProvider) {
+    public async Task SeedAsync(SchoolContext dbContext, IServiceProvider serviceProvider) {
         var userManager = serviceProvider.GetService<UserManager<AppUser>>();
         var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
 

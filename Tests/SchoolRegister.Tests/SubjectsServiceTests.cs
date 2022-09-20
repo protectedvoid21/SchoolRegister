@@ -16,8 +16,8 @@ public class SubjectsServiceTests {
     private readonly SubjectsService subjectsService;
 
     public SubjectsServiceTests() {
-        var options = new DbContextOptionsBuilder<SchoolRegisterContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
-        var dbContext = new SchoolRegisterContext(options);
+        var options = new DbContextOptionsBuilder<SchoolContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+        var dbContext = new SchoolContext(options);
         subjectsService = new SubjectsService(dbContext);
     }
 

@@ -11,7 +11,7 @@ using SchoolRegister.Models;
 
 namespace SchoolRegister.Migrations
 {
-    [DbContext(typeof(SchoolRegisterContext))]
+    [DbContext(typeof(SchoolContext))]
     [Migration("20220703155747_MessageInit")]
     partial class MessageInit
     {

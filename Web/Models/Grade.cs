@@ -5,14 +5,19 @@ namespace SchoolRegister.Models;
 public class Grade {
     public int Id { get; set; }
     
+    public int StudentSubjectId { get; set; }
+
     public StudentSubject StudentSubject { get; set; }
-    
+
     public int SubjectId { get; set; }
+
     public Subject Subject { get; set; }
 
     [Range(GlobalConstants.MinGrade, GlobalConstants.MaxGrade)]
     public int GradeType { get; set; }
+
     public GradeAdditionalInfo GradeInfo { get; set; }
+
     public DateTime DateAdd { get; set; }
 
     public string? Comment { get; set; }

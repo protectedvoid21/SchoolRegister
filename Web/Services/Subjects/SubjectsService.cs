@@ -6,9 +6,9 @@ using SchoolRegister.Services.Subjects;
 namespace SchoolRegister.Services.Subjects;
 
 public class SubjectsService : ISubjectsService {
-    private readonly SchoolRegisterContext schoolContext;
+    private readonly SchoolContext schoolContext;
 
-    public SubjectsService(SchoolRegisterContext schoolContext) {
+    public SubjectsService(SchoolContext schoolContext) {
         this.schoolContext = schoolContext;
     }
 

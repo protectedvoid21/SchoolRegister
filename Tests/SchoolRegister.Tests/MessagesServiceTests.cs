@@ -9,10 +9,10 @@ public class MessagesServiceTests {
     private readonly MessagesService messagesService;
     
     public MessagesServiceTests() {
-        var options = new DbContextOptionsBuilder<SchoolRegisterContext>()
+        var options = new DbContextOptionsBuilder<SchoolContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
-        var dbContext = new SchoolRegisterContext(options);
+        var dbContext = new SchoolContext(options);
         messagesService = new MessagesService(dbContext);
     }
 
@@ -39,7 +39,7 @@ public class MessagesServiceTests {
         
         Assert.True(message.IsVisible);
 
-        await messagesService.ChangeVisibility(message.Id);
+        await messagesService.ChangeVisibility(message.Id, false);
         
         Assert.False(message.IsVisible);
     } 

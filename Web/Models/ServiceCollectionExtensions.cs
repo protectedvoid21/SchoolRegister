@@ -27,7 +27,7 @@ public static class ServiceCollectionExtensions {
                 //options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = false;
             })
-            .AddEntityFrameworkStores<SchoolRegisterContext>()
+            .AddEntityFrameworkStores<SchoolContext>()
             .AddDefaultTokenProviders();
         return service;
     }

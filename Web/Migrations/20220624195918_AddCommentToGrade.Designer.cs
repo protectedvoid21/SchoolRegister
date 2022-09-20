@@ -11,7 +11,7 @@ using SchoolRegister.Models;
 
 namespace SchoolRegister.Migrations
 {
-    [DbContext(typeof(SchoolRegisterContext))]
+    [DbContext(typeof(SchoolContext))]
     [Migration("20220624195918_AddCommentToGrade")]
     partial class AddCommentToGrade
     {

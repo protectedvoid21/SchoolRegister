@@ -4,9 +4,9 @@ using SchoolRegister.Models;
 namespace SchoolRegister.Services.Announcements; 
 
 public class AnnouncementsService : IAnnouncementsService {
-    private readonly SchoolRegisterContext schoolContext;
+    private readonly SchoolContext schoolContext;
 
-    public AnnouncementsService(SchoolRegisterContext schoolContext) {
+    public AnnouncementsService(SchoolContext schoolContext) {
         this.schoolContext = schoolContext;
     }
 

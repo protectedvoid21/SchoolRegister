@@ -3,13 +3,13 @@
 namespace SchoolRegister.Services.Grades; 
 
 public interface IGradesService {
-    Task AddAsync(Grade grade);
+    Task AddAsync(int subjectId, int studentSubjectId, int gradeType, GradeAdditionalInfo gradeInfo, string comment);
 
-    Task<Grade> GetById(int id);
+    Task<TModel> GetById<TModel>(int id);
 
-    Task UpdateAsync(Grade grade);
+    Task UpdateAsync(int id, int gradeType, GradeAdditionalInfo gradeInfo, string comment);
 
-    Task DeleteAsync(Grade grade);
+    Task DeleteAsync(int id);
 
     Task<IEnumerable<Grade>> GetStudentGrades(int studentSubjectId);
 
