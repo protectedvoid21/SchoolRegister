@@ -70,45 +70,4 @@ public class TeacherController : Controller {
 
         return View(studentSubjectModel);
     }
-
-    [HttpGet]
-    public async Task<IActionResult> AddGrade(int studentSubjectId) {
-        StudentSubject studentSubject = await subjectsService.GetStudentSubjectById(studentSubjectId);
-        GradeCreateViewModel gradeModel = mapper.Map<GradeCreateViewModel>(studentSubject);
-        return View(gradeModel);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> AddGrade(GradeCreateViewModel gradeModel) {
-        if (!ModelState.IsValid) {
-            return View(gradeModel);
-        }
-
-        await gradesService.AddAsync(gradeModel.SubjectId, gradeModel.StudentSubjectId, gradeModel.GradeType,
-            gradeModel.GradeInfo, gradeModel.Comment);
-        //todo: Return to class view
-        return RedirectToAction("Index");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> EditGrade(int gradeId) {
-        GradeEditViewModel gradeModel = await gradesService.GetById<GradeEditViewModel>(gradeId);
-
-        return View(gradeModel);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> EditGrade(GradeEditViewModel gradeModel) {
-        if (!ModelState.IsValid) {
-            return View(gradeModel);
-        }
-
-        await gradesService.UpdateAsync(gradeModel.Id, gradeModel.GradeType, gradeModel.GradeInfo, gradeModel.Comment);
-        return RedirectToAction("Index");
-    }
-
-    public async Task<IActionResult> DeleteGrade(int gradeId) {
-        await gradesService.DeleteAsync(gradeId);
-        return RedirectToAction("Index");
-    }
 }

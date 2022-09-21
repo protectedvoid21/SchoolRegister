@@ -44,28 +44,4 @@ public class StudentController : Controller {
         StudentPanelViewModel studentPanel = mapper.Map<StudentPanelViewModel>(student);
         return View(studentPanel);
     }
-
-    [Authorize(Roles = "Student,Teacher")]
-    public async Task<IActionResult> GradeView(int gradeId) {
-        var user = await userManager.GetUserAsync(User);
-        if (User.IsInRole("Teacher")) {
-            Teacher teacher = await teachersService.GetByUser(user);
-            if (!await teachersService.IsTeacherGradeAuthor(teacher.Id, gradeId)) {
-                return Forbid();
-            }
-        }
-        else if (User.IsInRole("Student")) {
-            Student student = await studentsService.GetByUser(user);
-            if (!await gradesService.IsOwner(gradeId, student.Id)) {
-                return Forbid();
-            }
-        }
-        else {
-            return BadRequest();
-        }
-
-        GradeViewModel gradeModel = await gradesService.GetById<GradeViewModel>(gradeId);
-
-        return View(gradeModel);
-    }
 }

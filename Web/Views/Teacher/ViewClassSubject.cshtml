@@ -18,7 +18,7 @@
             <td>@studentSubject.Student.User.Name @studentSubject.Student.User.Surname</td>
             <td>
                 @foreach (var grade in studentSubject.Grades) {
-                    <a id="grade" class="btn" asp-controller="Student" asp-action="GradeView" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>
+                    <a id="grade" class="btn" asp-controller="Grade" asp-action="View" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>
                 }
             </td>
             <td>
@@ -27,7 +27,7 @@
                 }
             </td>
             <td class="d-flex">
-                <a class="btn btn-success flex-fill" asp-controller="Teacher" asp-action="AddGrade" asp-route-studentSubjectId="@studentSubject.Id">Add grade</a>
+                <a class="btn btn-success flex-fill" asp-controller="Grade" asp-action="Add" asp-route-studentSubjectId="@studentSubject.Id">Add grade</a>
             </td>
         </tr>
     }
