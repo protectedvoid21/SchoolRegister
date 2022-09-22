@@ -14,7 +14,6 @@ using SchoolRegister.Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
-[Authorize(Roles = "Teacher")]
 public class TeacherController : Controller {
     private readonly ITeachersService teachersService;
     private readonly ISubjectsService subjectsService;
@@ -69,5 +68,105 @@ public class TeacherController : Controller {
         studentSubjectModel.ClassName = schoolClass.Name;
 
         return View(studentSubjectModel);
+    }
+
+    [HttpGet, Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public ViewResult Add() {
+        var teacherModel = new CreateTeacherViewModel();
+        return View(teacherModel);
+    }
+
+    [HttpPost, Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public async Task<IActionResult> Add(CreateTeacherViewModel createTeacherModel) {
+        if(!ModelState.IsValid) {
+            return View(createTeacherModel);
+        }
+
+        var user = new AppUser {
+            UserName = Utils.GenerateUserName(createTeacherModel.Name, createTeacherModel.Surname),
+            Name = createTeacherModel.Name,
+            Surname = createTeacherModel.Surname,
+        };
+
+        await userManager.CreateAsync(user, Utils.GeneratePassword(10));
+        await userManager.AddToRoleAsync(user, "Teacher");
+
+        Teacher teacher = new() {
+            User = user,
+        };
+
+        await teachersService.AddAsync(teacher);
+        return RedirectToAction("ViewAll");
+    }
+
+    [HttpGet, Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public async Task<IActionResult> Edit(int id) {
+        return View(await teachersService.GetById(id));
+    }
+
+    [HttpPost, Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public async Task<IActionResult> Edit(Teacher teacher) {
+        if(!ModelState.IsValid) {
+            return View(teacher);
+        }
+
+        teacher.User.UserName = Utils.GenerateUserName(teacher.User.Name, teacher.User.Surname);
+
+        await teachersService.UpdateAsync(teacher);
+        return RedirectToAction("ViewAll");
+    }
+
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public async Task<IActionResult> Delete(int id) {
+        Teacher teacher = await teachersService.GetById(id);
+        //await userManager.DeleteAsync(teacher.User);
+        await teachersService.DeleteAsync(teacher);
+        return RedirectToAction("ViewAll");
+    }
+
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public async Task<IActionResult> ViewAll() {
+        IEnumerable<Teacher> teacherList = await teachersService.GetAllAsync();
+        List<TeacherViewModel> teacherModelList = new();
+
+        foreach(var teacher in teacherList) {
+            teacherModelList.Add(new TeacherViewModel {
+                Id = teacher.Id,
+                Name = teacher.User.Name,
+                Surname = teacher.User.Surname,
+                ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
+                SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
+                SchoolSubjectCount = teacher.SchoolSubjects.Count,
+            });
+        }
+
+        return View(teacherModelList);
+    }
+
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    public async Task<IActionResult> View(int id) {
+        Teacher teacher = await teachersService.GetById(id);
+        TeacherViewModel teacherModel = mapper.Map<TeacherViewModel>(teacher);
+        /*TeacherViewModel teacherModel = new() {
+            Id = teacherId,
+            Name = teacher.User.Name,
+            Surname = teacher.User.Surname,
+            ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
+            SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
+            SchoolSubjectCount = teacher.SchoolSubjects.Count
+        };
+
+        var schoolSubjects = await subjectsService.GetAllSchoolSubjects();
+        schoolSubjects = schoolSubjects.Where(s => s.Teacher == teacher).ToList();
+
+        foreach(var schoolSubject in schoolSubjects) {
+            teacherModel.TeachingClassList.Add(new TeachingClassModel {
+                ClassName = schoolSubject.SchoolClass.Name,
+                SubjectName = schoolSubject.Subject.Name,
+            });
+        }
+        teacherModel.TeachingClassList = teacherModel.TeachingClassList.OrderBy(c => c.ClassName).ToList();*/
+
+        return View(teacherModel);
     }
 }

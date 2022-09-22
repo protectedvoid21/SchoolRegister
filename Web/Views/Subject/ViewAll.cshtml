@@ -4,7 +4,7 @@
 }
 
 <h2>Subject list</h2>
-<a class="btn btn-info mb-3" asp-controller="Admin" asp-action="CreateSubject">Add subject</a>
+<a class="btn btn-info mb-3" asp-controller="Admin" asp-action="Add">Add subject</a>
 <table class="table table-sm table-bordered table-hover">
     <thead>
     <tr>
@@ -20,8 +20,8 @@
             <td>@subject.Subject.Name</td>
             <td>@subject.StudentCount</td>
             <td class="d-flex gap-2">
-                <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditSubject" asp-route-subjectId="@subject.Subject.Id">Edit</a>
-                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-action="DeleteSubject" asp-route-subjectId="@subject.Subject.Id">Delete</a>
+                <a class="btn btn-outline-warning flex-fill" asp-controller="Subject" asp-action="Edit" asp-route-id="@subject.Subject.Id">Edit</a>
+                <a class="btn btn-outline-danger flex-fill" asp-controller="Subject" asp-action="Delete" asp-route-id="@subject.Subject.Id">Delete</a>
             </td>
         </tr>
         index++;

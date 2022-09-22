@@ -13,7 +13,7 @@ public interface IAnnouncementsService {
 
     Task<Announcement> GetById(int id);
 
-    Task<IEnumerable<Announcement>> GetAllAsync();
+    Task<IEnumerable<TModel>> GetAllAsync<TModel>();
 
-    Task<IEnumerable<Announcement>> GetAllByTeacher(int teacherId);
+    Task<IEnumerable<TModel>> GetAllByTeacher<TModel>(int teacherId);
 }

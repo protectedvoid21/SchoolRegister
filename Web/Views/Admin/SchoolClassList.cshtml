@@ -21,10 +21,10 @@
             <td>@schoolClass.SchoolSubjects.Count</td>
             <td class="d-flex gap-2">
                 <a class="btn btn-info flex-fill" asp-action="SchoolClassView" asp-route-schoolClassId="@schoolClass.Id">View</a>
-                <a class="btn btn-info flex-fill" asp-action="CreateStudent" asp-route-schoolClassId="@schoolClass.Id">Add student</a>
+                <a class="btn btn-info flex-fill" asp-controller="Student" asp-action="Add" asp-route-schoolClassId="@schoolClass.Id">Add student</a>
             </td>
             <td class="gap-2">
-                <a class="btn btn-info flex-fill" asp-action="ClassSubjectView" asp-route-schoolClassId="@schoolClass.Id">View</a>
+                <a class="btn btn-info w-100" asp-action="ClassSubjectView" asp-route-schoolClassId="@schoolClass.Id">View</a>
             </td>
             <td class="d-flex gap-2">
                 <a class="btn btn-warning flex-fill" asp-action="EditSchoolClass" asp-route-schoolClassId="@schoolClass.Id">Edit</a>

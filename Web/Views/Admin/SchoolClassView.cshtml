@@ -1,7 +1,7 @@
 ﻿@model SchoolRegister.Models.SchoolClass
 
 <h2 class="align-content-center">@Model.Name</h2>
-<a class="btn btn-info mb-3" asp-controller="Admin" asp-action="CreateStudent" asp-route-schoolClassId="@Model.Id">Add student</a>
+<a class="btn btn-info mb-3" asp-controller="Student" asp-action="Add" asp-route-schoolClassId="@Model.Id">Add student</a>
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -18,8 +18,8 @@
             <td>@student.User.Surname</td>
             <td>@student.User.UserName</td>
             <td class="d-flex gap-3">
-                <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditStudent" asp-route-studentId="@student.Id">Edit</a>
-                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-action="DeleteStudent" asp-route-studentId="@student.Id">Delete</a>
+                <a class="btn btn-warning flex-fill" asp-controller="Student" asp-action="Edit" asp-route-id="@student.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Student" asp-action="Delete" asp-route-id="@student.Id">Delete</a>
             </td>
         </tr>
     }

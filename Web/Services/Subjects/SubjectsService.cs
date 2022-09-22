@@ -22,7 +22,8 @@ public class SubjectsService : ISubjectsService {
     }
 
     public async Task<Subject> GetById(int id) {
-        return await schoolContext.Subjects.FindAsync(id);
+        Subject subject = await schoolContext.Subjects.FindAsync(id);
+        return subject;
     }
 
     public async Task<StudentSubject> GetStudentSubjectById(int id) {

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SchoolRegister.Models.Announcement>
+﻿@model IEnumerable<SchoolRegister.Models.ViewModels.AnnouncementViewModel>
 
 <h2>Announcements</h2>
 @if (User.IsInRole("Teacher")) {
@@ -13,7 +13,7 @@
         <div class="card-header d-flex">
             <h5 class="m-auto p-2">@announcement.Title</h5>
             <h6 class="p-2">@announcement.CreateDate</h6>
-            <h6 class="p-2">@announcement.Teacher.User.Name @announcement.Teacher.User.Surname</h6>
+            <h6 class="p-2">@announcement.TeacherName @announcement.TeacherSurname</h6>
         </div>
         <div class="card-body">
             <p class="card-text text-center">@announcement.Description</p>

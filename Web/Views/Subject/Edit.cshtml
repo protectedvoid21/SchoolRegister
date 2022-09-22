@@ -2,9 +2,11 @@
 
 <form method="post">
     <div asp-validation-summary="All"></div>
+    <h2>Editing subject</h2>
+    <h4>Current name : @Model.Name</h4>
     <div class="mb-3">
         <span asp-validation-for="Name"></span>
-        <label asp-for="Name"></label>
+        <label>New name</label>
         <input asp-for="Name"/>
     </div>
     <input type="hidden" asp-for="Id"/>

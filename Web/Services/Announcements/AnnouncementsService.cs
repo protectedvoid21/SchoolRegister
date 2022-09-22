@@ -1,13 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using SchoolRegister.Models;
 
 namespace SchoolRegister.Services.Announcements; 
 
 public class AnnouncementsService : IAnnouncementsService {
-    private readonly SchoolContext schoolContext;
+    private readonly SchoolContext dbContext;
+    private readonly IMapper mapper;
 
-    public AnnouncementsService(SchoolContext schoolContext) {
-        this.schoolContext = schoolContext;
+    public AnnouncementsService(SchoolContext dbContext, IMapper mapper) {
+        this.dbContext = dbContext;
+        this.mapper = mapper;
     }
 
     public async Task AddAsync(string title, string description, int teacherId) {
@@ -18,43 +22,44 @@ public class AnnouncementsService : IAnnouncementsService {
             TeacherId = teacherId,
         };
 
-        await schoolContext.AddAsync(announcement);
-        await schoolContext.SaveChangesAsync();
+        await dbContext.AddAsync(announcement);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(Announcement announcement) {
-        schoolContext.Update(announcement);
-        await schoolContext.SaveChangesAsync();
+        dbContext.Update(announcement);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task RemoveAsync(int announcementId) {
-        Announcement announcement = await schoolContext.Announcements.FindAsync(announcementId);
-        schoolContext.Remove(announcement);
-        await schoolContext.SaveChangesAsync();
+        Announcement announcement = await dbContext.Announcements.FindAsync(announcementId);
+        dbContext.Remove(announcement);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<bool> IsOwner(int announcementId, int teacherId) {
-        Announcement announcement = await schoolContext.Announcements
+        Announcement announcement = await dbContext.Announcements
             .FirstAsync(a => a.Id == announcementId);
         return announcement.TeacherId == teacherId;
     }
 
     public async Task<Announcement> GetById(int id) {
-        Announcement announcement = await schoolContext.Announcements
+        Announcement announcement = await dbContext.Announcements
             .Include(a => a.Teacher)
             .FirstAsync(a => a.Id == id);
         return announcement;
     }
 
-    public async Task<IEnumerable<Announcement>> GetAllAsync() {
-        IEnumerable<Announcement> announcements = await schoolContext.Announcements
-            .Include(a => a.Teacher)
-            .ToListAsync();
+    public async Task<IEnumerable<TModel>> GetAllAsync<TModel>() {
+        IEnumerable<TModel> announcements = dbContext.Announcements
+            .ProjectTo<TModel>(mapper.ConfigurationProvider);
         return announcements;
     }
 
-    public async Task<IEnumerable<Announcement>> GetAllByTeacher(int teacherId) {
-        IEnumerable<Announcement> announcements = schoolContext.Announcements.Where(a => a.Teacher.Id == teacherId);
+    public async Task<IEnumerable<TModel>> GetAllByTeacher<TModel>(int teacherId) {
+        IEnumerable<TModel> announcements = dbContext.Announcements
+            .Where(a => a.Teacher.Id == teacherId)
+            .ProjectTo<TModel>(mapper.ConfigurationProvider);
         return announcements;
     }
 }

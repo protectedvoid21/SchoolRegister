@@ -27,10 +27,10 @@
             <td>@teacher.SubjectCount</td>
             <td>@teacher.SchoolSubjectCount</td>
             <td class="d-flex gap-2">
-                <a class="btn btn-info flex-fill" asp-controller="Admin" asp-action="TeacherView" asp-route-teacherId="@teacher.Id">View</a>
-                <a class="btn btn-info" asp-controller="Admin" asp-action="CreateSchoolSubject" asp-route-teacherId="@teacher.Id">Assign subjects</a>
-                <a class="btn btn-warning flex-fill" asp-controller="Admin" asp-action="EditTeacher" asp-route-teacherId="@teacher.Id">Edit</a>
-                <a class="btn btn-danger flex-fill" asp-controller="Admin" asp-action="DeleteTeacher" asp-route-teacherId="@teacher.Id">Delete</a>
+                <a class="btn btn-info flex-fill" asp-controller="Teacher" asp-action="View" asp-route-id="@teacher.Id">View</a>
+                <a class="btn btn-info" asp-controller="Admin" asp-action="CreateSchoolSubject" asp-route-id="@teacher.Id">Assign subjects</a>
+                <a class="btn btn-warning flex-fill" asp-controller="Teacher" asp-action="Edit" asp-route-id="@teacher.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-controller="Teacher" asp-action="Delete" asp-route-id="@teacher.Id">Delete</a>
             </td>
         </tr>
         index++;
