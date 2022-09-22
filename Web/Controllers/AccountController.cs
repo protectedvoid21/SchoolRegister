@@ -127,6 +127,7 @@ public class AccountController : Controller {
             var usersInRole = await userManager.GetUsersInRoleAsync(role.Name);
             RoleViewModel roleModel = mapper.Map<RoleViewModel>(role);
             roleModel.UserCount = usersInRole.Count;
+            roleModelList.Add(roleModel);
         }
 
         return View(roleModelList);

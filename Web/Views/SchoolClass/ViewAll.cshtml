@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SchoolRegister.Models.SchoolClass>
 
 <h2>Class list</h2>
-<a class="btn btn-info mb-3" asp-controller="Admin" asp-action="CreateSchoolClass">Add class</a>
+<a class="btn btn-info mb-3" asp-action="Add">Add class</a>
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -20,15 +20,15 @@
             <td>@schoolClass.StudentsList.Count</td>
             <td>@schoolClass.SchoolSubjects.Count</td>
             <td class="d-flex gap-2">
-                <a class="btn btn-info flex-fill" asp-action="SchoolClassView" asp-route-schoolClassId="@schoolClass.Id">View</a>
-                <a class="btn btn-info flex-fill" asp-controller="Student" asp-action="Add" asp-route-schoolClassId="@schoolClass.Id">Add student</a>
+                <a class="btn btn-info flex-fill" asp-action="View" asp-route-id="@schoolClass.Id">View</a>
+                <a class="btn btn-info flex-fill" asp-controller="Student" asp-action="Add" asp-route-id="@schoolClass.Id">Add student</a>
             </td>
             <td class="gap-2">
-                <a class="btn btn-info w-100" asp-action="ClassSubjectView" asp-route-schoolClassId="@schoolClass.Id">View</a>
+                <a class="btn btn-info w-100" asp-action="ClassSubjectView" asp-route-id="@schoolClass.Id">View</a>
             </td>
             <td class="d-flex gap-2">
-                <a class="btn btn-warning flex-fill" asp-action="EditSchoolClass" asp-route-schoolClassId="@schoolClass.Id">Edit</a>
-                <a class="btn btn-danger flex-fill" asp-action="DeleteSchoolClass" asp-route-schoolClassId="@schoolClass.Id">Delete</a>
+                <a class="btn btn-warning flex-fill" asp-action="Edit" asp-route-id="@schoolClass.Id">Edit</a>
+                <a class="btn btn-danger flex-fill" asp-action="Delete" asp-route-id="@schoolClass.Id">Delete</a>
             </td>
         </tr>
     }

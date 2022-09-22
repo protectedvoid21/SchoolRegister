@@ -44,78 +44,6 @@ public class AdminController : Controller {
         return View(adminViewModel);
     }
 
-    #region SchoolClass
-
-    [HttpGet]
-    public ViewResult CreateSchoolClass() {
-        var schoolClassModel = new SchoolClassViewModel();
-        return View(schoolClassModel);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateSchoolClass(SchoolClassViewModel schoolClassModel) {
-        if(!ModelState.IsValid || await schoolClassesService.IsSchoolClassExisting(schoolClassModel.Name)) {
-            return View(schoolClassModel);
-        }
-
-        SchoolClass schoolClass = new() {
-            Name = schoolClassModel.Name,
-            StudentsList = new()
-        };
-
-        await schoolClassesService.AddAsync(schoolClass);
-        return RedirectToAction("SchoolClassList");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> EditSchoolClass(int schoolClassId) {
-        SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
-        return View(schoolClass);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> EditSchoolClass(SchoolClass schoolClass) {
-        if(!ModelState.IsValid) {
-            return View(schoolClass);
-        }
-
-        if(await schoolClassesService.IsSchoolClassExisting(schoolClass.Name)) {
-            ModelState.AddModelError("", "Class with this name already exists");
-            return View(schoolClass);
-        }
-
-        await schoolClassesService.UpdateAsync(schoolClass);
-        return RedirectToAction("SchoolClassList");
-    }
-
-    public async Task<IActionResult> DeleteSchoolClass(int schoolClassId) {
-        await schoolClassesService.DeleteAsync(schoolClassId);
-        return RedirectToAction("SchoolClassList");
-    }
-
-    public async Task<IActionResult> SchoolClassList() {
-        IEnumerable<SchoolClass> schoolClassList = await schoolClassesService.GetAllAsync();
-        return View(schoolClassList);
-    }
-
-    public async Task<IActionResult> SchoolClassView(int schoolClassId) {
-        SchoolClass schoolClass = await schoolClassesService.GetById(schoolClassId);
-        return View(schoolClass);
-    }
-
-    public async Task<IActionResult> ClassSubjectView(int schoolClassId) {
-        ViewBag.ClassName = (await schoolClassesService.GetById(schoolClassId)).Name;
-
-        IEnumerable<Subject> subjects = (await subjectsService.GetAllSchoolSubjects())
-            .Where(s => s.SchoolClass.Id == schoolClassId)
-            .Select(s => s.Subject);
-        return View(subjects);
-    }
-
-    #endregion
-
-    #region Subject
-
     [HttpGet]
     public async Task<ViewResult> CreateSchoolSubject(int teacherId) {
         Teacher teacher = await teachersService.GetById(teacherId);
@@ -179,6 +107,4 @@ public class AdminController : Controller {
         await subjectsService.DeleteSchoolSubjectAsync(schoolSubject);
         return RedirectToAction("ViewAll", "Teacher");
     }
-
-    #endregion
 }
