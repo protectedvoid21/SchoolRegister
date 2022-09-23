@@ -109,7 +109,6 @@ public class TeacherController : Controller {
         if(!ModelState.IsValid) {
             return View(teacher);
         }
-
         teacher.User.UserName = Utils.GenerateUserName(teacher.User.Name, teacher.User.Surname);
 
         await teachersService.UpdateAsync(teacher);
@@ -119,8 +118,8 @@ public class TeacherController : Controller {
     [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public async Task<IActionResult> Delete(int id) {
         Teacher teacher = await teachersService.GetById(id);
-        //await userManager.DeleteAsync(teacher.User);
         await teachersService.DeleteAsync(teacher);
+
         return RedirectToAction("ViewAll");
     }
 
@@ -147,26 +146,6 @@ public class TeacherController : Controller {
     public async Task<IActionResult> View(int id) {
         Teacher teacher = await teachersService.GetById(id);
         TeacherViewModel teacherModel = mapper.Map<TeacherViewModel>(teacher);
-        /*TeacherViewModel teacherModel = new() {
-            Id = teacherId,
-            Name = teacher.User.Name,
-            Surname = teacher.User.Surname,
-            ClassCount = teacher.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count(),
-            SubjectCount = teacher.SchoolSubjects.Select(s => s.Subject).Distinct().Count(),
-            SchoolSubjectCount = teacher.SchoolSubjects.Count
-        };
-
-        var schoolSubjects = await subjectsService.GetAllSchoolSubjects();
-        schoolSubjects = schoolSubjects.Where(s => s.Teacher == teacher).ToList();
-
-        foreach(var schoolSubject in schoolSubjects) {
-            teacherModel.TeachingClassList.Add(new TeachingClassModel {
-                ClassName = schoolSubject.SchoolClass.Name,
-                SubjectName = schoolSubject.Subject.Name,
-            });
-        }
-        teacherModel.TeachingClassList = teacherModel.TeachingClassList.OrderBy(c => c.ClassName).ToList();*/
-
         return View(teacherModel);
     }
 }

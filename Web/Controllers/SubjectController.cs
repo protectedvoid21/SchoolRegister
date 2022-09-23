@@ -20,7 +20,7 @@ public class SubjectController : Controller {
         foreach(var subject in subjectList) {
             subjectListModel.Add(new SubjectElementViewModel {
                 Subject = subject,
-                StudentCount = await subjectsService.GetCountByStudents(subject)
+                StudentCount = await subjectsService.GetCountByStudents(subject.Id)
             });
         }
         return View(subjectListModel);

@@ -3,21 +3,19 @@
 namespace SchoolRegister.Models.ViewModels; 
 
 public class SchoolSubjectViewModel {
-    [Required]
+    [Required, Display(Name = "Select subject")]
     public int SubjectId { get; set; }
-    [Required] 
-    public List<ClassChoiceModel> ClassChoiceId { get; set; } = new();
+
+    [Display(Name = "Assign classes to teacher")]
+    public List<int> SelectedClassIds { get; set; } = new();
     [Required]
     public int TeacherId { get; set; }
 
-    public string? TeacherName { get; set; }
-    public string? TeacherSurname { get; set; }
+    public string TeacherName { get; set; }
+
+    public string TeacherSurname { get; set; }
 
     public IEnumerable<Subject> SubjectList { get; set; }
-    public SchoolClass[] SchoolClassList { get; set; }
-}
 
-public class ClassChoiceModel {
-    public int Id { get; set; }
-    public bool IsPicked { get; set; }
+    public IEnumerable<SchoolClass> SchoolClassList { get; set; }
 }

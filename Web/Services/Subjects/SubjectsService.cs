@@ -6,10 +6,10 @@ using SchoolRegister.Services.Subjects;
 namespace SchoolRegister.Services.Subjects;
 
 public class SubjectsService : ISubjectsService {
-    private readonly SchoolContext schoolContext;
+    private readonly SchoolContext dbContext;
 
-    public SubjectsService(SchoolContext schoolContext) {
-        this.schoolContext = schoolContext;
+    public SubjectsService(SchoolContext dbContext) {
+        this.dbContext = dbContext;
     }
 
     public async Task AddAsync(string name) {
@@ -17,17 +17,17 @@ public class SubjectsService : ISubjectsService {
             Name = name,
         };
 
-        await schoolContext.AddAsync(subject);
-        await schoolContext.SaveChangesAsync();
+        await dbContext.AddAsync(subject);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<Subject> GetById(int id) {
-        Subject subject = await schoolContext.Subjects.FindAsync(id);
+        Subject subject = await dbContext.Subjects.FindAsync(id);
         return subject;
     }
 
     public async Task<StudentSubject> GetStudentSubjectById(int id) {
-        return await schoolContext.StudentSubjects
+        return await dbContext.StudentSubjects
             .Include(s => s.SchoolSubject)
             .ThenInclude(s => s.Subject)
             .Include(s => s.Student)
@@ -40,34 +40,34 @@ public class SubjectsService : ISubjectsService {
             Id = id,
             Name = name,
         };
-        schoolContext.Update(subject);
-        await schoolContext.SaveChangesAsync();
+        dbContext.Update(subject);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(int id) {
-        Subject subject = await schoolContext.Subjects.FindAsync(id);
-        schoolContext.Remove(subject);
-        await schoolContext.SaveChangesAsync();
+        Subject subject = await dbContext.Subjects.FindAsync(id);
+        dbContext.Remove(subject);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<int> GetCountAsync() {
-        return await schoolContext.Subjects.CountAsync();
+        return await dbContext.Subjects.CountAsync();
     }
 
-    public async Task<int> GetCountByStudents(Subject subject) {
-        return await schoolContext.StudentSubjects.Where(s => s.SchoolSubject.Subject == subject).CountAsync();
+    public async Task<int> GetCountByStudents(int subjectId) {
+        return await dbContext.StudentSubjects.Where(s => s.SchoolSubject.Subject.Id == subjectId).CountAsync();
     }
 
-    public async Task<IEnumerable<StudentSubject>> GetStudentSubjectsForStudent(Student student) {
-        return schoolContext.StudentSubjects
-            .Where(s => s.Student == student)
+    public async Task<IEnumerable<StudentSubject>> GetStudentSubjectsForStudent(int studentId) {
+        return dbContext.StudentSubjects
+            .Where(s => s.Student.Id == studentId)
             .Include(s => s.Grades)
             .Include(s => s.SchoolSubject)
             .ThenInclude(s => s.Subject);
     }
 
     public async Task<IEnumerable<StudentSubject>> GetStudentSubjectsForTeacher(int teacherId) {
-        return await schoolContext.StudentSubjects
+        return await dbContext.StudentSubjects
             .Include(s => s.SchoolSubject)
             .ThenInclude(s => s.Subject)
             .Include(s => s.SchoolSubject)
@@ -79,17 +79,17 @@ public class SubjectsService : ISubjectsService {
     }
 
     public async Task<SchoolSubject> GetSchoolSubjectById(int id) {
-        return await schoolContext.SchoolSubjects.FindAsync(id);
+        return await dbContext.SchoolSubjects.FindAsync(id);
     }
 
     public async Task<IEnumerable<SchoolSubject>> GetSchoolSubjectsByClass(int schoolClassId) {
-        return await schoolContext.SchoolSubjects
+        return await dbContext.SchoolSubjects
             .Where(s => s.SchoolClassId == schoolClassId)
             .ToListAsync();
     }
 
     public async Task UpdateStudentSubjectsInClass(SchoolSubject schoolSubject) {
-        IEnumerable<Student> studentList = schoolContext.Students
+        IEnumerable<Student> studentList = dbContext.Students
             .Include(s => s.StudentSubjects)
             .Where(s => s.SchoolClass == schoolSubject.SchoolClass);
 
@@ -100,52 +100,58 @@ public class SubjectsService : ISubjectsService {
                     SchoolSubjectId = schoolSubject.Id,
                     Student = student,
                 };
-                await schoolContext.AddAsync(studentSubject);
+                await dbContext.AddAsync(studentSubject);
             }
         }
-        await schoolContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task UpdateSubjectsForStudent(Student student) {
-        IEnumerable<SchoolSubject> schoolSubjects = schoolContext.SchoolSubjects.Where(s => s.SchoolClass == student.SchoolClass);
+        IEnumerable<SchoolSubject> schoolSubjects = dbContext.SchoolSubjects.Where(s => s.SchoolClass == student.SchoolClass);
 
         foreach (var schoolSubject in schoolSubjects) {
-            if (!schoolContext.StudentSubjects.Select(s => s.SchoolSubject).Contains(schoolSubject)) {
+            if (!dbContext.StudentSubjects.Select(s => s.SchoolSubject).Contains(schoolSubject)) {
                 StudentSubject studentSubject = new() {
                     SchoolSubject = schoolSubject,
                     SchoolSubjectId = schoolSubject.Id,
                     Student = student,
                 };
-                await schoolContext.AddAsync(studentSubject);
+                await dbContext.AddAsync(studentSubject);
             }
         }
-        await schoolContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task AddSchoolSubjectAsync(int subjectId, int schoolClassId, int teacherId) {
-        SchoolSubject schoolSubject = new() {
-            SubjectId = subjectId,
-            SchoolClassId = schoolClassId,
-            TeacherId = teacherId
-        };
+    public async Task AddSchoolSubjectsAsync(int subjectId, IEnumerable<int> schoolClassIds, int teacherId) {
+        IEnumerable<SchoolSubject> existingSubjects =
+            dbContext.SchoolSubjects.Where(s => s.SubjectId == subjectId && s.TeacherId == teacherId);
+        
+        dbContext.RemoveRange(existingSubjects);
 
-        await schoolContext.AddAsync(schoolSubject);
-        await schoolContext.SaveChangesAsync();
+        List<SchoolSubject> schoolSubjects = new();
+        foreach (var schoolClassId in schoolClassIds) {
+            schoolSubjects.Add(new SchoolSubject {
+                SchoolClassId = schoolClassId,
+                SubjectId = subjectId,
+                TeacherId = teacherId
+            });
+        }
+
+        await dbContext.AddRangeAsync(schoolSubjects);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task AddSchoolSubjectRangeAsync(IEnumerable<SchoolSubject> schoolSubjects) {
-        schoolSubjects = schoolSubjects.Where(s => !IsSchoolSubjectExisting(s.SchoolClass.Id, s.Teacher.Id, s.Subject.Id));
-        await schoolContext.AddRangeAsync(schoolSubjects);
-        await schoolContext.SaveChangesAsync();
-    }
-
-    public async Task DeleteSchoolSubjectAsync(SchoolSubject schoolSubject) {
-        schoolContext.Remove(schoolSubject);
-        await schoolContext.SaveChangesAsync();
+    public async Task DeleteSchoolSubjectAsync(int id) {
+        SchoolSubject? schoolSubject = await dbContext.SchoolSubjects.FindAsync(id);
+        if (schoolSubject == null) {
+            return;
+        }
+        dbContext.Remove(schoolSubject);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<List<SchoolSubject>> GetAllSchoolSubjects() {
-        return await schoolContext.SchoolSubjects
+        return await dbContext.SchoolSubjects
             .Include(s => s.SchoolClass)
             .Include(s => s.Subject)
             .Include(s => s.Teacher)
@@ -153,15 +159,15 @@ public class SubjectsService : ISubjectsService {
     }
 
     public async Task<bool> IsSubjectExisting(string name) {
-        return await schoolContext.Subjects.AnyAsync(s => s.Name == name);
+        return await dbContext.Subjects.AnyAsync(s => s.Name == name);
     }
 
     public bool IsSchoolSubjectExisting(int classId, int teacherId, int subjectId) {
-        return schoolContext.SchoolSubjects.Any(
+        return dbContext.SchoolSubjects.Any(
             s => s.SchoolClass.Id == classId && s.Teacher.Id == teacherId && s.Subject.Id == subjectId);
     }
 
     public async Task<List<Subject>> GetAllSubjects() {
-        return await schoolContext.Subjects.ToListAsync();
+        return await dbContext.Subjects.ToListAsync();
     }
 }

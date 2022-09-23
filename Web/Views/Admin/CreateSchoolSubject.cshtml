@@ -2,35 +2,40 @@
 
 <h2>Add subject and class to teacher : @Model.TeacherName @Model.TeacherSurname</h2>
 <form method="post">
-    <input type="hidden" asp-for="SchoolClassList"/>
-    <input type="hidden" asp-for="SubjectList"/>
-    <input type="hidden" asp-for="TeacherId"/>
+    <input asp-for="SchoolClassList" hidden/>
+    <input asp-for="SubjectList" hidden/>
+    <input asp-for="TeacherId" hidden/>
+    <input asp-for="TeacherName" hidden/>
+    <input asp-for="TeacherSurname" hidden/>
     <div asp-validation-summary="All"></div>
-    <div>
-        <p>Select subject</p>
-        <span asp-validation-for="@Model.SubjectId"></span>
-        <select asp-for="@Model.SubjectId" class="form-select mb-3">
+    <div class="mb-3">
+        <label asp-for="SubjectId"></label>
+        <select asp-for="SubjectId" id="subject-input">
             @foreach (var subject in Model.SubjectList) {
                 <option value="@subject.Id">@subject.Name</option>
             }
         </select>
     </div>
-    <div>
-        <table class="table table-bordered table-hover">
-            <tr>
-                <th>Class name</th>
-                <th>Assign status</th>
-            </tr>
-            @for (int i = 0; i < Model.SchoolClassList.Length; i++) {
-                <tr>
-                    <td>@Model.SchoolClassList[i].Name</td>
-                    <td class="flex-row d-flex justify-content-around">
-                        <input type="hidden" asp-for="ClassChoiceId[i].Id"/>
-                        <input class="form-check-input" asp-for="@Model.ClassChoiceId[i].IsPicked"/>
-                    </td>
-                </tr>
+    <div class="mb-3">
+        <label asp-for="SelectedClassIds"></label>
+        <select asp-for="SelectedClassIds" id="class-input">
+            @foreach (var schoolClass in Model.SchoolClassList) {
+                <option value="@schoolClass.Id">@schoolClass.Name</option>
             }
-        </table>
+        </select>
     </div>
     <input class="btn btn-info" type="submit" value="Confirm"/>
 </form>
+
+@section Scripts {
+    <script>
+        $('#subject-input').selectize({
+            maxItems: 1
+        })
+
+        $('#class-input').selectize({
+            plugins: ['remove_button'],
+            delimiter: ','
+        })
+    </script>
+}

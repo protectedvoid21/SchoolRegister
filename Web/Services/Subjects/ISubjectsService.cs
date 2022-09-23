@@ -15,9 +15,9 @@ public interface ISubjectsService {
 
     Task<int> GetCountAsync();
 
-    Task<int> GetCountByStudents(Subject subject);
+    Task<int> GetCountByStudents(int subjectId);
 
-    Task<IEnumerable<StudentSubject>> GetStudentSubjectsForStudent(Student student);
+    Task<IEnumerable<StudentSubject>> GetStudentSubjectsForStudent(int studentId);
 
     Task<IEnumerable<StudentSubject>> GetStudentSubjectsForTeacher(int teacherId);
 
@@ -29,11 +29,9 @@ public interface ISubjectsService {
 
     Task UpdateSubjectsForStudent(Student student);
 
-    Task AddSchoolSubjectAsync(int subjectId, int schoolClassId, int teacherId);
+    Task AddSchoolSubjectsAsync(int subjectId, IEnumerable<int> schoolClassIds, int teacherId);
 
-    Task AddSchoolSubjectRangeAsync(IEnumerable<SchoolSubject> schoolSubjects);
-
-    Task DeleteSchoolSubjectAsync(SchoolSubject schoolSubject);
+    Task DeleteSchoolSubjectAsync(int id);
 
     Task<List<SchoolSubject>> GetAllSchoolSubjects();
 

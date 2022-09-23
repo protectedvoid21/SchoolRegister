@@ -32,6 +32,10 @@ public class MapperProfile : Profile {
         CreateMap<SchoolSubject, TeachingClassModel>()
             .ForMember(dest => dest.ClassName, opt => opt.MapFrom(src => src.SchoolClass.Name))
             .ForMember(dest => dest.SubjectName, opt => opt.MapFrom(src => src.Subject.Name));
+        CreateMap<Teacher, SchoolSubjectViewModel>()
+            .ForMember(dest => dest.TeacherName, opt => opt.MapFrom(src => src.User.Name))
+            .ForMember(dest => dest.TeacherSurname, opt => opt.MapFrom(src => src.User.Surname))
+            .ForMember(dest => dest.TeacherId, opt => opt.MapFrom(src => src.Id));
         CreateMap<Teacher, TeacherViewModel>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
             .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.User.Surname))
