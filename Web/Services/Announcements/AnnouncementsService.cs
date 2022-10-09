@@ -26,20 +26,31 @@ public class AnnouncementsService : IAnnouncementsService {
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Announcement announcement) {
+    public async Task UpdateAsync(int id, string title, string description) {
+        Announcement? announcement = await dbContext.Announcements.FindAsync(id);
+        if (announcement == null) {
+            return;
+        }
+        announcement.Title = title;
+        announcement.Description = description;
+
         dbContext.Update(announcement);
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task RemoveAsync(int announcementId) {
-        Announcement announcement = await dbContext.Announcements.FindAsync(announcementId);
+    public async Task RemoveAsync(int id) {
+        Announcement? announcement = await dbContext.Announcements.FindAsync(id);
+        if(announcement == null) {
+            return;
+        }
+
         dbContext.Remove(announcement);
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<bool> IsOwner(int announcementId, int teacherId) {
+    public async Task<bool> IsOwner(int id, int teacherId) {
         Announcement announcement = await dbContext.Announcements
-            .FirstAsync(a => a.Id == announcementId);
+            .FirstAsync(a => a.Id == id);
         return announcement.TeacherId == teacherId;
     }
 

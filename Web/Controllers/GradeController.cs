@@ -6,6 +6,7 @@ using SchoolRegister.Models;
 using SchoolRegister.Models.ViewModels.Grades;
 using SchoolRegister.Services.Grades;
 using SchoolRegister.Services.Students;
+using SchoolRegister.Services.Subjects;
 using SchoolRegister.Services.Teachers;
 
 namespace SchoolRegister.Controllers;
@@ -13,15 +14,24 @@ namespace SchoolRegister.Controllers;
 [Authorize(Roles = "Teacher")]
 public class GradeController : Controller {
     private readonly IGradesService gradesService;
+    private readonly ISubjectsService subjectsService;
     private readonly ITeachersService teachersService;
     private readonly IStudentsService studentsService;
     private readonly UserManager<AppUser> userManager;
+    private readonly IMapper mapper;
 
-    public GradeController(IGradesService gradesService, ITeachersService teachersService, IStudentsService studentsService, UserManager<AppUser> userManager) {
+    public GradeController(IGradesService gradesService,
+        ISubjectsService subjectsService, 
+        ITeachersService teachersService,
+        IStudentsService studentsService,
+        UserManager<AppUser> userManager,
+        IMapper mapper) {
         this.gradesService = gradesService;
+        this.subjectsService = subjectsService;
         this.teachersService = teachersService;
         this.studentsService = studentsService;
-        this.userManager = userManager; 
+        this.userManager = userManager;
+        this.mapper = mapper;
     }
 
     [Authorize(Roles = "Student,Teacher")]
@@ -50,7 +60,8 @@ public class GradeController : Controller {
 
     [HttpGet]
     public async Task<IActionResult> Add(int studentSubjectId) {
-        GradeCreateViewModel gradeModel = await gradesService.GetById<GradeCreateViewModel>(studentSubjectId);
+        StudentSubject studentSubject = await subjectsService.GetStudentSubjectById(studentSubjectId);
+        var gradeModel = mapper.Map<GradeCreateViewModel>(studentSubject);
         return View(gradeModel);
     }
 

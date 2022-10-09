@@ -82,19 +82,15 @@ public class AnnouncementsController : Controller {
 
     [Authorize(Roles = "Teacher")]
     [HttpPost]
-    public async Task<IActionResult> Edit(AnnouncementCreateViewModel announcementCreateModel) {
+    public async Task<IActionResult> Edit(AnnouncementCreateViewModel announcementModel) {
         var user = await userManager.GetUserAsync(User);
         Teacher teacher = await teachersService.GetByUser(user);
 
-        if (teacher.Id != announcementCreateModel.TeacherId) {
+        if (teacher.Id != announcementModel.TeacherId) {
             return ValidationProblem();
         }
 
-        Announcement announcement = await announcementsService.GetById(announcementCreateModel.Id);
-        announcement.Title = announcementCreateModel.Title;
-        announcement.Description = announcementCreateModel.Description;
-
-        await announcementsService.UpdateAsync(announcement);
+        await announcementsService.UpdateAsync(announcementModel.Id, announcementModel.Title, announcementModel.Description);
 
         return RedirectToAction("YourAnnouncements");
     }

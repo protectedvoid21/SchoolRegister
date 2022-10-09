@@ -69,27 +69,17 @@ public class GradesService : IGradesService {
     }
 
     public async Task<bool> IsOwner(int gradeId, int studentId) {
-        var grade = await dbContext.Grades
+        Grade grade = await dbContext.Grades
             .Include(g => g.StudentSubject.Student)
             .FirstAsync(g => g.Id == gradeId);
         return grade.StudentSubject.Student.Id == studentId;
     }
 
     public async Task<bool> IsTeaching(int gradeId, int teacherId) {
-        var grade = await dbContext.Grades
+        Grade grade = await dbContext.Grades
             .Include(g => g.StudentSubject.SchoolSubject.Teacher)
             .FirstAsync(g => g.Id == gradeId);
 
         return grade.StudentSubject.SchoolSubject.Teacher.Id == teacherId;
     }
-
-
-    /*public async Task<IEnumerable<Grade>> GetStudentGrades(int studentId, StudentSubject subject) {
-        var grades = await dbContext.StudentSubjects
-            .Include(s => s.Grades)
-            .Where(s => s.Student.Id == studentId && s.Subject == subject)
-            .SelectMany(s => s.Grades)
-            .ToListAsync();
-        return grades;
-    }*/
 }

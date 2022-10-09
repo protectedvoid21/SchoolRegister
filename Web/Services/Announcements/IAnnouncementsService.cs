@@ -5,9 +5,9 @@ namespace SchoolRegister.Services.Announcements;
 public interface IAnnouncementsService {
     Task AddAsync(string title, string description, int teacherId);
 
-    Task UpdateAsync(Announcement announcement);
+    Task UpdateAsync(int id, string title, string description);
 
-    Task RemoveAsync(int announcementId);
+    Task RemoveAsync(int id);
 
     Task<bool> IsOwner(int announcementId, int teacherId);
 
