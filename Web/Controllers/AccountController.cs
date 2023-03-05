@@ -1,12 +1,10 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using AutoMapper;
+﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels.User;
 
 namespace SchoolRegister.Controllers;
 
@@ -17,7 +15,8 @@ public class AccountController : Controller {
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly IMapper mapper;
 
-    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IMapper mapper) {
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
+        RoleManager<IdentityRole> roleManager, IMapper mapper) {
         this.userManager = userManager;
         this.signInManager = signInManager;
         this.roleManager = roleManager;
@@ -62,6 +61,7 @@ public class AccountController : Controller {
             foreach (var error in result.Errors) {
                 ModelState.AddModelError("", error.Description);
             }
+
             return View(changePasswordModel);
         }
 
@@ -72,7 +72,7 @@ public class AccountController : Controller {
         };
 
         return View("UserData", userModel);
-    } 
+    }
 
     /*[HttpGet]
     public async Task<IActionResult> CreateUser() {
@@ -123,7 +123,7 @@ public class AccountController : Controller {
     public async Task<IActionResult> RoleList() {
         List<RoleViewModel> roleModelList = new();
         var roleList = roleManager.Roles.AsAsyncEnumerable();
-        await foreach(var role in roleList) {
+        await foreach (var role in roleList) {
             var usersInRole = await userManager.GetUsersInRoleAsync(role.Name);
             RoleViewModel roleModel = mapper.Map<RoleViewModel>(role);
             roleModel.UserCount = usersInRole.Count;
@@ -165,7 +165,8 @@ public class AccountController : Controller {
         if (!ModelState.IsValid) {
             return View(role);
         }
-        if(await roleManager.RoleExistsAsync(role.Name)) {
+
+        if (await roleManager.RoleExistsAsync(role.Name)) {
             ModelState.AddModelError("", "Role with this name already exists");
             return View(role);
         }
@@ -179,6 +180,6 @@ public class AccountController : Controller {
         await roleManager.DeleteAsync(role);
         return RedirectToAction("RoleList");
     }
-    
+
     #endregion
 }

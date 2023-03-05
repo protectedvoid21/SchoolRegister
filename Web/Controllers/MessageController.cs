@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Runtime.CompilerServices;
+﻿using Data.Models;
+using Data.ViewModels;
+using Data.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Models.ViewModels.User;
-using SchoolRegister.Services.Messages;
-using SchoolRegister.Services.Students;
-using SchoolRegister.Services.Teachers;
+using Services.Messages;
+using Services.Students;
+using Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -20,8 +18,8 @@ public class MessageController : Controller {
     private readonly IStudentsService studentsService;
     private readonly IMessagesService messagesService;
 
-    public MessageController(UserManager<AppUser> userManager, 
-        RoleManager<IdentityRole> roleManager, 
+    public MessageController(UserManager<AppUser> userManager,
+        RoleManager<IdentityRole> roleManager,
         ITeachersService teachersService,
         IStudentsService studentsService,
         IMessagesService messagesService) {
@@ -64,17 +62,20 @@ public class MessageController : Controller {
                     Surname = student.User.Surname,
                 });
             }
+
             userGrouped.Add("Students", studentModelList);
         }
+
         var teacherList = await teachersService.GetAllAsync();
         List<UserSimpleViewModel> teacherModelList = new();
-        foreach(var teacher in teacherList) {
+        foreach (var teacher in teacherList) {
             teacherModelList.Add(new UserSimpleViewModel {
                 Id = teacher.User.Id,
                 Name = teacher.User.Name,
                 Surname = teacher.User.Surname,
             });
         }
+
         userGrouped.Add("Teachers", teacherModelList);
 
         MessageViewModel messageModel = new() {
@@ -88,6 +89,7 @@ public class MessageController : Controller {
         if (!ModelState.IsValid) {
             return View(messageModel);
         }
+
         var user = await userManager.GetUserAsync(User);
         var receiverUser = await userManager.FindByIdAsync(messageModel.UserReceiverId);
 
@@ -102,7 +104,8 @@ public class MessageController : Controller {
             }
         }
 
-        await messagesService.AddAsync(messageModel.Title, messageModel.Description, user.Id, messageModel.UserReceiverId);
+        await messagesService.AddAsync(messageModel.Title, messageModel.Description, user.Id,
+            messageModel.UserReceiverId);
 
         return RedirectToAction("Index");
     }
@@ -124,7 +127,7 @@ public class MessageController : Controller {
     public async Task<IActionResult> Revoke(int id) {
         var user = await userManager.GetUserAsync(User);
 
-        if(!await messagesService.IsReceiver(id, user.Id)) {
+        if (!await messagesService.IsReceiver(id, user.Id)) {
             return Forbid();
         }
 

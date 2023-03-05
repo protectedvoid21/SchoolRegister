@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Data.Models;
+using Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Services.Subjects;
+using Services.Subjects;
 
 namespace SchoolRegister.Controllers;
 
@@ -17,12 +17,13 @@ public class SubjectController : Controller {
     public async Task<IActionResult> ViewAll() {
         List<Subject> subjectList = await subjectsService.GetAllSubjects();
         List<SubjectElementViewModel> subjectListModel = new();
-        foreach(var subject in subjectList) {
+        foreach (var subject in subjectList) {
             subjectListModel.Add(new SubjectElementViewModel {
                 Subject = subject,
                 StudentCount = await subjectsService.GetCountByStudents(subject.Id)
             });
         }
+
         return View(subjectListModel);
     }
 
@@ -34,11 +35,11 @@ public class SubjectController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Add(SubjectViewModel subjectModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(subjectModel);
         }
 
-        if(await subjectsService.IsSubjectExisting(subjectModel.Name)) {
+        if (await subjectsService.IsSubjectExisting(subjectModel.Name)) {
             ModelState.AddModelError("", "Subject with this name already exists");
             return View(subjectModel);
         }
@@ -55,9 +56,10 @@ public class SubjectController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Edit(Subject subject) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(subject);
         }
+
         await subjectsService.UpdateAsync(subject.Id, subject.Name);
         return RedirectToAction("ViewAll");
     }

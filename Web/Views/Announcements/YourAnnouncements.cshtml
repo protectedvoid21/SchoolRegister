@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SchoolRegister.Models.ViewModels.AnnouncementViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Data.ViewModels.AnnouncementViewModel>
 
 <h2 class="text-center mb-5">Your announcements</h2>
 @foreach (var announcement in Model) {

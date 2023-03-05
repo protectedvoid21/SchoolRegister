@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SchoolRegister.Models;
 
-namespace SchoolRegister.Pages; 
+namespace SchoolRegister.Pages;
 
 public class LoginModel : PageModel {
     private readonly UserManager<AppUser> userManager;
@@ -13,9 +13,8 @@ public class LoginModel : PageModel {
     [BindProperty] public InputModel Input { get; set; } = new();
 
     public class InputModel {
-        [Required]
-        [Display(Name = "Username")]
-        public string UserName { get; set; }
+        [Required] [Display(Name = "Username")] public string UserName { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -27,22 +26,24 @@ public class LoginModel : PageModel {
         this.signInManager = signInManager;
     }
 
-    public void OnGet() {}
+    public void OnGet() {
+    }
 
     public async Task<IActionResult> OnPostAsync() {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return Page();
         }
 
         var user = await userManager.FindByNameAsync(Input.UserName);
-        if(user == null) {
+        if (user == null) {
             return Page();
         }
 
         var result = await signInManager.PasswordSignInAsync(user, Input.Password, false, false);
-        if(result.Succeeded) {
+        if (result.Succeeded) {
             return RedirectToAction("Index", "Home");
         }
+
         return Page();
     }
 }

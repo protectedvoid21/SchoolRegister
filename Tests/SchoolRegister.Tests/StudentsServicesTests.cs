@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using SchoolRegister.Models;
-using SchoolRegister.Services.Students;
-using SchoolRegister.Services.Subjects;
-using SchoolRegister.Tests.Utils;
+using Services.Students;
+using Services.Subjects;
+using Tests.Utils;
 using Xunit;
 
-namespace SchoolRegister.Tests;
+namespace Tests;
 
 public class StudentsServiceTests {
     [Theory]
@@ -15,7 +14,8 @@ public class StudentsServiceTests {
     [InlineData("Adam", "Żółć")]
     [InlineData("Michael", "Gray")]
     public async Task Add_Students_ExistsInDb(string name, string surname) {
-        var options = new DbContextOptionsBuilder<SchoolContext>().UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+        var options = new DbContextOptionsBuilder<SchoolContext>().UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
         var context = new SchoolContext(options);
 
         var userManagerMock = new Mock<FakeUserManager>();
@@ -23,7 +23,7 @@ public class StudentsServiceTests {
         var studentsService = new StudentsService(context, userManagerMock.Object, subjectsServiceMock.Object);
 
         await studentsService.AddAsync(name, surname, 0);
-        
+
         var students = await studentsService.GetAllAsync();
 
         Assert.Single(students);

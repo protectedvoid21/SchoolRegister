@@ -1,4 +1,5 @@
-﻿@model SchoolRegister.Models.SchoolClass
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Data.Models.SchoolClass
 
 <h2 class="align-content-center">@Model.Name</h2>
 <a class="btn btn-info mb-3" asp-controller="Student" asp-action="Add" asp-route-schoolClassId="@Model.Id">Add student</a>

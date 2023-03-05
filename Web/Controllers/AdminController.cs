@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Services.SchoolClasses;
-using SchoolRegister.Services.Students;
-using SchoolRegister.Services.Subjects;
-using SchoolRegister.Services.Teachers;
+using Services.SchoolClasses;
+using Services.Students;
+using Services.Subjects;
+using Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -63,7 +61,7 @@ public class AdminController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> CreateSchoolSubject(SchoolSubjectViewModel schoolSubjectModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(schoolSubjectModel);
         }
 

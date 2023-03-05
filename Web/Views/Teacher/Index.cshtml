@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SchoolRegister.Models.ViewModels.Teachers.TeacherSubjectViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model IEnumerable<Data.ViewModels.Teachers.TeacherSubjectViewModel>
 
 <h2>Class list</h2>
 @foreach (var teachingModel in Model) {

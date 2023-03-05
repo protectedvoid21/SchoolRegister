@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SchoolRegister.Models.Message>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Data.Models.Message>
 
 <h2 class="text-center mb-4">Sent messages</h2>
 
@@ -12,7 +13,9 @@
     @foreach (var message in Model) {
         <tr>
             <td>@message.CreatedDate</td>
-            <td><a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a></td>
+            <td>
+                <a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a>
+            </td>
             <td>@message.ReceiverUser.Name @message.ReceiverUser.Surname</td>
         </tr>
     }

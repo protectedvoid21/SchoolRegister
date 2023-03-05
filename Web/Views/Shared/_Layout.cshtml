@@ -1,33 +1,26 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - SchoolRegister</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/selectize.bootstrap5.css"/>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />   
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <style>
-        body {
-            margin: 0;
-        }
+        body { margin: 0; }
 
         .navbar-brand {
             font-weight: bold;
             font-size: 1.6em;
         }
 
-        .nav {
-            padding: 0;
-        }
+        .nav { padding: 0; }
 
-        .ul {
-            padding: 0;
-        }
+        .ul { padding: 0; }
 
-        .nav a {
-            color: #dddddd;
-        }
+        .nav a { color: #dddddd; }
 
         .adm-view-text {
             font-size: 0.7em;
@@ -35,13 +28,9 @@
             font-weight: lighter;
         }
 
-        .bg-brown {
-            background-color: #292525;
-        }
+        .bg-brown { background-color: #292525; }
 
-        .nav-item:hover {
-            background-color: #191515;
-        }
+        .nav-item:hover { background-color: #191515; }
     </style>
 </head>
 <body>
@@ -49,7 +38,9 @@
     <header style="width: 20%">
         <nav class="bg-brown h-100 min-vh-100">
             <ul class="nav flex-column sticky-top">
-                <li><a class="navbar-brand nav-link text-white text-center" asp-controller="Teacher" asp-action="Index">School Register</a></li>
+                <li>
+                    <a class="navbar-brand nav-link text-white text-center" asp-controller="Teacher" asp-action="Index">School Register</a>
+                </li>
                 @if (User.IsInRole("Admin")) {
                     <partial name="_AdminPartial"/>
                 }

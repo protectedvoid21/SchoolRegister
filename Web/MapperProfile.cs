@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels;
+using Data.ViewModels.Grades;
+using Data.ViewModels.Students;
+using Data.ViewModels.Teachers;
+using Data.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Models.ViewModels.Grades;
-using SchoolRegister.Models.ViewModels.Students;
-using SchoolRegister.Models.ViewModels.Teachers;
-using SchoolRegister.Models.ViewModels.User;
 
-namespace SchoolRegister; 
+namespace SchoolRegister;
 
 public class MapperProfile : Profile {
     public MapperProfile() {
@@ -39,11 +39,14 @@ public class MapperProfile : Profile {
         CreateMap<Teacher, TeacherViewModel>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
             .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src.User.Surname))
-            .ForMember(dest => dest.ClassCount, opt => opt.MapFrom(src => src.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count()))
-            .ForMember(dest => dest.SubjectCount, opt => opt.MapFrom(src => src.SchoolSubjects.Select(s => s.Subject).Distinct().Count()))
+            .ForMember(dest => dest.ClassCount,
+                opt => opt.MapFrom(src => src.SchoolSubjects.Select(s => s.SchoolClass.Id).Distinct().Count()))
+            .ForMember(dest => dest.SubjectCount,
+                opt => opt.MapFrom(src => src.SchoolSubjects.Select(s => s.Subject).Distinct().Count()))
             .ForMember(dest => dest.SchoolSubjectCount, opt => opt.MapFrom(src => src.SchoolSubjects.Count))
             .ForMember(dest => dest.TeachingClassList,
-                opt => opt.MapFrom(src => src.SchoolSubjects.Where(s => s.TeacherId == src.Id).OrderBy(c => c.SchoolClass.Name)));
+                opt => opt.MapFrom(src =>
+                    src.SchoolSubjects.Where(s => s.TeacherId == src.Id).OrderBy(c => c.SchoolClass.Name)));
 
         CreateMap<Announcement, AnnouncementViewModel>()
             .ForMember(dest => dest.TeacherName, opt => opt.MapFrom(src => src.Teacher.User.Name))

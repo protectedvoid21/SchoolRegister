@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SchoolRegister.Models;
-using SchoolRegister.Services.Messages;
+﻿using Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Services.Messages;
 using Xunit;
 
-namespace SchoolRegister.Tests; 
+namespace Tests;
 
 public class MessagesServiceTests {
     private readonly MessagesService messagesService;
-    
+
     public MessagesServiceTests() {
         var options = new DbContextOptionsBuilder<SchoolContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
@@ -23,7 +23,7 @@ public class MessagesServiceTests {
     public async Task Add_NewMessage_MessageIsVisibleInDatabase(string title, string description) {
         const string senderId = "senderId";
         const string receiverId = "receiverId";
-        
+
         await messagesService.AddAsync(title, description, senderId, receiverId);
 
         Assert.Single(await messagesService.GetAllReceivedMessages(receiverId));
@@ -36,11 +36,11 @@ public class MessagesServiceTests {
 
         var messageList = await messagesService.GetAllReceivedMessages("2");
         Message message = messageList.First();
-        
+
         Assert.True(message.IsVisible);
 
         await messagesService.ChangeVisibility(message.Id, false);
-        
+
         Assert.False(message.IsVisible);
-    } 
+    }
 }

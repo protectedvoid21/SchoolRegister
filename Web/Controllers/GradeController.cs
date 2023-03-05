@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels.Grades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels.Grades;
-using SchoolRegister.Services.Grades;
-using SchoolRegister.Services.Students;
-using SchoolRegister.Services.Subjects;
-using SchoolRegister.Services.Teachers;
+using Services.Grades;
+using Services.Students;
+using Services.Subjects;
+using Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -21,7 +21,7 @@ public class GradeController : Controller {
     private readonly IMapper mapper;
 
     public GradeController(IGradesService gradesService,
-        ISubjectsService subjectsService, 
+        ISubjectsService subjectsService,
         ITeachersService teachersService,
         IStudentsService studentsService,
         UserManager<AppUser> userManager,
@@ -37,15 +37,15 @@ public class GradeController : Controller {
     [Authorize(Roles = "Student,Teacher")]
     public async Task<IActionResult> View(int gradeId) {
         var user = await userManager.GetUserAsync(User);
-        if(User.IsInRole("Teacher")) {
+        if (User.IsInRole("Teacher")) {
             Teacher teacher = await teachersService.GetByUser(user);
-            if(!await teachersService.IsTeacherGradeAuthor(teacher.Id, gradeId)) {
+            if (!await teachersService.IsTeacherGradeAuthor(teacher.Id, gradeId)) {
                 return Forbid();
             }
         }
-        else if(User.IsInRole("Student")) {
+        else if (User.IsInRole("Student")) {
             Student student = await studentsService.GetByUser(user);
-            if(!await gradesService.IsOwner(gradeId, student.Id)) {
+            if (!await gradesService.IsOwner(gradeId, student.Id)) {
                 return Forbid();
             }
         }
@@ -67,7 +67,7 @@ public class GradeController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Add(GradeCreateViewModel gradeModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(gradeModel);
         }
 
@@ -86,7 +86,7 @@ public class GradeController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Edit(GradeEditViewModel gradeModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(gradeModel);
         }
 

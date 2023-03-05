@@ -1,6 +1,19 @@
-﻿<li><p class="adm-view-text text-center">@User.Identity.Name</p></li>
-<li><a class="nav-link nav-item text-white text-center" asp-controller="Teacher" asp-action="Index">Class List</a></li>
-<li><a class="nav-link nav-item text-white text-center" asp-controller="Message" asp-action="Index">Messages</a></li>
-<li><a class="nav-link nav-item text-white text-center" asp-controller="Announcements" asp-action="Index">Announcements</a></li>
-<li><a class="nav-link nav-item text-white text-center">Help</a></li>
-<li><a class="nav-link nav-item text-white text-center" asp-controller="Account" asp-action="Logout">Logout</a></li>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+<li>
+    <p class="adm-view-text text-center">@User.Identity.Name</p>
+</li>
+<li>
+    <a class="nav-link nav-item text-white text-center" asp-controller="Teacher" asp-action="Index">Class List</a>
+</li>
+<li>
+    <a class="nav-link nav-item text-white text-center" asp-controller="Message" asp-action="Index">Messages</a>
+</li>
+<li>
+    <a class="nav-link nav-item text-white text-center" asp-controller="Announcements" asp-action="Index">Announcements</a>
+</li>
+<li>
+    <a class="nav-link nav-item text-white text-center">Help</a>
+</li>
+<li>
+    <a class="nav-link nav-item text-white text-center" asp-controller="Account" asp-action="Logout">Logout</a>
+</li>

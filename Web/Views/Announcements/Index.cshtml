@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SchoolRegister.Models.ViewModels.AnnouncementViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model IEnumerable<Data.ViewModels.AnnouncementViewModel>
 
 <h2>Announcements</h2>
 @if (User.IsInRole("Teacher")) {

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Services.SchoolClasses;
-using SchoolRegister.Services.Subjects;
+﻿using Data.Models;
+using Data.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Services.SchoolClasses;
+using Services.Subjects;
 
-namespace SchoolRegister.Controllers; 
+namespace SchoolRegister.Controllers;
 
 public class SchoolClassController : Controller {
     private readonly ISchoolClassesService schoolClassesService;
@@ -23,7 +23,7 @@ public class SchoolClassController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Add(SchoolClassViewModel schoolClassModel) {
-        if(!ModelState.IsValid || await schoolClassesService.IsSchoolClassExisting(schoolClassModel.Name)) {
+        if (!ModelState.IsValid || await schoolClassesService.IsSchoolClassExisting(schoolClassModel.Name)) {
             return View(schoolClassModel);
         }
 
@@ -44,11 +44,11 @@ public class SchoolClassController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Edit(SchoolClass schoolClass) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(schoolClass);
         }
 
-        if(await schoolClassesService.IsSchoolClassExisting(schoolClass.Name)) {
+        if (await schoolClassesService.IsSchoolClassExisting(schoolClass.Name)) {
             ModelState.AddModelError("", "Class with this name already exists");
             return View(schoolClass);
         }

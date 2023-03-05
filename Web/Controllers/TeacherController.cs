@@ -1,16 +1,13 @@
-﻿using System.ComponentModel;
-using AutoMapper;
+﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels.Teachers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels.Grades;
-using SchoolRegister.Models.ViewModels.Teacher;
-using SchoolRegister.Models.ViewModels.Teachers;
-using SchoolRegister.Services.Grades;
-using SchoolRegister.Services.SchoolClasses;
-using SchoolRegister.Services.Subjects;
-using SchoolRegister.Services.Teachers;
+using Services.Grades;
+using Services.SchoolClasses;
+using Services.Subjects;
+using Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -22,8 +19,8 @@ public class TeacherController : Controller {
     private readonly UserManager<AppUser> userManager;
     private readonly IMapper mapper;
 
-    public TeacherController(ITeachersService teachersService, 
-        ISubjectsService subjectsService, 
+    public TeacherController(ITeachersService teachersService,
+        ISubjectsService subjectsService,
         ISchoolClassesService schoolClassesService,
         IGradesService gradesService,
         UserManager<AppUser> userManager,
@@ -45,7 +42,7 @@ public class TeacherController : Controller {
 
         List<TeacherSubjectViewModel> teacherSubjectsModelList = new();
 
-        foreach(var group in groupedSubjects) {
+        foreach (var group in groupedSubjects) {
             teacherSubjectsModelList.Add(new TeacherSubjectViewModel {
                 SchoolClass = group.Key,
                 SubjectList = group.Select(s => s.Subject).ToList()
@@ -63,7 +60,8 @@ public class TeacherController : Controller {
         IEnumerable<StudentSubject> studentSubjects = await subjectsService.GetStudentSubjectsForTeacher(teacher.Id);
         var schoolClass = await schoolClassesService.GetById(classId);
 
-        studentSubjectModel.StudentSubjects = studentSubjects.Where(s => s.SchoolSubject.Subject.Id == subjectId && s.Student.SchoolClass == schoolClass);
+        studentSubjectModel.StudentSubjects = studentSubjects.Where(s =>
+            s.SchoolSubject.Subject.Id == subjectId && s.Student.SchoolClass == schoolClass);
         studentSubjectModel.SubjectName = (await subjectsService.GetById(subjectId)).Name;
         studentSubjectModel.ClassName = schoolClass.Name;
 
@@ -78,7 +76,7 @@ public class TeacherController : Controller {
 
     [HttpPost, Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public async Task<IActionResult> Add(CreateTeacherViewModel createTeacherModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(createTeacherModel);
         }
 
@@ -106,9 +104,10 @@ public class TeacherController : Controller {
 
     [HttpPost, Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public async Task<IActionResult> Edit(Teacher teacher) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(teacher);
         }
+
         teacher.User.UserName = Utils.GenerateUserName(teacher.User.Name, teacher.User.Surname);
 
         await teachersService.UpdateAsync(teacher);
@@ -128,7 +127,7 @@ public class TeacherController : Controller {
         IEnumerable<Teacher> teacherList = await teachersService.GetAllAsync();
         List<TeacherViewModel> teacherModelList = new();
 
-        foreach(var teacher in teacherList) {
+        foreach (var teacher in teacherList) {
             teacherModelList.Add(new TeacherViewModel {
                 Id = teacher.Id,
                 Name = teacher.User.Name,

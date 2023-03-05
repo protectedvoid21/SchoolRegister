@@ -1,5 +1,6 @@
-﻿@using SchoolRegister.Models
-@model SchoolRegister.Models.ViewModels.Grades.GradeCreateViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Data.Models
+@model Data.ViewModels.Grades.GradeCreateViewModel
 
 <h2>Adding grade for</h2>
 <h2>Student : @Model.StudentName @Model.StudentSurname</h2>
@@ -33,7 +34,7 @@
         <label asp-for="Comment"></label>
         <textarea asp-for="Comment" class="form-control"></textarea>
     </div>
-    <input type="hidden" asp-for="StudentName" />
+    <input type="hidden" asp-for="StudentName"/>
     <input type="hidden" asp-for="StudentSurname"/>
     <input type="hidden" asp-for="SubjectId"/>
     <input type="hidden" asp-for="SubjectName"/>

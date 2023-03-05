@@ -1,5 +1,6 @@
-﻿@using SchoolRegister.Models
-@model SchoolRegister.Models.ViewModels.Students.StudentPanelViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Data.Models
+@model Data.ViewModels.Students.StudentPanelViewModel
 
 <link rel="stylesheet" href="~/css/grades.css"/>
 <script src="~/js/grades.js"></script>
@@ -21,7 +22,11 @@
                     <a id="grade" class="btn" asp-controller="Student" asp-action="GradeView" asp-route-gradeId="@grade.Id">@grade.GetGradeName()</a>
                 }
             </td>
-            <td>@if(studentSubject.Grades.Any()) { @studentSubject.GetSubjectAverage().ToString("F2") }</td>
+            <td>
+                @if (studentSubject.Grades.Any()) {
+                    @studentSubject.GetSubjectAverage().ToString("F2")
+                }
+            </td>
         </tr>
     }
 </table>

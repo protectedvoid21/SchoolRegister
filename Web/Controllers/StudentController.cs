@@ -1,16 +1,14 @@
-﻿using System.Runtime.CompilerServices;
-using AutoMapper;
+﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels.Students;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels.Grades;
-using SchoolRegister.Models.ViewModels.Students;
-using SchoolRegister.Services.Grades;
-using SchoolRegister.Services.SchoolClasses;
-using SchoolRegister.Services.Students;
-using SchoolRegister.Services.Subjects;
-using SchoolRegister.Services.Teachers;
+using Services.Grades;
+using Services.SchoolClasses;
+using Services.Students;
+using Services.Subjects;
+using Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -62,7 +60,7 @@ public class StudentController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Add(CreateStudentViewModel studentModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(studentModel);
         }
 
@@ -81,7 +79,7 @@ public class StudentController : Controller {
 
     [HttpPost]
     public async Task<IActionResult> Edit(StudentViewModel studentModel) {
-        if(!ModelState.IsValid) {
+        if (!ModelState.IsValid) {
             return View(studentModel);
         }
 

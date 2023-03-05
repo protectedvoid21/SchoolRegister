@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
+using Data.Models;
+using Data.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SchoolRegister.Models;
-using SchoolRegister.Models.ViewModels;
-using SchoolRegister.Services.Announcements;
-using SchoolRegister.Services.Teachers;
+using Services.Announcements;
+using Services.Teachers;
 
 namespace SchoolRegister.Controllers;
 
@@ -17,7 +15,8 @@ public class AnnouncementsController : Controller {
     private readonly UserManager<AppUser> userManager;
     private readonly IMapper mapper;
 
-    public AnnouncementsController(IAnnouncementsService announcementsService, ITeachersService teachersService, UserManager<AppUser> userManager, IMapper mapper) {
+    public AnnouncementsController(IAnnouncementsService announcementsService, ITeachersService teachersService,
+        UserManager<AppUser> userManager, IMapper mapper) {
         this.announcementsService = announcementsService;
         this.teachersService = teachersService;
         this.userManager = userManager;
@@ -51,7 +50,8 @@ public class AnnouncementsController : Controller {
             return View(announcementCreateModel);
         }
 
-        await announcementsService.AddAsync(announcementCreateModel.Title, announcementCreateModel.Description, announcementCreateModel.TeacherId);
+        await announcementsService.AddAsync(announcementCreateModel.Title, announcementCreateModel.Description,
+            announcementCreateModel.TeacherId);
         return RedirectToAction("Index");
     }
 
@@ -90,7 +90,8 @@ public class AnnouncementsController : Controller {
             return ValidationProblem();
         }
 
-        await announcementsService.UpdateAsync(announcementModel.Id, announcementModel.Title, announcementModel.Description);
+        await announcementsService.UpdateAsync(announcementModel.Id, announcementModel.Title,
+            announcementModel.Description);
 
         return RedirectToAction("YourAnnouncements");
     }

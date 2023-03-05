@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SchoolRegister.Models.Message>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Data.Models.Message>
 
 <h2 class="text-center mb-4">Message list</h2>
 <div class="d-flex gap-2">
@@ -20,10 +21,12 @@
             }
             <tr>
                 <td>@message.CreatedDate</td>
-                <td><a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a></td>
+                <td>
+                    <a asp-controller="Message" asp-action="View" asp-route-id="@message.Id">@message.Title</a>
+                </td>
                 <td>
                     @if (message.SenderUser != null) {
-                        <p>@message.SenderUser.Name  @message.SenderUser.Surname</p>
+                        <p>@message.SenderUser.Name @message.SenderUser.Surname</p>
                     }
                     else {
                         <p class="text-muted">deleted user</p>

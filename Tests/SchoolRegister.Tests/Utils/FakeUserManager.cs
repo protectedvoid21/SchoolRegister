@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using SchoolRegister.Models;
 
-namespace SchoolRegister.Tests.Utils; 
+namespace Tests.Utils;
 
 public class FakeUserManager : UserManager<AppUser> {
     public FakeUserManager()

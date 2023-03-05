@@ -1,9 +1,10 @@
-﻿@model SchoolRegister.Models.ViewModels.MessageViewModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Data.ViewModels.MessageViewModel
 
 <h2>Write a message</h2>
 <p>
     @foreach (var userGroup in Model.UserDictionary) {
-        <button class="btn btn-primary display-button" id="@userGroup.Key">@userGroup.Key</button>        
+        <button class="btn btn-primary display-button" id="@userGroup.Key">@userGroup.Key</button>
     }
 </p>
 <form method="post">
@@ -31,7 +32,7 @@
                         <td>
                             <input type="radio" asp-for="UserReceiverId" value="@user.Id"/>
                         </td>
-                    </tr>       
+                    </tr>
                 }
             </table>
         </div>
